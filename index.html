@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#b71c1c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>SAB-5 | Capacitación Seguridad Privada</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --navy:#1a1a1a;--navy2:#2a2a2a;
+      --red:#cc0000;--red2:#a50000;--red-light:#ef5350;
+      --green:#2e7d32;--amber:#e65100;
+      --bg:#f5f3f3;--white:#fff;--text:#1a1a1a;--muted:#666;
+      --border:#e0d8d8;--shadow:0 2px 12px rgba(0,0,0,.1);--r:12px
+    }
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:16px;line-height:1.5}
+    .screen{display:none;min-height:100vh;flex-direction:column}
+    .screen.active{display:flex}
+
+    /* HEADER */
+    .hdr{background:#1a1a1a;color:#fff;padding:12px 18px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.5)}
+    .hdr-logo{display:flex;align-items:center;gap:8px;flex:1}
+    .hdr-brand{font-size:16px;font-weight:900;letter-spacing:1px;color:#fff}
+    .hdr-brand span{color:#ef5350}
+    .hdr-sep{width:1px;height:20px;background:rgba(255,255,255,.2);margin:0 4px}
+    .hdr-title{font-size:17px;font-weight:700;line-height:1.2}
+    .hdr-sub{font-size:12px;opacity:.8}
+    .back-btn{background:none;border:none;color:rgba(255,255,255,.85);font-size:26px;cursor:pointer;padding:2px 6px 2px 0;line-height:1}
+
+    /* LOGIN HERO */
+    .login-hero{position:relative;overflow:hidden;padding:0;text-align:center;color:#fff;background:#111;height:100vh;max-height:420px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+    .login-hero-bg{position:absolute;inset:-8px;background:url('bg.jpg') center/cover no-repeat;filter:blur(3px) brightness(.45);transform:scale(1.08);z-index:0}
+    .login-hero-gradient{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.25) 0%,rgba(0,0,0,.1) 40%,rgba(0,0,0,.8) 100%);z-index:1}
+    .login-hero-content{position:relative;z-index:2;padding:20px 24px 28px;width:100%;display:flex;flex-direction:column;align-items:center}
+    /* Logo + texto lado a lado */
+    .hero-logo-row{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:16px}
+    .hero-logo-img{width:90px;height:90px;object-fit:contain;filter:drop-shadow(0 4px 14px rgba(0,0,0,.5));flex-shrink:0}
+    .hero-logo-txt{text-align:left}
+    .brand-big{font-size:52px;font-weight:900;letter-spacing:3px;line-height:1;text-shadow:0 2px 16px rgba(0,0,0,.7)}
+    .brand-big span{color:#ef5350}
+    .brand-tag{font-size:11px;font-weight:800;letter-spacing:4px;color:rgba(255,255,255,.85);text-transform:uppercase;margin-top:5px}
+    .brand-divider{width:50px;height:2px;background:var(--red);margin:14px auto 12px;border-radius:2px}
+    .brand-sub{font-size:13px;color:rgba(255,255,255,.75);letter-spacing:.5px}
+    /* CONTACTO / PRESENTACIÓN */
+    .contact-section{padding:20px 20px 6px}
+    .contact-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+    .contact-label::after{content:'';flex:1;height:1px;background:var(--border)}
+    .ops-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+    .op-box{background:#fff;border-radius:10px;padding:11px 8px;text-align:center;box-shadow:var(--shadow);border-top:3px solid #1a1a1a}
+    .op-ico{font-size:18px;margin-bottom:4px}
+    .op-num{font-size:12px;font-weight:800;color:#1a1a1a;letter-spacing:.5px;line-height:1.2}
+    .op-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+    .wa-card{background:#fff;border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;margin-bottom:18px;border:2px solid #25D366;text-decoration:none;cursor:pointer}
+    .wa-ico{width:46px;height:46px;flex-shrink:0;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center}
+    .wa-ico svg{width:26px;height:26px}
+    .wa-info{flex:1}
+    .wa-title{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+    .wa-num{font-size:20px;font-weight:900;color:#1a1a1a;letter-spacing:1px;margin:2px 0}
+    .wa-sub{font-size:11px;color:#25D366;font-weight:600}
+    .wa-arr{font-size:22px;color:#25D366;font-weight:700}
+    .login-divider{text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:0 20px 16px;display:flex;align-items:center;gap:8px}
+    .login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+    .login-form{padding:0 20px 20px;flex:1}
+    .form-group{margin-bottom:16px}
+    label{display:block;font-size:12px;font-weight:700;color:var(--red2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px}
+    input,select{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:10px;font-size:16px;background:#fff;color:var(--text);-webkit-appearance:none;transition:border-color .2s}
+    input:focus,select:focus{outline:none;border-color:var(--red)}
+
+    /* BUTTONS */
+    .btn{display:block;width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;text-align:center;transition:transform .1s,opacity .2s}
+    .btn:active{transform:scale(.98)}
+    .btn-primary{background:var(--red);color:#fff;letter-spacing:.5px}
+    .btn-primary:hover{background:var(--red2)}
+    .btn-success{background:var(--green);color:#fff}
+    .btn-outline{background:transparent;border:2px solid var(--red);color:var(--red)}
+    .btn-dark{background:var(--navy);color:#fff}
+    .mb12{margin-bottom:12px}
+    .mb20{margin-bottom:20px}
+
+    /* PROGRESS */
+    .pbar{background:rgba(255,255,255,.3);height:6px;border-radius:3px;overflow:hidden;margin-top:8px}
+    .pfill{background:#fff;height:100%;border-radius:3px;transition:width .5s ease}
+
+    /* HOME */
+    .home-top{background:linear-gradient(135deg,#1a1a1a 0%,#2c0000 100%);color:#fff;padding:20px}
+    .home-top h2{font-size:20px;font-weight:800}
+    .home-top p{font-size:12px;opacity:.8;margin-top:2px}
+    .home-logo-bar{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.12)}
+    .home-logo-bar .brand{font-size:20px;font-weight:900;letter-spacing:1px}
+    .home-logo-bar .brand span{color:#ef5350}
+    .home-logo-bar .tag{font-size:10px;letter-spacing:2px;color:#ef9a9a;text-transform:uppercase}
+    .mlist{padding:14px 16px;flex:1}
+    .mlist-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:12px}
+
+    .mcard{background:#fff;border-radius:var(--r);padding:16px;margin-bottom:12px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;cursor:pointer;transition:transform .1s;border-left:4px solid var(--border)}
+    .mcard:active{transform:scale(.98)}
+    .mcard.available{border-left-color:var(--red)}
+    .mcard.completed{border-left-color:var(--green)}
+    .mcard.locked{opacity:.45;cursor:not-allowed}
+    .mcard-ico{font-size:30px;width:46px;text-align:center}
+    .mcard-info{flex:1}
+    .mcard-name{font-weight:700;font-size:15px}
+    .mcard-desc{font-size:13px;color:var(--muted);margin-top:2px}
+    .mcard-st{font-size:20px}
+
+    /* CONTENT */
+    .mcontent{flex:1;padding:16px;overflow-y:auto}
+    .card{background:#fff;border-radius:var(--r);padding:18px 16px;margin-bottom:14px;box-shadow:var(--shadow)}
+    .card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:8px;border-bottom:2px solid #f0e8e8;padding-bottom:10px}
+    .card p{font-size:15px;line-height:1.65;color:#333}
+
+    .rlist{list-style:none}
+    .ritem{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f2f2f2;font-size:14px;line-height:1.5}
+    .ritem:last-child{border-bottom:none}
+    .rico{font-size:20px;min-width:26px;margin-top:1px}
+
+    .do-c{background:#e8f5e9;border-left:4px solid var(--green);border-radius:8px;padding:13px;margin-bottom:10px}
+    .dont-c{background:#ffebee;border-left:4px solid var(--red);border-radius:8px;padding:13px;margin-bottom:10px}
+    .do-c .rtitle{font-weight:700;font-size:14px;color:var(--green);margin-bottom:4px}
+    .dont-c .rtitle{font-weight:700;font-size:14px;color:var(--red);margin-bottom:4px}
+    .rdesc{font-size:13px;color:#444;line-height:1.5}
+
+    .divider{text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+    .alert-box{background:#fff8e1;border:2px solid var(--amber);border-radius:10px;padding:13px;margin-bottom:12px;display:flex;gap:10px;align-items:flex-start}
+    .alert-ico{font-size:22px}
+    .alert-txt{font-size:13px;line-height:1.55}
+
+    .estep{background:#fff;border-radius:10px;padding:13px;margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:flex-start;gap:12px}
+    .enum{background:var(--red);color:#fff;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;min-width:30px}
+    .etxt h4{font-weight:700;font-size:14px;margin-bottom:3px}
+    .etxt p{font-size:13px;color:#555;line-height:1.45}
+
+    /* PANIC */
+    .panic-btn{background:var(--red);border-radius:50%;width:130px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:20px auto;animation:pulse 2s infinite;cursor:default;box-shadow:0 4px 20px rgba(198,40,40,.4)}
+    .panic-btn .pico{font-size:38px}
+    .panic-btn .ptxt{color:#fff;font-weight:700;font-size:13px;margin-top:6px}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(198,40,40,.4)}70%{box-shadow:0 0 0 18px rgba(198,40,40,0)}100%{box-shadow:0 0 0 0 rgba(198,40,40,0)}}
+
+    /* QUIZ */
+    .qwrap{flex:1;padding:16px}
+    .qprogrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:12px;color:var(--muted)}
+    .qdots{display:flex;gap:5px}
+    .qdot{width:9px;height:9px;border-radius:50%;background:var(--border)}
+    .qdot.active{background:var(--red)}
+    .qdot.ok{background:var(--green)}
+    .qdot.bad{background:#b71c1c}
+
+    .qcard{background:#fff;border-radius:var(--r);padding:18px 16px;box-shadow:var(--shadow);margin-bottom:14px}
+    .qtxt{font-size:16px;font-weight:600;line-height:1.5;margin-bottom:18px;color:var(--text)}
+    .opts{display:flex;flex-direction:column;gap:10px}
+    .opt{padding:14px 15px;border:2px solid var(--border);border-radius:10px;background:#fff;text-align:left;font-size:15px;cursor:pointer;transition:all .15s;color:var(--text);line-height:1.4}
+    .opt:active{transform:scale(.98)}
+    .opt.ok{background:#e8f5e9;border-color:var(--green);color:var(--green);font-weight:600}
+    .opt.bad{background:#ffebee;border-color:var(--red);color:var(--red);font-weight:600}
+    .opt.off{cursor:not-allowed}
+
+    .fb{border-radius:10px;padding:13px;margin-bottom:12px;font-size:14px;font-weight:600;display:flex;align-items:flex-start;gap:9px;line-height:1.5}
+    .fb-ok{background:#e8f5e9;color:var(--green)}
+    .fb-bad{background:#ffebee;color:var(--red)}
+
+    /* RESULT */
+    .rscreen{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px;text-align:center}
+    .rico2{font-size:78px;margin-bottom:18px}
+    .rtitle2{font-size:26px;font-weight:900;margin-bottom:6px}
+    .rscore{font-size:54px;font-weight:900;margin:14px 0}
+    .rmsg{font-size:15px;color:var(--muted);line-height:1.6;margin-bottom:22px;max-width:280px}
+    .cert{background:#fff;border-radius:16px;padding:20px;box-shadow:var(--shadow);width:100%;max-width:320px;border:2px solid var(--green);margin-bottom:22px;text-align:left}
+    .cert-hdr{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px}
+    .cert-name{font-size:19px;font-weight:800;color:var(--text);margin-bottom:4px}
+    .cert-det{font-size:13px;color:var(--muted)}
+    .cert-stamp{margin-top:12px;padding-top:12px;border-top:1px solid #eee;font-size:12px;color:var(--green);font-weight:700}
+
+    .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;width:100%;max-width:320px}
+    .stat-box{background:#fff;border-radius:10px;padding:14px;text-align:center;box-shadow:var(--shadow)}
+    .stat-n{font-size:24px;font-weight:800;color:var(--red)}
+    .stat-l{font-size:11px;color:var(--muted);margin-top:3px}
+
+    .final-card{background:#fff;border-radius:var(--r);padding:20px;box-shadow:var(--shadow);text-align:center;margin-bottom:16px;border:2px dashed var(--red)}
+
+    /* HEADER quiz con fondo rojo */
+    #s-quiz .hdr,#s-final .hdr{background:linear-gradient(135deg,#1a1a1a,#8b0000)}
+
+    /* ADMIN LOGIN */
+    .admin-login-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 24px;background:#f5f3f3}
+    .admin-login-logo{text-align:center;margin-bottom:28px}
+    .admin-login-logo .brand-big{font-size:36px}
+    .admin-badge{display:inline-block;background:#1a1a1a;color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;padding:4px 10px;border-radius:20px;margin-top:6px}
+    .admin-card{background:#fff;border-radius:var(--r);padding:24px;box-shadow:var(--shadow);border-top:4px solid var(--red)}
+
+    /* ADMIN DASHBOARD */
+    #s-admin{background:#f5f3f3;max-width:100%!important}
+    .admin-hdr{background:#1a1a1a;color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+    .admin-hdr-left{display:flex;align-items:center;gap:10px}
+    .admin-hdr .brand-sm{font-size:16px;font-weight:900;letter-spacing:1px}
+    .admin-hdr .brand-sm span{color:#ef5350}
+    .admin-hdr .adm-tag{font-size:10px;background:var(--red);color:#fff;padding:2px 8px;border-radius:10px;font-weight:700;letter-spacing:1px}
+    .admin-body{padding:14px;flex:1;overflow-y:auto}
+
+    /* ADMIN TABS */
+    .admin-tabs{display:flex;background:#fff;border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:99}
+    .admin-tab{flex:1;padding:12px 6px;border:none;background:none;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;text-align:center}
+    .admin-tab.active{color:var(--red);border-bottom-color:var(--red)}
+    .admin-tab-panel{display:none}
+    .admin-tab-panel.active{display:block}
+
+    /* QUESTION EDITOR */
+    .qed-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+    .qed-tab{padding:7px 13px;border:2px solid var(--border);border-radius:20px;background:#fff;font-size:12px;font-weight:700;cursor:pointer;color:var(--muted)}
+    .qed-tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
+    .qcard-edit{background:#fff;border-radius:10px;box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden}
+    .qcard-edit-hdr{padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+    .qcard-edit-num{background:var(--red);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+    .qcard-edit-preview{flex:1;font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .qcard-edit-arr{font-size:18px;color:var(--muted);transition:transform .2s}
+    .qcard-edit.open .qcard-edit-arr{transform:rotate(90deg)}
+    .qcard-edit-body{display:none;padding:0 14px 14px}
+    .qcard-edit.open .qcard-edit-body{display:block}
+    .qed-label{font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;margin-top:10px}
+    .qed-input{width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);resize:vertical;font-family:inherit}
+    .qed-input:focus{outline:none;border-color:var(--red)}
+    .opt-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    .opt-radio{accent-color:var(--green);width:18px;height:18px;flex-shrink:0;cursor:pointer}
+    .opt-input{flex:1;padding:9px 12px;border:2px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit}
+    .opt-input:focus{outline:none;border-color:var(--red)}
+    .opt-row.correct .opt-input{border-color:var(--green);background:#f1faf2}
+    .del-q-btn{background:#ffebee;border:none;color:var(--red);padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;margin-top:6px}
+    .add-q-btn{width:100%;padding:12px;border:2px dashed var(--border);border-radius:10px;background:transparent;color:var(--muted);font-size:14px;font-weight:600;cursor:pointer;margin-bottom:12px}
+    .add-q-btn:hover{border-color:var(--red);color:var(--red)}
+    .save-q-btn{width:100%;padding:14px;background:var(--red);border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:6px}
+    .save-q-btn:active{opacity:.85}
+
+    /* COVER EDITOR */
+    .cover-preview{position:relative;overflow:hidden;border-radius:var(--r);margin-bottom:16px;min-height:180px;background:#111;display:flex;flex-direction:column;justify-content:flex-end;box-shadow:var(--shadow)}
+    .cover-preview-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(2px) brightness(.5);transform:scale(1.06)}
+    .cover-preview-grad{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.1),rgba(0,0,0,.7))}
+    .cover-preview-cnt{position:relative;z-index:1;padding:20px;text-align:center;color:#fff}
+    .cover-preview-brand{font-size:32px;font-weight:900;letter-spacing:3px}
+    .cover-preview-tag{font-size:9px;font-weight:800;letter-spacing:4px;opacity:.85;text-transform:uppercase;margin-top:2px}
+    .cover-preview-line{width:40px;height:2px;margin:8px auto;border-radius:2px}
+    .cover-preview-sub{font-size:12px;opacity:.75}
+
+    .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+    .kpi{background:#fff;border-radius:var(--r);padding:14px 12px;box-shadow:var(--shadow);text-align:center;border-top:3px solid var(--border)}
+    .kpi.aprobados{border-top-color:var(--green)}
+    .kpi.desaprobados{border-top-color:var(--red)}
+    .kpi.total{border-top-color:#1a1a1a}
+    .kpi.promedio{border-top-color:#e65100}
+    .kpi-n{font-size:30px;font-weight:900;line-height:1}
+    .kpi.aprobados .kpi-n{color:var(--green)}
+    .kpi.desaprobados .kpi-n{color:var(--red)}
+    .kpi.total .kpi-n{color:#1a1a1a}
+    .kpi.promedio .kpi-n{color:#e65100}
+    .kpi-l{font-size:11px;color:var(--muted);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+
+    .filter-bar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+    .filter-btn{padding:7px 14px;border:2px solid var(--border);border-radius:20px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .15s}
+    .filter-btn.active{background:var(--red);border-color:var(--red);color:#fff}
+
+    .search-input{width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:10px;font-size:15px;margin-bottom:12px;background:#fff}
+    .search-input:focus{outline:none;border-color:var(--red)}
+
+    .result-table{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);font-size:13px}
+    .result-table th{background:#1a1a1a;color:#fff;padding:10px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+    .result-table td{padding:10px 12px;border-bottom:1px solid #f0eaea;vertical-align:middle}
+    .result-table tr:last-child td{border-bottom:none}
+    .result-table tr:hover td{background:#fdf5f5}
+    .badge-ok{display:inline-block;background:#e8f5e9;color:var(--green);padding:3px 10px;border-radius:12px;font-weight:700;font-size:11px}
+    .badge-no{display:inline-block;background:#ffebee;color:var(--red);padding:3px 10px;border-radius:12px;font-weight:700;font-size:11px}
+    .score-bar-wrap{display:flex;align-items:center;gap:6px}
+    .score-bar{height:6px;border-radius:3px;flex:1;background:#f0eaea;overflow:hidden}
+    .score-bar-fill{height:100%;border-radius:3px;transition:width .4s}
+    .no-data{text-align:center;padding:40px 20px;color:var(--muted)}
+    .no-data .no-ico{font-size:40px;margin-bottom:10px}
+
+    .logout-btn{background:none;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.8);padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
+    .logout-btn:hover{background:rgba(255,255,255,.1)}
+
+    .export-btn{display:block;width:100%;padding:12px;border:2px solid var(--red);border-radius:10px;background:transparent;color:var(--red);font-size:14px;font-weight:700;cursor:pointer;margin-bottom:12px;text-align:center}
+    .export-btn:hover{background:var(--red);color:#fff}
+
+    @media(min-width:600px){.screen{max-width:480px;margin:0 auto}body{background:#e8e0e0}
+      #s-admin{max-width:100%!important}
+      .kpi-grid{grid-template-columns:repeat(4,1fr)}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div class="screen active" id="s-login">
+  <div class="login-hero">
+    <div class="login-hero-bg"></div>
+    <div class="login-hero-gradient"></div>
+    <div class="login-hero-content">
+      <div class="hero-logo-row">
+        <img src="logo.png" class="hero-logo-img" alt="" onerror="this.style.display='none'">
+        <div class="hero-logo-txt">
+          <div class="brand-big">SAB<span>-5</span></div>
+          <div class="brand-tag">Seguridad Privada</div>
+        </div>
+      </div>
+      <div class="brand-divider"></div>
+      <div class="brand-sub">Sistema de Capacitación Profesional</div>
+    </div>
+  </div>
+  <!-- SECCIÓN CONTACTO / OPERACIONES -->
+  <div class="contact-section">
+
+    <div class="contact-label">Números de Operaciones</div>
+    <div class="ops-grid">
+      <div class="op-box">
+        <div class="op-ico">📞</div>
+        <div class="op-num">11 7613<br>0761</div>
+        <div class="op-lbl">Operación 1</div>
+      </div>
+      <div class="op-box">
+        <div class="op-ico">📞</div>
+        <div class="op-num">11 6418<br>1407</div>
+        <div class="op-lbl">Operación 2</div>
+      </div>
+      <div class="op-box">
+        <div class="op-ico">📞</div>
+        <div class="op-num">11 5874<br>6034</div>
+        <div class="op-lbl">Operación 3</div>
+      </div>
+    </div>
+
+    <div class="contact-label">Atención al Asociado</div>
+    <a class="wa-card" href="https://wa.me/541158703627" target="_blank" rel="noopener">
+      <div class="wa-ico">
+        <!-- WhatsApp SVG oficial -->
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.668 4.61 1.824 6.504L4 29l7.698-1.797A12.93 12.93 0 0016 28c6.627 0 12-5.373 12-12S22.627 3 16 3z" fill="white"/>
+          <path d="M21.5 18.5c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.68-1.63-.93-2.23-.24-.58-.49-.5-.68-.51h-.58c-.2 0-.52.07-.79.37-.27.3-1.03 1-1.03 2.44s1.05 2.83 1.2 3.03c.15.2 2.07 3.16 5.01 4.43.7.3 1.25.48 1.67.61.7.22 1.34.19 1.84.12.56-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z" fill="#25D366"/>
+        </svg>
+      </div>
+      <div class="wa-info">
+        <div class="wa-title">Atención al Asociado</div>
+        <div class="wa-num">11 5870-3627</div>
+        <div class="wa-sub">Tocá para abrir WhatsApp →</div>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="login-divider">Registro de capacitación</div>
+
+  <div class="login-form">
+    <div class="form-group">
+      <label>Nombre y Apellido</label>
+      <input type="text" id="i-nombre" placeholder="Ej: Juan Pérez" autocomplete="name">
+    </div>
+    <div class="form-group">
+      <label>N° de Legajo</label>
+      <input type="text" id="i-legajo" placeholder="Ej: 00123" inputmode="numeric">
+    </div>
+    <div class="form-group">
+      <label>DNI</label>
+      <input type="text" id="i-dni" placeholder="Sin puntos ni espacios" inputmode="numeric">
+    </div>
+    <div class="form-group">
+      <label>Sede / Turno</label>
+      <input type="text" id="i-sede" placeholder="Ej: Sede Centro – Turno Noche">
+    </div>
+    <button class="btn btn-primary" onclick="doLogin()" style="margin-top:6px">COMENZAR CAPACITACIÓN →</button>
+    <p style="text-align:center;font-size:11px;color:#aaa;margin-top:14px">Tus datos serán registrados con fines de capacitación.</p>
+    <p style="text-align:center;margin-top:20px">
+      <button onclick="go('s-admin-login')" style="background:none;border:none;font-size:11px;color:#bbb;cursor:pointer;text-decoration:underline">Acceso Administrador</button>
+    </p>
+  </div>
+</div>
+
+<!-- ===== ADMIN LOGIN ===== -->
+<div class="screen" id="s-admin-login">
+  <div class="hdr" style="background:#1a1a1a">
+    <button class="back-btn" onclick="go('s-login')">←</button>
+    <div class="hdr-title">Acceso Administrador</div>
+  </div>
+  <div class="admin-login-wrap">
+    <div class="admin-login-logo">
+      <div class="brand-big">SAB<span style="color:#ef5350">-5</span></div>
+      <div class="admin-badge">PANEL ADMINISTRADOR</div>
+    </div>
+    <div class="admin-card">
+      <div class="form-group">
+        <label>Usuario</label>
+        <input type="text" id="a-user" placeholder="admin" autocomplete="username">
+      </div>
+      <div class="form-group" style="margin-bottom:20px">
+        <label>Contraseña</label>
+        <input type="password" id="a-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAdminLogin()">
+      </div>
+      <button class="btn btn-primary" onclick="doAdminLogin()">INGRESAR AL PANEL →</button>
+      <p id="a-err" style="color:var(--red);font-size:13px;text-align:center;margin-top:10px;display:none">Usuario o contraseña incorrectos.</p>
+    </div>
+    <p style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">Solo personal autorizado de SAB-5.</p>
+  </div>
+</div>
+
+<!-- ===== ADMIN DASHBOARD ===== -->
+<div class="screen" id="s-admin">
+  <div class="admin-hdr">
+    <div class="admin-hdr-left">
+      <span class="brand-sm">SAB<span>-5</span></span>
+      <span class="adm-tag">ADMIN</span>
+    </div>
+    <button class="logout-btn" onclick="go('s-login')">Salir</button>
+  </div>
+
+  <!-- TABS -->
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="switchTab('t-resultados',this)">📊 Resultados</button>
+    <button class="admin-tab" onclick="switchTab('t-preguntas',this)">❓ Preguntas</button>
+    <button class="admin-tab" onclick="switchTab('t-portada',this)">🎨 Portada</button>
+  </div>
+
+  <div class="admin-body">
+
+    <!-- ── TAB RESULTADOS ── -->
+    <div id="t-resultados" class="admin-tab-panel active">
+      <div class="kpi-grid">
+        <div class="kpi total"><div class="kpi-n" id="kpi-total">0</div><div class="kpi-l">Total</div></div>
+        <div class="kpi aprobados"><div class="kpi-n" id="kpi-ok">0</div><div class="kpi-l">Aprobados</div></div>
+        <div class="kpi desaprobados"><div class="kpi-n" id="kpi-no">0</div><div class="kpi-l">Desaprobados</div></div>
+        <div class="kpi promedio"><div class="kpi-n" id="kpi-avg">-</div><div class="kpi-l">Promedio</div></div>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="setFilter('todos',this)">Todos</button>
+        <button class="filter-btn" onclick="setFilter('APROBADO',this)">✅ Aprobados</button>
+        <button class="filter-btn" onclick="setFilter('DESAPROBADO',this)">❌ Desaprobados</button>
+      </div>
+      <input class="search-input" id="admin-search" placeholder="🔍 Buscar nombre, legajo o sede..." oninput="renderTable()">
+      <div style="overflow-x:auto">
+        <table class="result-table" id="admin-table">
+          <thead><tr><th>Nombre</th><th>Legajo</th><th>Sede/Turno</th><th>Nota</th><th>Resultado</th><th>Fecha</th></tr></thead>
+          <tbody id="admin-tbody"></tbody>
+        </table>
+      </div>
+      <div id="admin-nodata" class="no-data" style="display:none">
+        <div class="no-ico">📋</div><p>Sin evaluaciones registradas aún.</p>
+      </div>
+      <div style="margin-top:14px">
+        <button class="export-btn" onclick="exportCSV()">⬇ Exportar a CSV</button>
+      </div>
+      <p style="font-size:11px;color:#bbb;text-align:center;margin-bottom:16px">También se sincroniza con Google Sheets cuando está configurado.</p>
+    </div>
+
+    <!-- ── TAB PREGUNTAS ── -->
+    <div id="t-preguntas" class="admin-tab-panel">
+      <div class="qed-tabs">
+        <button class="qed-tab active" onclick="switchQTab(1,this)">⚖️ Mod.1</button>
+        <button class="qed-tab" onclick="switchQTab(2,this)">👮 Mod.2</button>
+        <button class="qed-tab" onclick="switchQTab(3,this)">🚨 Mod.3</button>
+        <button class="qed-tab" onclick="switchQTab(4,this)">🔴 Mod.4</button>
+        <button class="qed-tab" onclick="switchQTab('exam',this)">📝 Final</button>
+      </div>
+      <div id="qed-list"></div>
+      <button class="add-q-btn" onclick="addQuestion()">+ Agregar pregunta</button>
+      <button class="save-q-btn" onclick="saveQuestions()">💾 GUARDAR CAMBIOS</button>
+      <p id="qed-saved" style="text-align:center;color:var(--green);font-size:13px;font-weight:700;display:none">✅ Cambios guardados correctamente.</p>
+    </div>
+
+    <!-- ── TAB PORTADA ── -->
+    <div id="t-portada" class="admin-tab-panel">
+      <!-- Preview en tiempo real -->
+      <div class="cover-preview" id="cover-prev">
+        <div class="cover-preview-bg" id="cprev-bg"></div>
+        <div class="cover-preview-grad"></div>
+        <div class="cover-preview-cnt">
+          <div class="cover-preview-brand" id="cprev-brand">SAB<span id="cprev-brand2" style="color:#ef5350">-5</span></div>
+          <div class="cover-preview-tag" id="cprev-tag">Seguridad Privada</div>
+          <div class="cover-preview-line" id="cprev-line" style="background:#cc0000"></div>
+          <div class="cover-preview-sub" id="cprev-sub">Sistema de Capacitación Profesional</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>✏️ Textos</h3>
+        <div class="form-group">
+          <label>Nombre de la empresa</label>
+          <input class="qed-input" id="cv-brand" placeholder="SAB" oninput="prevCover()">
+        </div>
+        <div class="form-group">
+          <label>Sufijo destacado (ej: -5)</label>
+          <input class="qed-input" id="cv-brand2" placeholder="-5" oninput="prevCover()">
+        </div>
+        <div class="form-group">
+          <label>Tagline (debajo del nombre)</label>
+          <input class="qed-input" id="cv-tag" placeholder="Seguridad Privada" oninput="prevCover()">
+        </div>
+        <div class="form-group">
+          <label>Subtítulo del sistema</label>
+          <input class="qed-input" id="cv-sub" placeholder="Sistema de Capacitación Profesional" oninput="prevCover()">
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎨 Color de acento</h3>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:4px">
+          <input type="color" id="cv-color" value="#cc0000" oninput="prevCover()" style="width:54px;height:44px;border:2px solid var(--border);border-radius:8px;cursor:pointer;padding:2px">
+          <div>
+            <div style="font-size:14px;font-weight:600">Color principal</div>
+            <div style="font-size:12px;color:var(--muted)">Afecta botones, íconos y la línea de la portada</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🖼️ Imagen de fondo</h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Subí la foto del vigilador para la portada. Se guardará como fondo difuso.</p>
+        <input type="file" id="cv-img" accept="image/*" onchange="loadCoverImage(this)" style="display:none">
+        <button class="export-btn" onclick="gi('cv-img').click()">📷 Seleccionar imagen</button>
+        <p id="cv-img-name" style="font-size:12px;color:var(--muted);text-align:center;margin-top:6px"></p>
+      </div>
+
+      <button class="save-q-btn" onclick="saveCover()">💾 GUARDAR PORTADA</button>
+      <p id="cover-saved" style="text-align:center;color:var(--green);font-size:13px;font-weight:700;display:none;margin-bottom:16px">✅ Portada actualizada correctamente.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== HOME ===== -->
+<div class="screen" id="s-home">
+  <div class="home-top">
+    <div class="home-logo-bar">
+      <img src="logo.png" style="width:32px;height:32px;object-fit:contain;filter:drop-shadow(0 1px 4px rgba(0,0,0,.4))" onerror="this.style.display='none'">
+      <div>
+        <div class="brand">SAB<span>-5</span></div>
+        <div class="tag">Seguridad Privada</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <p style="font-size:12px;opacity:.75;color:#fff">Bienvenido/a</p>
+        <h2 id="h-nombre">Vigilador</h2>
+      </div>
+      <div style="text-align:right">
+        <div id="h-legajo" style="font-size:12px;opacity:.7;color:#fff"></div>
+        <div id="h-sede"   style="font-size:12px;opacity:.7;color:#fff"></div>
+      </div>
+    </div>
+    <div style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.8);margin-bottom:5px">
+        <span>Progreso general</span><span id="prog-txt">0 / 4 módulos</span>
+      </div>
+      <div class="pbar"><div class="pfill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="mlist">
+    <p class="mlist-label">Módulos de Capacitación</p>
+    <div id="mod-container"></div>
+    <div id="final-card" style="display:none" class="final-card">
+      <div style="font-size:40px;margin-bottom:8px">📝</div>
+      <h3 style="color:var(--navy);margin-bottom:6px">Evaluación Final</h3>
+      <p style="font-size:13px;color:#666;margin-bottom:16px">20 preguntas · Mínimo para aprobar: 70%</p>
+      <button class="btn btn-primary" onclick="startFinal()">RENDIR AHORA →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MÓDULO (contenido) ===== -->
+<div class="screen" id="s-mod">
+  <div class="hdr">
+    <button class="back-btn" onclick="go('s-home')">←</button>
+    <div>
+      <div class="hdr-title" id="mod-title">Módulo</div>
+      <div class="hdr-sub">Leé todo antes del quiz</div>
+    </div>
+  </div>
+  <div class="mcontent" id="mod-body"></div>
+  <div style="padding:14px">
+    <button class="btn btn-primary" id="btn-quiz" onclick="startModQuiz()">IR AL QUIZ →</button>
+  </div>
+</div>
+
+<!-- ===== QUIZ MÓDULO ===== -->
+<div class="screen" id="s-quiz">
+  <div class="hdr">
+    <div style="flex:1">
+      <div class="hdr-title" id="qmod-title">Quiz</div>
+      <div class="pbar"><div class="pfill" id="q-pbar" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="qwrap">
+    <div class="qprogrow">
+      <span id="q-counter">Pregunta 1 de 5</span>
+      <div class="qdots" id="q-dots"></div>
+    </div>
+    <div class="qcard">
+      <p class="qtxt" id="q-txt"></p>
+      <div class="opts" id="q-opts"></div>
+    </div>
+    <div id="q-fb" style="display:none"></div>
+    <button class="btn btn-primary" id="btn-qnext" style="display:none" onclick="nextQ()">SIGUIENTE →</button>
+  </div>
+</div>
+
+<!-- ===== RESULTADO MÓDULO ===== -->
+<div class="screen" id="s-qresult">
+  <div class="hdr"><div class="hdr-title">Resultado del Quiz</div></div>
+  <div id="qresult-body" class="rscreen"></div>
+</div>
+
+<!-- ===== EVALUACIÓN FINAL ===== -->
+<div class="screen" id="s-final">
+  <div class="hdr">
+    <div style="flex:1">
+      <div class="hdr-title">📝 Evaluación Final</div>
+      <div class="pbar"><div class="pfill" id="f-pbar" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="qwrap">
+    <div class="qprogrow">
+      <span id="f-counter">Pregunta 1 de 20</span>
+      <div class="qdots" id="f-dots"></div>
+    </div>
+    <div class="qcard">
+      <p class="qtxt" id="f-txt"></p>
+      <div class="opts" id="f-opts"></div>
+    </div>
+    <div id="f-fb" style="display:none"></div>
+    <button class="btn btn-primary" id="btn-fnext" style="display:none" onclick="nextF()">SIGUIENTE →</button>
+  </div>
+</div>
+
+<!-- ===== RESULTADO FINAL ===== -->
+<div class="screen" id="s-fresult">
+  <div class="hdr"><div class="hdr-title">🎓 Resultado Final</div></div>
+  <div id="fresult-body" class="rscreen"></div>
+</div>
+
+<script>
+// ─── CONFIG ─────────────────────────────────────────────────────
+const GAS_URL = 'TU_URL_AQUI'; // ← reemplazá con tu URL de Apps Script
+const MIN_MOD  = 80; // % mínimo para aprobar módulo
+const MIN_FINAL= 80; // % mínimo para aprobar evaluación
+
+// ─── CONTENIDO MÓDULOS ──────────────────────────────────────────
+const MODS = [
+  { id:1, icon:'⚖️', title:'Marco Legal',            desc:'Normativa argentina de seguridad privada', html: mod1() },
+  { id:2, icon:'👮', title:'Conducta en el Puesto',  desc:'Qué hacer y qué NO hacer en servicio',     html: mod2() },
+  { id:3, icon:'🚨', title:'Situaciones de Emergencia', desc:'Incendio, intrusión, persona herida',   html: mod3() },
+  { id:4, icon:'🔴', title:'Botón de Pánico',         desc:'Cuándo y cómo activarlo correctamente',   html: mod4() },
+];
+
+function mod1(){ return `
+<div class="card"><h3>⚖️ Normativa que te rige</h3>
+<p>Como vigilador de seguridad privada estás amparado y regulado por leyes nacionales y provinciales. Conocerlas es parte esencial de tu profesión.</p></div>
+
+<div class="card"><h3>📋 Leyes principales</h3>
+<ul class="rlist">
+  <li class="ritem"><span class="rico">📜</span><div><strong>Ley 12.297 (PBA)</strong> – Regula el ejercicio de la seguridad privada en Buenos Aires. Establece requisitos de habilitación, obligaciones y prohibiciones.</div></li>
+  <li class="ritem"><span class="rico">📜</span><div><strong>Decreto 1139/02</strong> – Reglamentación de la Ley 12.297. Detalla el régimen de licencias y permisos.</div></li>
+  <li class="ritem"><span class="rico">📜</span><div><strong>Ley 24.192 (Nacional)</strong> – Complementa la regulación de actividades de seguridad privada a nivel federal.</div></li>
+</ul></div>
+
+<div class="card"><h3>✅ Tus obligaciones legales</h3>
+<div class="do-c"><div class="rtitle">✅ Portar credencial habilitante</div><div class="rdesc">Siempre visible durante el servicio. Sin ella no podés ejercer.</div></div>
+<div class="do-c"><div class="rtitle">✅ Cumplir el puesto asignado</div><div class="rdesc">No podés abandonarlo sin autorización ni relevo formal de otro vigilador.</div></div>
+<div class="do-c"><div class="rtitle">✅ Registrar novedades</div><div class="rdesc">Todo hecho relevante debe asentarse en el libro de novedades con hora y firma.</div></div>
+<div class="do-c"><div class="rtitle">✅ Respetar la cadena de mando</div><div class="rdesc">Acatá las órdenes de supervisores siempre que no impliquen actos ilícitos.</div></div>
+</div>
+
+<div class="card"><h3>🚫 Prohibiciones legales</h3>
+<div class="dont-c"><div class="rtitle">❌ No detener personas ilegalmente</div><div class="rdesc">Solo podés retener en flagrante delito y debés llamar a la policía de inmediato.</div></div>
+<div class="dont-c"><div class="rtitle">❌ No portar armas sin habilitación</div><div class="rdesc">El uso de armas requiere habilitación específica y autorización de la empresa.</div></div>
+<div class="dont-c"><div class="rtitle">❌ No identificarse como policía</div><div class="rdesc">Hacerse pasar por autoridad policial siendo seguridad privada es un delito.</div></div>
+</div>
+
+<div class="alert-box"><span class="alert-ico">⚠️</span>
+<div class="alert-txt"><strong>Importante:</strong> Tu credencial debe renovarse periódicamente. Trabajar con credencial vencida implica sanciones para vos y para la empresa.</div></div>
+`}
+
+function mod2(){ return `
+<div class="card"><h3>👮 Tu comportamiento define el servicio</h3>
+<p>La conducta en el puesto es lo más visible de tu trabajo. Un vigilador profesional transmite seguridad y confianza en todo momento.</p></div>
+
+<div class="divider">✅ LO QUE SÍ DEBÉS HACER</div>
+<div class="do-c"><div class="rtitle">✅ Mantener presencia activa</div><div class="rdesc">Alerta, parado o en recorrida según lo indicado. Postura firme, ojos en el sector.</div></div>
+<div class="do-c"><div class="rtitle">✅ Uniformarte correctamente</div><div class="rdesc">Uniforme limpio, planchado y completo. La presentación personal es parte del trabajo.</div></div>
+<div class="do-c"><div class="rtitle">✅ Registrar entradas y salidas</div><div class="rdesc">Completá el libro de novedades en cada ingreso/egreso de personas o vehículos.</div></div>
+<div class="do-c"><div class="rtitle">✅ Comunicarte con supervisores</div><div class="rdesc">Ante cualquier duda o novedad, avisá de inmediato por radio o teléfono de servicio.</div></div>
+<div class="do-c"><div class="rtitle">✅ Tratar con respeto al público</div><div class="rdesc">Saludo cordial, tono firme pero respetuoso. Nunca ser grosero, aunque la situación sea tensa.</div></div>
+
+<div class="divider">❌ LO QUE NO DEBÉS HACER</div>
+<div class="dont-c"><div class="rtitle">❌ NO DORMIR EN EL PUESTO</div><div class="rdesc">Dormirse en servicio es una falta gravísima. Puede costar el trabajo y la habilitación profesional. Si te sentís muy cansado, avisá al supervisor.</div></div>
+<div class="dont-c"><div class="rtitle">❌ NO usar el celular personal</div><div class="rdesc">El celular personal solo en descanso o emergencia real. En el puesto activo está prohibido. Genera distracción y mala imagen ante el cliente.</div></div>
+<div class="dont-c"><div class="rtitle">❌ NO consumir alcohol ni drogas</div><div class="rdesc">Concurrir bajo efectos de alcohol o drogas es causal inmediata de desvinculación y puede tener consecuencias penales.</div></div>
+<div class="dont-c"><div class="rtitle">❌ NO abandonar el puesto sin aviso</div><div class="rdesc">Jamás retirarse sin relevo. Si necesitás moverte, comunicalo al supervisor antes.</div></div>
+<div class="dont-c"><div class="rtitle">❌ NO invitar personas al puesto</div><div class="rdesc">Familiares o amigos no pueden estar en el puesto. Genera conflictos y distracción.</div></div>
+<div class="dont-c"><div class="rtitle">❌ NO sentarse si el puesto es de pie</div><div class="rdesc">Si el puesto indica posición de pie o recorrida, no está permitido sentarse durante el servicio activo.</div></div>
+
+<div class="alert-box"><span class="alert-ico">💡</span>
+<div class="alert-txt"><strong>Consejo pro:</strong> Llevá siempre una libreta personal para anotar matrículas, horarios y novedades. Es una señal de profesionalismo.</div></div>
+`}
+
+function mod3(){ return `
+<div class="card"><h3>🚨 Preparate para actuar, no para improvisar</h3>
+<p>Ante una emergencia, los primeros 60 segundos son críticos. Conocer el protocolo de memoria puede salvar vidas.</p></div>
+
+<div class="divider">🔥 INCENDIO</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Dar la alarma</h4><p>Activá la alarma de incendio de inmediato. Alertá al personal gritando "¡INCENDIO!".</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Llamar al 100 – Bomberos</h4><p>Dirección exacta, tipo de incendio, si hay personas atrapadas.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Guiar la evacuación</h4><p>Dirigí a las personas hacia salidas de emergencia. <strong>Nunca usar ascensores.</strong></p></div></div>
+<div class="estep"><div class="enum">4</div><div class="etxt"><h4>No arriesgar tu vida</h4><p>Si el fuego es grande, no intentés apagarlo. Tu función es evacuar, no combatir incendios.</p></div></div>
+</div>
+
+<div class="divider">🔓 INTRUSIÓN / ROBO</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>No confrontar si hay riesgo</h4><p>Tu vida vale más que cualquier bien material. Si hay armas, no resistir.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Activar el botón de pánico</h4><p>Si podés hacerlo sin ser visto. Activa la respuesta inmediata de monitoreo.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Llamar al 911</h4><p>Descripción de sospechosos: vestimenta, cantidad, dirección de fuga.</p></div></div>
+<div class="estep"><div class="enum">4</div><div class="etxt"><h4>Preservar la escena</h4><p>No tocar nada. Conservá el lugar intacto para la policía.</p></div></div>
+</div>
+
+<div class="divider">🏥 PERSONA HERIDA</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Llamar al 107 (SAME) o 911</h4><p>Cantidad de heridos, tipo de lesión visible, estado de consciencia.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>No mover al herido</h4><p>Salvo peligro inminente (fuego, derrumbe). Mover incorrectamente puede agravar lesiones.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Despejar la zona</h4><p>Alejá a los curiosos. Mantené libre el acceso para el personal médico.</p></div></div>
+</div>
+
+<div class="card" style="background:#fce4ec;border-left:4px solid var(--red)">
+<h3>📞 Números de emergencia</h3>
+<ul class="rlist">
+<li class="ritem"><span class="rico">🚒</span><div><strong>100</strong> – Bomberos</div></li>
+<li class="ritem"><span class="rico">🚑</span><div><strong>107</strong> – SAME / Ambulancias</div></li>
+<li class="ritem"><span class="rico">🚓</span><div><strong>911</strong> – Policía / Emergencias</div></li>
+<li class="ritem"><span class="rico">📡</span><div><strong>Central de monitoreo</strong> – Número de tu empresa (ver instrucciones del puesto)</div></li>
+</ul></div>
+`}
+
+function mod4(){ return `
+<div class="card"><h3>🔴 El botón de pánico es tu línea de vida</h3>
+<p>Es el recurso más directo para pedir ayuda inmediata <strong>sin necesidad de hablar</strong>. Debés saber exactamente cuándo y cómo usarlo.</p></div>
+
+<div class="card" style="text-align:center">
+  <div class="panic-btn"><span class="pico">🔴</span><span class="ptxt">PÁNICO</span></div>
+  <p style="font-size:12px;color:#777;margin-top:6px">Aspecto típico del dispositivo. El tuyo puede variar según el modelo asignado.</p>
+</div>
+
+<div class="divider">🟢 CUÁNDO ACTIVARLO</div>
+<div class="do-c"><div class="rtitle">✅ Robo o asalto en curso</div><div class="rdesc">Cuando tenés certeza de un delito en progreso y podés activarlo sin ser visto.</div></div>
+<div class="do-c"><div class="rtitle">✅ Amenaza o violencia</div><div class="rdesc">Si alguien amenaza tu integridad o la de las personas que protegés.</div></div>
+<div class="do-c"><div class="rtitle">✅ Intrusión confirmada fuera de horario</div><div class="rdesc">Si detectás presencia no autorizada en sectores que deben estar vacíos.</div></div>
+<div class="do-c"><div class="rtitle">✅ Emergencia médica grave</div><div class="rdesc">Combinalo con el 107. Permite que la empresa de monitoreo coordine la respuesta.</div></div>
+
+<div class="divider">📡 QUÉ PASA DESPUÉS DE ACTIVARLO</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Central recibe la señal</h4><p>La empresa de monitoreo recibe la alarma en segundos.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Intentan contactarte</h4><p>Pueden llamar al puesto. Si no podés hablar, <strong>guardá silencio</strong> — es la señal de que estás bajo coerción.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Despachan respuesta</h4><p>Envían móvil de la empresa y/o alertan a la policía según el protocolo.</p></div></div>
+<div class="estep"><div class="enum">4</div><div class="etxt"><h4>Tu tarea: mantenerte seguro</h4><p>No confrontar. Memorizar detalles: cantidad, vestimenta, vehículos. Cooperar si hay armas.</p></div></div>
+</div>
+
+<div class="dont-c"><div class="rtitle">❌ NO activar por error sin reportarlo</div><div class="rdesc">Si fue un error, llamá de inmediato a la central para cancelar. Las falsas alarmas reiteradas tienen sanciones.</div></div>
+
+<div class="alert-box"><span class="alert-ico">🔋</span>
+<div class="alert-txt"><strong>Verificación diaria:</strong> Al inicio de cada turno, comprobá que el botón tenga batería y señal. Reportá cualquier falla al supervisor antes de asumir el puesto.</div></div>
+`}
+
+// ─── QUIZZES ────────────────────────────────────────────────────
+const QUIZZES = {
+  1:[
+    {q:"¿Cuál es la ley provincial que regula la seguridad privada en Buenos Aires?",o:["Ley 24.192","Ley 12.297","Ley 17.132","Ley 20.744"],c:1},
+    {q:"¿Qué debés hacer si presenciás un delito flagrante?",o:["Ignorarlo y seguir en el puesto","Retener al sospechoso y llamar de inmediato a la policía","Perseguirlo hasta donde sea necesario","Llamar a la prensa"],c:1},
+    {q:"¿Podés identificarte como policía para resolver una situación?",o:["Sí, si es necesario para calmar a la gente","Solo en emergencias graves","No, está prohibido y es un delito","Solo si no hay policías cerca"],c:2},
+    {q:"El libro de novedades es:",o:["Un registro opcional de incidentes","Un documento obligatorio donde se asientan hechos relevantes del servicio","Un libro de lectura para el tiempo libre","Un registro de horas trabajadas"],c:1},
+    {q:"Trabajar sin credencial de habilitación vigente:",o:["No tiene consecuencias","Es una falta leve","Puede implicar sanciones para vos y para la empresa","Solo es problema si hay un control policial"],c:2},
+  ],
+  2:[
+    {q:"Dormirse en el puesto de trabajo es:",o:["Aceptable en turno nocturno","Una falta leve","Una falta grave que puede costar el trabajo y la habilitación","Algo sin consecuencias"],c:2},
+    {q:"¿Cuándo podés usar el celular personal en el puesto activo?",o:["Siempre que no haya movimiento","En descanso o ante una emergencia real","Solo cuando está silenciado","Nunca bajo ninguna circunstancia"],c:1},
+    {q:"Si necesitás ir al baño durante el servicio, ¿qué hacés?",o:["Te vas rápido y volvés","Dejás una nota y te ausentás","Comunicás al supervisor antes de moverte","Esperás a que llegue alguien"],c:2},
+    {q:"¿Podés recibir a un amigo o familiar en el puesto de trabajo?",o:["Sí, siempre que no moleste","Solo fuera del horario pico","No, está prohibido","Solo si el jefe no está"],c:2},
+    {q:"Concurrir al trabajo habiendo consumido alcohol se considera:",o:["Aceptable si no se nota","Una falta leve","Causal inmediata de desvinculación y puede tener consecuencias legales","Solo un problema si hay un accidente"],c:2},
+  ],
+  3:[
+    {q:"Ante un incendio, ¿cuál es tu primera acción?",o:["Intentar apagar el fuego solo","Dar la alarma y llamar a Bomberos (100)","Esperar instrucciones del supervisor","Evacuar sin avisar a nadie"],c:1},
+    {q:"¿A qué número llamás ante una persona herida?",o:["100","101","107 (SAME) o 911","112"],c:2},
+    {q:"Si hay un robo en curso y el delincuente está armado, ¿qué hacés?",o:["Intentar reducirlo físicamente","No resistir, activar pánico si es posible y llamar al 911","Gritar para llamar la atención","Salir corriendo del puesto"],c:1},
+    {q:"Ante una persona herida, ¿debés moverla?",o:["Sí, siempre para ponerla cómoda","No, salvo peligro inminente como fuego o derrumbe","Solo si está inconsciente","Siempre que el herido lo pida"],c:1},
+    {q:"¿Qué hacés con la escena después de un robo?",o:["Ordenarla para recibir a la policía","No tocar nada y preservar el lugar","Limpiarla para evitar huellas del personal","Documentarla con fotos y luego ordenar"],c:1},
+  ],
+  4:[
+    {q:"¿Cuándo debés activar el botón de pánico?",o:["Solo cuando lo indique el supervisor","Ante robo, asalto, amenaza o intrusión confirmada","Solo si ves armas de fuego","Solo para emergencias médicas"],c:1},
+    {q:"Si activaste el botón de pánico por error, ¿qué hacés?",o:["No decís nada, se arregla solo","Llamás de inmediato a la central para cancelar la alerta","Esperás a que llegue el móvil y explicás","Apagás el dispositivo"],c:1},
+    {q:"La central llama al puesto después del pánico y estás bajo coerción. ¿Qué hacés?",o:["Decís que fue un error","Guardás silencio: es la señal de que estás en peligro","Colgás el teléfono","Pedís ayuda abiertamente"],c:1},
+    {q:"¿Cuándo verificás el funcionamiento del botón de pánico?",o:["Una vez por mes","Al inicio de cada turno","Solo cuando hay sospechas de falla","Es responsabilidad de la empresa"],c:1},
+    {q:"Si hay un asalto con armas, tu prioridad es:",o:["Proteger los bienes del cliente a cualquier costo","No confrontar, cooperar y memorizar detalles para después","Intentar reducir al delincuente","Llamar a refuerzos antes que nada"],c:1},
+  ],
+};
+
+// El examen final se arma dinámicamente desde los módulos
+// Así cualquier cambio en módulos se refleja automáticamente
+function buildExam(){
+  return [
+    ...QUIZZES[1],
+    ...QUIZZES[2],
+    ...QUIZZES[3],
+    ...QUIZZES[4],
+  ];
+}
+// EXAM es un proxy que siempre lee los módulos actuales
+const EXAM = new Proxy([], {
+  get(t, prop){
+    const src = buildExam();
+    if(prop === 'length') return src.length;
+    if(!isNaN(prop))      return src[prop];
+    if(prop === 'filter') return src.filter.bind(src);
+    if(prop === 'forEach') return src.forEach.bind(src);
+    if(prop === 'push')   return src.push.bind(src);
+    return src[prop];
+  }
+});
+
+// ─── ESTADO ─────────────────────────────────────────────────────
+let user    = {};
+let prog    = {}; // {modId: {done, score}}
+let curMod  = null;
+let curQ    = [];
+let qIdx    = 0;
+let qAns    = [];
+let fIdx    = 0;
+let fAns    = [];
+let t0      = null;
+
+// ─── NAVEGACIÓN ─────────────────────────────────────────────────
+function go(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+
+// ─── LOGIN ───────────────────────────────────────────────────────
+function doLogin(){
+  const n=v('i-nombre'), l=v('i-legajo'), d=v('i-dni'), s=v('i-sede');
+  if(!n||!l||!d||!s){ alert('Completá todos los campos para continuar.'); return; }
+  user={nombre:n,legajo:l,dni:d,sede:s,inicio:new Date().toISOString()};
+  t0=Date.now();
+  renderHome(); go('s-home');
+}
+
+// ─── HOME ────────────────────────────────────────────────────────
+function renderHome(){
+  gi('h-nombre').textContent = user.nombre;
+  gi('h-legajo').textContent = 'Legajo: '+user.legajo;
+  gi('h-sede').textContent   = user.sede;
+  const done = MODS.filter(m=>prog[m.id]?.done).length;
+  gi('prog-txt').textContent = done+' / '+MODS.length+' módulos';
+  gi('prog-fill').style.width = (done/MODS.length*100)+'%';
+
+  const c = gi('mod-container'); c.innerHTML='';
+  MODS.forEach((m,i)=>{
+    const p=prog[m.id];
+    const isDone = p?.done;
+    const isOk   = i===0 || prog[MODS[i-1].id]?.done;
+    const st     = isDone?'✅':(isOk?'▶️':'🔒');
+    const cls    = isDone?'completed':(isOk?'available':'locked');
+    const sc     = isDone?' · '+p.score+'%':'';
+    const d=document.createElement('div');
+    d.className='mcard '+cls;
+    d.innerHTML=`<div class="mcard-ico">${m.icon}</div><div class="mcard-info"><div class="mcard-name">${m.title}</div><div class="mcard-desc">${m.desc}${sc}</div></div><div class="mcard-st">${st}</div>`;
+    if(isOk||isDone) d.onclick=()=>openMod(m.id);
+    c.appendChild(d);
+  });
+
+  const allDone = MODS.every(m=>prog[m.id]?.done);
+  gi('final-card').style.display = allDone?'block':'none';
+}
+
+// ─── MÓDULO ──────────────────────────────────────────────────────
+function openMod(id){
+  curMod = MODS.find(m=>m.id===id);
+  gi('mod-title').textContent = curMod.icon+' '+curMod.title;
+  gi('mod-body').innerHTML    = curMod.html;
+  gi('btn-quiz').textContent  = prog[id]?.done ? 'REPASAR QUIZ →' : 'IR AL QUIZ →';
+  go('s-mod');
+}
+
+function startModQuiz(){
+  curQ  = shuf([...QUIZZES[curMod.id]]);
+  qIdx  = 0; qAns = [];
+  gi('qmod-title').textContent = 'Quiz: '+curMod.title;
+  renderQ(); go('s-quiz');
+}
+
+function renderQ(){
+  const q=curQ[qIdx], tot=curQ.length;
+  gi('q-counter').textContent='Pregunta '+(qIdx+1)+' de '+tot;
+  gi('q-pbar').style.width=(qIdx/tot*100)+'%';
+  buildDots('q-dots',tot,qIdx,qAns);
+  gi('q-txt').textContent=q.q;
+  const c=gi('q-opts'); c.innerHTML='';
+  q.o.forEach((op,i)=>{ const b=document.createElement('button'); b.className='opt'; b.textContent=op; b.onclick=()=>ansQ(i,b,q); c.appendChild(b); });
+  gi('q-fb').style.display='none';
+  gi('btn-qnext').style.display='none';
+}
+
+function ansQ(sel,btn,q){
+  const ok=sel===q.c;
+  gi('q-opts').querySelectorAll('.opt').forEach((b,i)=>{ b.classList.add('off'); b.onclick=null; if(i===q.c)b.classList.add('ok'); if(i===sel&&!ok)b.classList.add('bad'); });
+  qAns[qIdx]={ok};
+  const fb=gi('q-fb'); fb.style.display='block';
+  fb.innerHTML=`<div class="fb ${ok?'fb-ok':'fb-bad'}"><span>${ok?'✅':'❌'}</span><span>${ok?'¡Correcto!':'Incorrecto. Respuesta: '+q.o[q.c]}</span></div>`;
+  const nb=gi('btn-qnext'); nb.style.display='block';
+  nb.textContent = qIdx===curQ.length-1?'VER RESULTADO →':'SIGUIENTE →';
+}
+
+function nextQ(){ if(qIdx===curQ.length-1) showQResult(); else { qIdx++; renderQ(); } }
+
+function showQResult(){
+  const ok=qAns.filter(a=>a.ok).length, tot=curQ.length;
+  const sc=Math.round(ok/tot*100), pass=sc>=MIN_MOD;
+  prog[curMod.id]={done:pass,score:sc};
+  const b=gi('qresult-body');
+  b.innerHTML=`
+    <div class="rico2">${pass?'🎉':'📚'}</div>
+    <div class="rtitle2" style="color:${pass?'var(--green)':'var(--red)'}">${pass?'¡Módulo aprobado!':'Necesitás repasar'}</div>
+    <div class="rscore" style="color:${pass?'var(--green)':'var(--red)'}">${sc}%</div>
+    <div class="rmsg">${ok} de ${tot} correctas.<br>${pass?'Podés continuar al siguiente módulo.':'Necesitás '+MIN_MOD+'% para avanzar.'}</div>
+    <div style="width:100%;max-width:320px">
+      ${pass?`<button class="btn btn-success mb12" onclick="renderHome();go('s-home')">CONTINUAR →</button>`:''}
+      <button class="btn btn-outline" onclick="openMod(${curMod.id});go('s-mod')">${pass?'Repasar módulo':'Volver a estudiar'}</button>
+    </div>`;
+  go('s-qresult');
+}
+
+// ─── EVALUACIÓN FINAL ────────────────────────────────────────────
+function startFinal(){ fIdx=0; fAns=[]; renderF(); go('s-final'); }
+
+function renderF(){
+  const q=EXAM[fIdx], tot=EXAM.length;
+  gi('f-counter').textContent='Pregunta '+(fIdx+1)+' de '+tot;
+  gi('f-pbar').style.width=(fIdx/tot*100)+'%';
+  buildDots('f-dots',Math.min(10,tot),fIdx<10?fIdx:fIdx-10,fAns,fIdx<10?0:10);
+  gi('f-txt').textContent=q.q;
+  const c=gi('f-opts'); c.innerHTML='';
+  q.o.forEach((op,i)=>{ const b=document.createElement('button'); b.className='opt'; b.textContent=op; b.onclick=()=>ansF(i,b,q); c.appendChild(b); });
+  gi('f-fb').style.display='none';
+  gi('btn-fnext').style.display='none';
+}
+
+function ansF(sel,btn,q){
+  const ok=sel===q.c;
+  gi('f-opts').querySelectorAll('.opt').forEach((b,i)=>{ b.classList.add('off'); b.onclick=null; if(i===q.c)b.classList.add('ok'); if(i===sel&&!ok)b.classList.add('bad'); });
+  fAns[fIdx]={ok};
+  const fb=gi('f-fb'); fb.style.display='block';
+  fb.innerHTML=`<div class="fb ${ok?'fb-ok':'fb-bad'}"><span>${ok?'✅':'❌'}</span><span>${ok?'¡Correcto!':'Respuesta: '+q.o[q.c]}</span></div>`;
+  const nb=gi('btn-fnext'); nb.style.display='block';
+  nb.textContent = fIdx===EXAM.length-1?'VER RESULTADO FINAL →':'SIGUIENTE →';
+}
+
+function nextF(){ if(fIdx===EXAM.length-1) showFResult(); else { fIdx++; renderF(); } }
+
+function showFResult(){
+  const ok=fAns.filter(a=>a.ok).length, tot=EXAM.length;
+  const sc=Math.round(ok/tot*100), pass=sc>=MIN_FINAL;
+  const min=Math.round((Date.now()-t0)/60000);
+  const now=new Date();
+  const fecha=now.toLocaleDateString('es-AR')+' '+now.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+  const data={...user,fin:now.toISOString(),minutos:min,
+    mod1:prog[1]?.score??0, mod2:prog[2]?.score??0, mod3:prog[3]?.score??0, mod4:prog[4]?.score??0,
+    final:sc, resultado:pass?'APROBADO':'DESAPROBADO', correctas:ok, total:tot};
+  saveSheets(data);
+
+  const b=gi('fresult-body');
+  b.innerHTML=`
+    <div class="rico2">${pass?'🏆':'📋'}</div>
+    <div class="rtitle2" style="color:${pass?'var(--green)':'var(--red)'}">${pass?'¡APROBADO!':'DESAPROBADO'}</div>
+    <div class="rscore" style="color:${pass?'var(--green)':'var(--red)'}">${sc}%</div>
+    <div class="rmsg">${ok} de ${tot} correctas · ${min} min · Mínimo: ${MIN_FINAL}%</div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-n">${prog[1]?.score??0}%</div><div class="stat-l">⚖️ Marco Legal</div></div>
+      <div class="stat-box"><div class="stat-n">${prog[2]?.score??0}%</div><div class="stat-l">👮 Conducta</div></div>
+      <div class="stat-box"><div class="stat-n">${prog[3]?.score??0}%</div><div class="stat-l">🚨 Emergencias</div></div>
+      <div class="stat-box"><div class="stat-n">${prog[4]?.score??0}%</div><div class="stat-l">🔴 Pánico</div></div>
+    </div>
+    ${pass?`
+    <div class="cert">
+      <div class="cert-hdr">🏅 Constancia de Capacitación</div>
+      <div class="cert-name">${user.nombre}</div>
+      <div class="cert-det">Legajo: ${user.legajo} · DNI: ${user.dni}</div>
+      <div class="cert-det">${user.sede}</div>
+      <div class="cert-stamp">✅ Aprobado el ${fecha} · Nota: ${sc}%</div>
+    </div>`:`
+    <div class="alert-box" style="max-width:320px;margin-bottom:16px">
+      <span class="alert-ico">📚</span>
+      <div class="alert-txt">Necesitás ${MIN_FINAL}% para aprobar. Repasá los módulos y volvé a rendir.</div>
+    </div>`}
+    <div style="width:100%;max-width:320px">
+      ${!pass?`<button class="btn btn-primary mb12" onclick="renderHome();go('s-home')">VOLVER A REPASAR</button>`:''}
+      <p style="font-size:11px;color:#aaa;text-align:center;margin-top:8px">Tu resultado fue registrado automáticamente.</p>
+    </div>`;
+  go('s-fresult');
+}
+
+// ─── GUARDAR RESULTADO ───────────────────────────────────────────
+function saveSheets(data){
+  // Siempre guarda en localStorage
+  saveLocal(data);
+  // Envía a Google Sheets si está configurado
+  if(!GAS_URL||GAS_URL==='TU_URL_AQUI'){ return; }
+  fetch(GAS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+    .catch(e=>console.error('Error Sheets:',e));
+}
+
+function saveLocal(data){
+  const key = 'sab5_evaluaciones';
+  const list = JSON.parse(localStorage.getItem(key)||'[]');
+  list.unshift(data); // más nuevo primero
+  localStorage.setItem(key, JSON.stringify(list));
+}
+
+function getLocal(){
+  return JSON.parse(localStorage.getItem('sab5_evaluaciones')||'[]');
+}
+
+// ─── ADMIN ───────────────────────────────────────────────────────
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'sab5admin'; // ← cambiá esta contraseña
+
+let adminFilter = 'todos';
+
+function doAdminLogin(){
+  const u = gi('a-user').value.trim();
+  const p = gi('a-pass').value;
+  if(u === ADMIN_USER && p === ADMIN_PASS){
+    gi('a-err').style.display = 'none';
+    gi('a-pass').value = '';
+    loadAdmin();
+    go('s-admin');
+  } else {
+    gi('a-err').style.display = 'block';
+  }
+}
+
+function loadAdmin(){
+  const data = getLocal();
+  const total = data.length;
+  const ok    = data.filter(d=>d.resultado==='APROBADO').length;
+  const no    = data.filter(d=>d.resultado==='DESAPROBADO').length;
+  const avg   = total ? Math.round(data.reduce((s,d)=>s+(d.final||0),0)/total) : null;
+
+  gi('kpi-total').textContent = total;
+  gi('kpi-ok').textContent    = ok;
+  gi('kpi-no').textContent    = no;
+  gi('kpi-avg').textContent   = avg !== null ? avg+'%' : '-';
+
+  renderTable();
+}
+
+function setFilter(f, btn){
+  adminFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+function renderTable(){
+  const search = (gi('admin-search')?.value||'').toLowerCase();
+  let data = getLocal();
+
+  if(adminFilter !== 'todos') data = data.filter(d=>d.resultado===adminFilter);
+  if(search) data = data.filter(d=>
+    (d.nombre||'').toLowerCase().includes(search) ||
+    (d.legajo||'').toLowerCase().includes(search) ||
+    (d.sede||'').toLowerCase().includes(search)
+  );
+
+  const tbody = gi('admin-tbody');
+  tbody.innerHTML = '';
+
+  if(!data.length){
+    gi('admin-table').style.display='none';
+    gi('admin-nodata').style.display='block';
+    return;
+  }
+  gi('admin-table').style.display='table';
+  gi('admin-nodata').style.display='none';
+
+  data.forEach(d=>{
+    const ok = d.resultado === 'APROBADO';
+    const score = d.final || 0;
+    const color = score >= 70 ? '#2e7d32' : score >= 50 ? '#e65100' : '#c62828';
+    const fecha = d.fin ? new Date(d.fin).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}) : '-';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${d.nombre||'-'}</strong><br><span style="font-size:11px;color:#999">DNI: ${d.dni||'-'}</span></td>
+      <td>${d.legajo||'-'}</td>
+      <td style="font-size:12px">${d.sede||'-'}</td>
+      <td>
+        <div class="score-bar-wrap">
+          <strong style="color:${color};min-width:32px">${score}%</strong>
+          <div class="score-bar"><div class="score-bar-fill" style="width:${score}%;background:${color}"></div></div>
+        </div>
+      </td>
+      <td><span class="${ok?'badge-ok':'badge-no'}">${ok?'✅ APROBADO':'❌ DESAP.'}</span></td>
+      <td style="font-size:11px;color:#777">${fecha}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function exportCSV(){
+  const data = getLocal();
+  if(!data.length){ alert('No hay datos para exportar.'); return; }
+  const cols = ['nombre','legajo','dni','sede','mod1','mod2','mod3','mod4','final','resultado','correctas','total','minutos','inicio','fin'];
+  const heads = ['Nombre','Legajo','DNI','Sede/Turno','Mod1(%)','Mod2(%)','Mod3(%)','Mod4(%)','Final(%)','Resultado','Correctas','Total','Minutos','Inicio','Fin'];
+  const rows = [heads.join(','), ...data.map(d=>cols.map(c=>`"${(d[c]||'').toString().replace(/"/g,'""')}"`).join(','))];
+  const blob = new Blob([rows.join('\n')], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'SAB5_Evaluaciones_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// ─── ADMIN TABS ──────────────────────────────────────────────────
+function switchTab(panelId, btn){
+  document.querySelectorAll('.admin-tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
+  gi(panelId).classList.add('active');
+  btn.classList.add('active');
+  if(panelId==='t-preguntas') renderQEditor();
+  if(panelId==='t-portada')   loadCoverForm();
+}
+
+// ─── EDITOR DE PREGUNTAS ─────────────────────────────────────────
+let qedTab = 1; // módulo activo en editor
+
+function switchQTab(mod, btn){
+  qedTab = mod;
+  document.querySelectorAll('.qed-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQEditor();
+}
+
+function getEditQuestions(){
+  const saved = localStorage.getItem('sab5_questions');
+  if(qedTab==='exam') return buildExam(); // siempre desde módulos
+  if(saved){
+    const all = JSON.parse(saved);
+    return all[qedTab] || [...(QUIZZES[qedTab]||[])];
+  }
+  return [...(QUIZZES[qedTab]||[])];
+}
+
+function getAllQuestions(){
+  const saved = localStorage.getItem('sab5_questions');
+  if(saved) return JSON.parse(saved);
+  return { 1:[...QUIZZES[1]], 2:[...QUIZZES[2]], 3:[...QUIZZES[3]], 4:[...QUIZZES[4]] };
+}
+
+function renderQEditor(){
+  const qs = getEditQuestions();
+  const container = gi('qed-list');
+  container.innerHTML = '';
+  qs.forEach((q,qi) => {
+    const div = document.createElement('div');
+    div.className = 'qcard-edit';
+    div.id = 'qce-'+qi;
+    div.innerHTML = `
+      <div class="qcard-edit-hdr" onclick="toggleQCard(${qi})">
+        <div class="qcard-edit-num">${qi+1}</div>
+        <div class="qcard-edit-preview">${q.q}</div>
+        <div class="qcard-edit-arr">›</div>
+      </div>
+      <div class="qcard-edit-body">
+        <div class="qed-label">Pregunta</div>
+        <textarea class="qed-input" id="qe-q-${qi}" rows="3">${q.q}</textarea>
+        <div class="qed-label">Opciones (marcá el círculo verde = respuesta correcta)</div>
+        ${q.o.map((op,oi)=>`
+          <div class="opt-row ${oi===q.c?'correct':''}" id="optrow-${qi}-${oi}">
+            <input type="radio" class="opt-radio" name="correct-${qi}" value="${oi}" ${oi===q.c?'checked':''} onchange="markCorrect(${qi},${oi})">
+            <input type="text" class="opt-input" id="qe-o-${qi}-${oi}" value="${op}" placeholder="Opción ${oi+1}">
+          </div>`).join('')}
+        <button class="del-q-btn" onclick="deleteQuestion(${qi})">🗑 Eliminar esta pregunta</button>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function toggleQCard(qi){
+  const el = gi('qce-'+qi);
+  el.classList.toggle('open');
+}
+
+function markCorrect(qi, oi){
+  // Quitar estilo de todos los opts de esa pregunta
+  for(let i=0;i<4;i++){
+    const row = gi('optrow-'+qi+'-'+i);
+    if(row) row.classList.toggle('correct', i===oi);
+  }
+}
+
+function addQuestion(){
+  const all = getAllQuestions();
+  const arr = qedTab==='exam' ? all.exam : all[qedTab];
+  arr.push({q:'Nueva pregunta',o:['Opción A','Opción B','Opción C','Opción D'],c:0});
+  if(qedTab==='exam') all.exam=arr; else all[qedTab]=arr;
+  localStorage.setItem('sab5_questions', JSON.stringify(all));
+  // Actualizar arrays en memoria
+  applyQuestions(all);
+  renderQEditor();
+  // Abrir la nueva card
+  setTimeout(()=>{ const el=gi('qce-'+(arr.length-1)); el?.classList.add('open'); el?.scrollIntoView({behavior:'smooth'}); },100);
+}
+
+function deleteQuestion(qi){
+  if(!confirm('¿Eliminar esta pregunta?')) return;
+  const all = getAllQuestions();
+  const arr = qedTab==='exam' ? all.exam : all[qedTab];
+  arr.splice(qi,1);
+  if(qedTab==='exam') all.exam=arr; else all[qedTab]=arr;
+  localStorage.setItem('sab5_questions', JSON.stringify(all));
+  applyQuestions(all);
+  renderQEditor();
+}
+
+function saveQuestions(){
+  const qs = getEditQuestions();
+  const all = getAllQuestions();
+  // Leer valores actuales del DOM
+  const updated = qs.map((q,qi)=>{
+    const pregunta = gi('qe-q-'+qi)?.value.trim() || q.q;
+    const opciones = q.o.map((_,oi)=> gi('qe-o-'+qi+'-'+oi)?.value.trim()||q.o[oi]);
+    const correcta = parseInt(document.querySelector(`input[name="correct-${qi}"]:checked`)?.value??q.c);
+    return {q:pregunta, o:opciones, c:correcta};
+  });
+  if(qedTab==='exam') all.exam=updated; else all[qedTab]=updated;
+  localStorage.setItem('sab5_questions', JSON.stringify(all));
+  applyQuestions(all);
+  const msg = gi('qed-saved');
+  msg.style.display='block';
+  setTimeout(()=>msg.style.display='none', 2500);
+}
+
+function applyQuestions(all){
+  // Aplicar módulos — el examen final se reconstruye solo desde QUIZZES
+  [1,2,3,4].forEach(i=>{ if(all[i]) QUIZZES[i]=all[i]; });
+}
+
+// Cargar preguntas guardadas al iniciar
+(function initQuestions(){
+  const saved = localStorage.getItem('sab5_questions');
+  if(saved) applyQuestions(JSON.parse(saved));
+})();
+
+// ─── EDITOR DE PORTADA ───────────────────────────────────────────
+function loadCoverForm(){
+  const s = getCoverSettings();
+  gi('cv-brand').value  = s.brand  || 'SAB';
+  gi('cv-brand2').value = s.brand2 || '-5';
+  gi('cv-tag').value    = s.tag    || 'Seguridad Privada';
+  gi('cv-sub').value    = s.sub    || 'Sistema de Capacitación Profesional';
+  gi('cv-color').value  = s.color  || '#cc0000';
+  // Mostrar imagen guardada en preview
+  if(s.bgImage){
+    gi('cprev-bg').style.backgroundImage = `url(${s.bgImage})`;
+  }
+  prevCover();
+}
+
+function prevCover(){
+  const brand  = gi('cv-brand').value  || 'SAB';
+  const brand2 = gi('cv-brand2').value || '-5';
+  const tag    = gi('cv-tag').value    || 'Seguridad Privada';
+  const sub    = gi('cv-sub').value    || 'Sistema de Capacitación Profesional';
+  const color  = gi('cv-color').value  || '#cc0000';
+  gi('cprev-brand').childNodes[0].textContent = brand;
+  gi('cprev-brand2').textContent = brand2;
+  gi('cprev-brand2').style.color = color;
+  gi('cprev-tag').textContent    = tag;
+  gi('cprev-sub').textContent    = sub;
+  gi('cprev-line').style.background = color;
+}
+
+function loadCoverImage(input){
+  const file = input.files[0];
+  if(!file) return;
+  gi('cv-img-name').textContent = file.name;
+  const reader = new FileReader();
+  reader.onload = e => {
+    gi('cprev-bg').style.backgroundImage = `url(${e.target.result})`;
+    // Guardar temporalmente para el save
+    window._pendingBg = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveCover(){
+  const s = {
+    brand:  gi('cv-brand').value,
+    brand2: gi('cv-brand2').value,
+    tag:    gi('cv-tag').value,
+    sub:    gi('cv-sub').value,
+    color:  gi('cv-color').value,
+    bgImage: window._pendingBg || getCoverSettings().bgImage || ''
+  };
+  localStorage.setItem('sab5_cover', JSON.stringify(s));
+  applyCover(s);
+  const msg = gi('cover-saved');
+  msg.style.display='block';
+  setTimeout(()=>msg.style.display='none', 2500);
+}
+
+function getCoverSettings(){
+  const saved = localStorage.getItem('sab5_cover');
+  return saved ? JSON.parse(saved) : {};
+}
+
+function applyCover(s){
+  if(!s||!Object.keys(s).length) return;
+  // Actualizar portada en vivo
+  if(s.brand){
+    const bb = document.querySelector('.brand-big');
+    if(bb){ bb.childNodes[0].textContent = s.brand; }
+  }
+  if(s.brand2){
+    const b2 = document.querySelector('.brand-big span');
+    if(b2){ b2.textContent = s.brand2; b2.style.color = s.color||'#ef5350'; }
+  }
+  if(s.tag){
+    const t = document.querySelector('.brand-tag');
+    if(t) t.textContent = s.tag;
+  }
+  if(s.sub){
+    const su = document.querySelector('.brand-sub');
+    if(su) su.textContent = s.sub;
+  }
+  if(s.color){
+    document.documentElement.style.setProperty('--red', s.color);
+    document.documentElement.style.setProperty('--red2', s.color);
+  }
+  if(s.bgImage){
+    const bg = document.querySelector('.login-hero-bg');
+    if(bg) bg.style.backgroundImage = `url(${s.bgImage})`;
+  }
+  if(s.brand || s.brand2){
+    document.title = `${s.brand||'SAB'}${s.brand2||'-5'} | Capacitación`;
+  }
+}
+
+// Aplicar configuración guardada al cargar la app
+(function initCover(){
+  applyCover(getCoverSettings());
+})();
+
+// ─── UTILIDADES ──────────────────────────────────────────────────
+function gi(id){ return document.getElementById(id); }
+function v(id){ return gi(id).value.trim(); }
+function shuf(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]; } return a; }
+function buildDots(containerId, count, activeIdx, answers, offset=0){
+  const el=gi(containerId); el.innerHTML='';
+  for(let i=0;i<count;i++){
+    const ri=offset+i; const d=document.createElement('div');
+    d.className='qdot'+(ri===offset+activeIdx?' active':'')+(answers[ri]!==undefined?(answers[ri].ok?' ok':' bad'):'');
+    el.appendChild(d);
+  }
+}
+</script>
+</body>
+</html>
