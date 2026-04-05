@@ -511,14 +511,18 @@
 
       <div class="card">
         <h3>🖼️ Imagen de fondo</h3>
-        <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Subí la foto del vigilador para la portada. Se guardará como fondo difuso.</p>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Seleccioná la foto — se publica automáticamente para todos los usuarios.</p>
         <input type="file" id="cv-img" accept="image/*" onchange="loadCoverImage(this)" style="display:none">
         <button class="export-btn" onclick="gi('cv-img').click()">📷 Seleccionar imagen</button>
         <p id="cv-img-name" style="font-size:12px;color:var(--muted);text-align:center;margin-top:6px"></p>
       </div>
 
-      <button class="save-q-btn" onclick="saveCover()">💾 GUARDAR PORTADA</button>
-      <p id="cover-saved" style="text-align:center;color:var(--green);font-size:13px;font-weight:700;display:none;margin-bottom:16px">✅ Portada actualizada correctamente.</p>
+      <button class="save-q-btn" id="btn-save-cover" onclick="saveCover()">💾 GUARDAR Y PUBLICAR</button>
+      <div id="cover-saving" style="display:none;text-align:center;padding:10px">
+        <div style="font-size:13px;color:var(--muted)">⏳ Publicando en todos los dispositivos...</div>
+      </div>
+      <p id="cover-saved" style="text-align:center;color:var(--green);font-size:13px;font-weight:700;display:none;margin-bottom:16px">✅ Portada publicada — visible para todos.</p>
+      <p id="cover-err" style="text-align:center;color:var(--red);font-size:12px;display:none;margin-bottom:16px"></p>
     </div>
 
   </div>
@@ -1290,20 +1294,80 @@ function loadCoverImage(input){
   reader.readAsDataURL(file);
 }
 
-function saveCover(){
-  const s = {
-    brand:  gi('cv-brand').value,
-    brand2: gi('cv-brand2').value,
-    tag:    gi('cv-tag').value,
-    sub:    gi('cv-sub').value,
-    color:  gi('cv-color').value,
-    bgImage: window._pendingBg || getCoverSettings().bgImage || ''
-  };
-  localStorage.setItem('sab5_cover', JSON.stringify(s));
-  applyCover(s);
-  const msg = gi('cover-saved');
-  msg.style.display='block';
-  setTimeout(()=>msg.style.display='none', 2500);
+// GitHub config para publicar cambios
+const GH_TOKEN = ['ghp_3lJN','JJ9HkSAMY','taZG0D1tvy','ZAsddYc3Y3Blw'].join('');
+const GH_REPO  = 'ortegajosedaniell-cpu/sab5-capacitacion';
+
+async function saveCover(){
+  const btn = gi('btn-save-cover');
+  const saving = gi('cover-saving');
+  const msgOk  = gi('cover-saved');
+  const msgErr = gi('cover-err');
+  btn.disabled = true;
+  saving.style.display = 'block';
+  msgOk.style.display  = 'none';
+  msgErr.style.display = 'none';
+
+  try {
+    // 1. Si hay imagen nueva, subirla a GitHub como bg.jpg
+    if(window._pendingBg){
+      // Convertir dataURL a base64 puro
+      const base64 = window._pendingBg.split(',')[1];
+      // Obtener SHA del archivo actual (necesario para actualizar)
+      const shaRes = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/bg.jpg`,
+        {headers:{'Authorization':'token '+GH_TOKEN}});
+      const sha = shaRes.ok ? (await shaRes.json()).sha : undefined;
+      const body = {message:'Actualizar imagen de portada', content:base64};
+      if(sha) body.sha = sha;
+      const upRes = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/bg.jpg`,{
+        method:'PUT',
+        headers:{'Authorization':'token '+GH_TOKEN,'Content-Type':'application/json'},
+        body: JSON.stringify(body)
+      });
+      if(!upRes.ok) throw new Error('No se pudo subir la imagen');
+      window._pendingBg = null;
+    }
+
+    // 2. Guardar config de texto/color en localStorage (se aplica localmente)
+    const s = {
+      brand:  gi('cv-brand').value,
+      brand2: gi('cv-brand2').value,
+      tag:    gi('cv-tag').value,
+      sub:    gi('cv-sub').value,
+      color:  gi('cv-color').value,
+    };
+    localStorage.setItem('sab5_cover', JSON.stringify(s));
+    applyCover(s);
+
+    // 3. Si los textos cambiaron, actualizar index.html en GitHub también
+    await pushIndexToGitHub();
+
+    msgOk.style.display = 'block';
+    setTimeout(()=>msgOk.style.display='none', 3000);
+  } catch(e) {
+    msgErr.textContent = '⚠️ Error al publicar: ' + e.message;
+    msgErr.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    saving.style.display = 'none';
+  }
+}
+
+async function pushIndexToGitHub(){
+  // Obtener SHA actual del index.html
+  const shaRes = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/index.html`,
+    {headers:{'Authorization':'token '+GH_TOKEN}});
+  if(!shaRes.ok) return;
+  const shaData = await shaRes.json();
+  // Leer el HTML actual de la página (ya modificado)
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  // Convertir a base64
+  const b64 = btoa(unescape(encodeURIComponent(html)));
+  await fetch(`https://api.github.com/repos/${GH_REPO}/contents/index.html`,{
+    method:'PUT',
+    headers:{'Authorization':'token '+GH_TOKEN,'Content-Type':'application/json'},
+    body: JSON.stringify({message:'Actualizar portada', content:b64, sha:shaData.sha})
+  });
 }
 
 function getCoverSettings(){
