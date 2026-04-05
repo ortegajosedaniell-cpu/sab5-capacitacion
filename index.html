@@ -368,8 +368,9 @@
     </div>
     <button class="btn btn-primary" onclick="doLogin()" style="margin-top:6px">COMENZAR CAPACITACIÓN →</button>
     <p style="text-align:center;font-size:11px;color:#aaa;margin-top:14px">Tus datos serán registrados con fines de capacitación.</p>
+    <!-- Acceso admin: toque largo (3 seg) en el punto invisible -->
     <p style="text-align:center;margin-top:20px">
-      <button onclick="go('s-admin-login')" style="background:none;border:none;font-size:11px;color:#bbb;cursor:pointer;text-decoration:underline">Acceso Administrador</button>
+      <span id="admin-dot" onmousedown="startAdminHold()" onmouseup="cancelAdminHold()" ontouchstart="startAdminHold()" ontouchend="cancelAdminHold()" style="display:inline-block;width:30px;height:20px;cursor:default;color:transparent;user-select:none">·</span>
     </p>
   </div>
 </div>
@@ -1432,6 +1433,15 @@ function applyCover(s){
 })();
 
 // ─── UTILIDADES ──────────────────────────────────────────────────
+// Acceso admin oculto: mantener presionado 3 segundos el punto invisible
+let _adminTimer = null;
+function startAdminHold(){
+  _adminTimer = setTimeout(()=>{ go('s-admin-login'); }, 3000);
+}
+function cancelAdminHold(){
+  clearTimeout(_adminTimer);
+}
+
 function gi(id){ return document.getElementById(id); }
 function v(id){ return gi(id).value.trim(); }
 function shuf(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]; } return a; }
