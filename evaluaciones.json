@@ -1,0 +1,19 @@
+[
+  {
+    "nombre": "Jonathan Zaniboni",
+    "legajo": "4792",
+    "dni": "37926143",
+    "sede": "Sede Sur - Turno Diurno",
+    "inicio": "2026-04-05T15:28:03.527Z",
+    "fin": "2026-04-05T15:42:36.727Z",
+    "minutos": 15,
+    "mod1": 100,
+    "mod2": 80,
+    "mod3": 100,
+    "mod4": 80,
+    "final": 100,
+    "resultado": "APROBADO",
+    "correctas": 20,
+    "total": 20
+  }
+]
