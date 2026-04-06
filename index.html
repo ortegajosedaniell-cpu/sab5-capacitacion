@@ -334,12 +334,13 @@
     .btn-user-del{background:#fff0f0;color:var(--red);border:none;border-radius:8px;padding:6px 10px;font-size:14px;cursor:pointer}
 
     /* INTRO VIDEO */
-    #s-intro{position:fixed;inset:0;z-index:9999;background:#0a0a0a;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    #s-intro,#s-cierre{position:fixed;inset:0;z-index:9999;background:#0a0a0a;display:flex;flex-direction:column;align-items:center;justify-content:center}
     #s-intro.active{display:flex}
-    #intro-video{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;position:relative;z-index:1;display:block;border-radius:4px}
-    #intro-skip{position:absolute;bottom:32px;right:20px;z-index:10;background:rgba(0,0,0,.6);color:#fff;border:1.5px solid rgba(255,255,255,.45);border-radius:24px;padding:9px 22px;font-size:13px;font-weight:700;cursor:pointer;backdrop-filter:blur(6px);letter-spacing:.3px}
-    #intro-skip:hover{background:rgba(255,255,255,.18)}
-    #intro-bar{position:absolute;bottom:0;left:0;height:3px;background:var(--red);width:0%;transition:width .3s linear;z-index:10}
+    #s-cierre{display:none}
+    #intro-video,#cierre-video{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;position:relative;z-index:1;display:block;border-radius:4px}
+    #intro-skip,#cierre-skip{position:absolute;bottom:32px;right:20px;z-index:10;background:rgba(0,0,0,.6);color:#fff;border:1.5px solid rgba(255,255,255,.45);border-radius:24px;padding:9px 22px;font-size:13px;font-weight:700;cursor:pointer;backdrop-filter:blur(6px);letter-spacing:.3px}
+    #intro-skip:hover,#cierre-skip:hover{background:rgba(255,255,255,.18)}
+    #intro-bar,#cierre-bar{position:absolute;bottom:0;left:0;height:3px;background:var(--red);width:0%;transition:width .3s linear;z-index:10}
 
     @media(min-width:600px){.screen{max-width:480px;margin:0 auto}body{background:#e8e0e0}
       #s-admin{max-width:100%!important}
@@ -354,6 +355,13 @@
   <video id="intro-video" src="intro.mp4" autoplay muted playsinline webkit-playsinline></video>
   <div id="intro-bar"></div>
   <button id="intro-skip" onclick="skipIntro()">Saltar ›</button>
+</div>
+
+<!-- ===== CIERRE VIDEO (solo si aprobado) ===== -->
+<div id="s-cierre">
+  <video id="cierre-video" src="cierre.mp4" muted playsinline webkit-playsinline></video>
+  <div id="cierre-bar"></div>
+  <button id="cierre-skip" onclick="skipCierre()">Saltar ›</button>
 </div>
 
 <!-- ===== LOGIN ===== -->
@@ -1618,7 +1626,30 @@ function showFResult(){
       ${!pass?`<button class="btn btn-primary mb12" onclick="renderHome();go('s-home')">VOLVER A REPASAR</button>`:''}
       <p style="font-size:11px;color:#aaa;text-align:center;margin-top:8px">Tu resultado fue registrado automáticamente.</p>
     </div>`;
-  go('s-fresult');
+  if(pass){
+    // Mostrar video de cierre antes del resultado
+    const cv = gi('cierre-video');
+    const cs = gi('s-cierre');
+    const cb = gi('cierre-bar');
+    cv.currentTime = 0;
+    cb.style.width = '0%';
+    cs.style.display = 'flex';
+    cs.style.opacity = '1';
+    cv.play().catch(()=>{ cs.style.display='none'; go('s-fresult'); });
+    cv.ontimeupdate = ()=>{ if(cv.duration) cb.style.width=(cv.currentTime/cv.duration*100)+'%'; };
+    cv.onended = ()=>{ skipCierre(); };
+  } else {
+    go('s-fresult');
+  }
+}
+
+function skipCierre(){
+  const cs = gi('s-cierre');
+  const cv = gi('cierre-video');
+  cv.pause();
+  cs.style.transition = 'opacity .5s';
+  cs.style.opacity = '0';
+  setTimeout(()=>{ cs.style.display='none'; go('s-fresult'); }, 500);
 }
 
 // ─── GUARDAR RESULTADO ───────────────────────────────────────────
