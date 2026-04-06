@@ -279,8 +279,53 @@
     .logout-btn{background:none;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.8);padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
     .logout-btn:hover{background:rgba(255,255,255,.1)}
 
-    .export-btn{display:block;width:100%;padding:12px;border:2px solid var(--red);border-radius:10px;background:transparent;color:var(--red);font-size:14px;font-weight:700;cursor:pointer;margin-bottom:12px;text-align:center}
+    .export-btn{display:block;width:100%;padding:12px;border:2px solid var(--red);border-radius:10px;background:transparent;color:var(--red);font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;text-align:center}
     .export-btn:hover{background:var(--red);color:#fff}
+    .export-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px;margin-bottom:6px}
+    .exp-btn{padding:12px 6px;border:2px solid var(--border);border-radius:10px;background:#fff;font-size:12px;font-weight:700;cursor:pointer;text-align:center;color:var(--text);transition:all .15s}
+    .exp-btn:hover{transform:scale(.97)}
+    .exp-btn.csv{border-color:#1d6f42;color:#1d6f42}
+    .exp-btn.csv:hover{background:#1d6f42;color:#fff}
+    .exp-btn.xls{border-color:#217346;color:#217346}
+    .exp-btn.xls:hover{background:#217346;color:#fff}
+    .exp-btn.word{border-color:#2b579a;color:#2b579a}
+    .exp-btn.word:hover{background:#2b579a;color:#fff}
+    .exp-ico{font-size:22px;margin-bottom:4px}
+    .exp-lbl{font-size:11px}
+
+    /* GESTIÓN DE ADMINS */
+    .user-row{background:#fff;border-radius:10px;padding:13px 14px;margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px}
+    .user-ava{width:38px;height:38px;border-radius:50%;background:#1a1a1a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0}
+    .user-ava.super{background:var(--red)}
+    .user-info{flex:1}
+    .user-name{font-weight:700;font-size:14px}
+    .user-role{font-size:11px;color:var(--muted);margin-top:2px}
+    .user-perms{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+    .perm-tag{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;background:#f0eaea;color:#666}
+    .perm-tag.on{background:#1a1a1a;color:#fff}
+    .user-actions{display:flex;gap:6px}
+    .ua-btn{padding:6px 10px;border-radius:8px;border:none;font-size:12px;font-weight:600;cursor:pointer}
+    .ua-edit{background:#f0f0f0;color:#333}
+    .ua-del{background:#ffebee;color:var(--red)}
+
+    /* MODAL */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:999;align-items:center;justify-content:center;padding:20px}
+    .modal-overlay.open{display:flex}
+    .modal-box{background:#fff;border-radius:16px;padding:24px;width:100%;max-width:380px;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+    .modal-title{font-size:17px;font-weight:800;margin-bottom:18px;color:var(--navy)}
+    .perm-check{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f2f2f2;font-size:14px}
+    .perm-check input{accent-color:var(--red);width:18px;height:18px}
+    .perm-check:last-child{border-bottom:none}
+    .modal-actions{display:flex;gap:8px;margin-top:18px}
+    .modal-actions button{flex:1;padding:12px;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer}
+    .btn-modal-ok{background:var(--red);color:#fff}
+    .btn-modal-cancel{background:#f0f0f0;color:#333}
+    .user-card{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+    .user-card-name{font-weight:700;font-size:15px;color:var(--navy);margin-bottom:3px}
+    .user-card-perms{font-size:12px;color:var(--muted)}
+    .user-card-actions{display:flex;gap:8px;flex-shrink:0}
+    .btn-user-edit{background:#f0f4ff;color:#1565c0;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer}
+    .btn-user-del{background:#fff0f0;color:var(--red);border:none;border-radius:8px;padding:6px 10px;font-size:14px;cursor:pointer}
 
     @media(min-width:600px){.screen{max-width:480px;margin:0 auto}body{background:#e8e0e0}
       #s-admin{max-width:100%!important}
@@ -368,9 +413,8 @@
     </div>
     <button class="btn btn-primary" onclick="doLogin()" style="margin-top:6px">COMENZAR CAPACITACIÓN →</button>
     <p style="text-align:center;font-size:11px;color:#aaa;margin-top:14px">Tus datos serán registrados con fines de capacitación.</p>
-    <!-- Acceso admin: toque largo (3 seg) en el punto invisible -->
-    <p style="text-align:center;margin-top:20px">
-      <span id="admin-dot" onmousedown="startAdminHold()" onmouseup="cancelAdminHold()" ontouchstart="startAdminHold()" ontouchend="cancelAdminHold()" style="display:inline-block;width:30px;height:20px;cursor:default;color:transparent;user-select:none">·</span>
+    <p style="text-align:center;margin-top:24px">
+      <button onclick="go('s-admin-login')" style="background:none;border:1px solid #ddd;border-radius:20px;font-size:11px;color:#ccc;cursor:pointer;padding:5px 16px;letter-spacing:.5px">Administrador</button>
     </p>
   </div>
 </div>
@@ -413,10 +457,11 @@
   </div>
 
   <!-- TABS -->
-  <div class="admin-tabs">
-    <button class="admin-tab active" onclick="switchTab('t-resultados',this)">📊 Resultados</button>
-    <button class="admin-tab" onclick="switchTab('t-preguntas',this)">❓ Preguntas</button>
-    <button class="admin-tab" onclick="switchTab('t-portada',this)">🎨 Portada</button>
+  <div class="admin-tabs" id="admin-tabs-bar">
+    <button class="admin-tab active" onclick="switchTab('t-resultados',this)">📊 Datos</button>
+    <button class="admin-tab" id="tab-preguntas" onclick="switchTab('t-preguntas',this)">❓ Preguntas</button>
+    <button class="admin-tab" id="tab-usuarios" onclick="switchTab('t-usuarios',this)">👥 Admins</button>
+    <button class="admin-tab" id="tab-portada" onclick="switchTab('t-portada',this)">🎨 Portada</button>
   </div>
 
   <div class="admin-body">
@@ -444,10 +489,19 @@
       <div id="admin-nodata" class="no-data" style="display:none">
         <div class="no-ico">📋</div><p>Sin evaluaciones registradas aún.</p>
       </div>
-      <div style="margin-top:14px">
-        <button class="export-btn" onclick="exportCSV()">⬇ Exportar a CSV</button>
+      <div class="export-grid">
+        <button class="exp-btn csv" onclick="exportCSV()"><div class="exp-ico">📄</div><div class="exp-lbl">CSV</div></button>
+        <button class="exp-btn xls" onclick="exportExcel()"><div class="exp-ico">📊</div><div class="exp-lbl">Excel</div></button>
+        <button class="exp-btn word" onclick="exportWord()"><div class="exp-ico">📝</div><div class="exp-lbl">Word</div></button>
       </div>
-      <p style="font-size:11px;color:#bbb;text-align:center;margin-bottom:16px">También se sincroniza con Google Sheets cuando está configurado.</p>
+      <p style="font-size:11px;color:#bbb;text-align:center;margin-bottom:16px">Exportá todas las evaluaciones al formato que necesités.</p>
+    </div>
+
+    <!-- ── TAB USUARIOS/ADMINS ── -->
+    <div id="t-usuarios" class="admin-tab-panel">
+      <div id="user-list"></div>
+      <button class="add-q-btn" id="btn-add-admin" onclick="openUserModal(null)" style="display:none">+ Agregar administrador</button>
+      <p style="font-size:11px;color:#bbb;text-align:center;margin-top:8px;margin-bottom:16px">Solo el Superadmin puede crear y eliminar administradores.</p>
     </div>
 
     <!-- ── TAB PREGUNTAS ── -->
@@ -526,6 +580,31 @@
       <p id="cover-err" style="text-align:center;color:var(--red);font-size:12px;display:none;margin-bottom:16px"></p>
     </div>
 
+  </div>
+</div>
+
+<!-- ===== MODAL USUARIO ===== -->
+<div class="modal-overlay" id="modal-user">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-user-title">Nuevo Administrador</div>
+    <div class="form-group">
+      <label>Usuario</label>
+      <input class="qed-input" id="mu-user" placeholder="Ej: supervisor1">
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input class="qed-input" type="password" id="mu-pass" placeholder="Mínimo 6 caracteres">
+    </div>
+    <div class="form-group" style="margin-bottom:6px">
+      <label>Permisos</label>
+      <div class="perm-check"><input type="checkbox" id="p-resultados" checked><label for="p-resultados">📊 Ver resultados y exportar</label></div>
+      <div class="perm-check"><input type="checkbox" id="p-preguntas"><label for="p-preguntas">❓ Editar preguntas</label></div>
+      <div class="perm-check"><input type="checkbox" id="p-portada"><label for="p-portada">🎨 Editar portada</label></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="closeUserModal()">Cancelar</button>
+      <button class="btn-modal-ok" onclick="saveUser()">Guardar</button>
+    </div>
   </div>
 </div>
 
@@ -1051,14 +1130,26 @@ let adminFilter = 'todos';
 function doAdminLogin(){
   const u = gi('a-user').value.trim();
   const p = gi('a-pass').value;
+  // Super admin
   if(u === ADMIN_USER && p === ADMIN_PASS){
+    _currentAdmin = {username: u, isSuperAdmin: true, perms:{resultados:true,preguntas:true,portada:true}};
     gi('a-err').style.display = 'none';
     gi('a-pass').value = '';
     loadAdmin();
     go('s-admin');
-  } else {
-    gi('a-err').style.display = 'block';
+    return;
   }
+  // Admins secundarios
+  const found = getAdminUsers().find(x=>x.username===u && x.pass===p);
+  if(found){
+    _currentAdmin = {username: found.username, isSuperAdmin: false, perms: found.perms};
+    gi('a-err').style.display = 'none';
+    gi('a-pass').value = '';
+    loadAdmin();
+    go('s-admin');
+    return;
+  }
+  gi('a-err').style.display = 'block';
 }
 
 function loadAdmin(){
@@ -1073,7 +1164,21 @@ function loadAdmin(){
   gi('kpi-no').textContent    = no;
   gi('kpi-avg').textContent   = avg !== null ? avg+'%' : '-';
 
+  // Aplicar visibilidad de tabs según permisos
+  const p = _currentAdmin ? _currentAdmin.perms : {};
+  const sa = _currentAdmin && _currentAdmin.isSuperAdmin;
+  gi('tab-preguntas').style.display = (sa || p.preguntas) ? '' : 'none';
+  gi('tab-usuarios').style.display  = sa ? '' : 'none';
+  gi('tab-portada').style.display   = (sa || p.portada)   ? '' : 'none';
+
+  // Activar tab Datos por defecto
+  document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.admin-tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.admin-tab').classList.add('active');
+  gi('t-resultados').classList.add('active');
+
   renderTable();
+  renderUserList();
 }
 
 function setFilter(f, btn){
@@ -1141,6 +1246,185 @@ function exportCSV(){
   a.click(); URL.revokeObjectURL(url);
 }
 
+function exportExcel(){
+  const data = getLocal();
+  if(!data.length){ alert('No hay datos para exportar.'); return; }
+  const heads = ['Nombre','Legajo','DNI','Sede/Turno','Mod1(%)','Mod2(%)','Mod3(%)','Mod4(%)','Final(%)','Resultado','Correctas','Total Preguntas','Minutos','Fecha'];
+  const cols  = ['nombre','legajo','dni','sede','mod1','mod2','mod3','mod4','final','resultado','correctas','total','minutos','fin'];
+  const toTd = v => `<td>${v||''}</td>`;
+  const rows = data.map(d=>'<tr>'+cols.map(c=>{
+    if(c==='fin') return toTd(d.fin ? new Date(d.fin).toLocaleString('es-AR') : '-');
+    return toTd(d[c]||'');
+  }).join('')+'</tr>').join('');
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+    <head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets>
+    <x:ExcelWorksheet><x:Name>Evaluaciones</x:Name><x:WorksheetOptions><x:DisplayGridlines/>
+    </x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+    </head><body><table border="1">
+    <thead style="background:#cc0000;color:#fff"><tr>${heads.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+    <tbody>${rows}</tbody></table></body></html>`;
+  const blob = new Blob([html], {type:'application/vnd.ms-excel;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'SAB5_Evaluaciones_'+new Date().toISOString().slice(0,10)+'.xls';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+function exportWord(){
+  const data = getLocal();
+  if(!data.length){ alert('No hay datos para exportar.'); return; }
+  const fecha = new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const aprobados = data.filter(d=>d.resultado==='APROBADO').length;
+  const promedio  = data.length ? Math.round(data.reduce((s,d)=>s+(d.final||0),0)/data.length) : 0;
+  const filas = data.map(d=>{
+    const f = d.fin ? new Date(d.fin).toLocaleString('es-AR') : '-';
+    const color = d.resultado==='APROBADO' ? '#1b5e20' : '#b71c1c';
+    return `<tr>
+      <td style="padding:5px 8px">${d.nombre||'-'}</td>
+      <td style="padding:5px 8px;text-align:center">${d.legajo||'-'}</td>
+      <td style="padding:5px 8px;text-align:center">${d.dni||'-'}</td>
+      <td style="padding:5px 8px">${d.sede||'-'}</td>
+      <td style="padding:5px 8px;text-align:center">${d.final||0}%</td>
+      <td style="padding:5px 8px;text-align:center;color:${color};font-weight:bold">${d.resultado||'-'}</td>
+      <td style="padding:5px 8px;font-size:11px">${f}</td>
+    </tr>`;
+  }).join('');
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+    <head><meta charset="UTF-8"><title>SAB-5 Evaluaciones</title>
+    <style>
+      body{font-family:Arial,sans-serif;font-size:12pt}
+      h1{color:#cc0000;text-align:center;font-size:18pt}
+      .sub{text-align:center;color:#555;margin-bottom:20px}
+      .kpi{display:inline-block;margin:0 16px;text-align:center}
+      .kpi b{display:block;font-size:22pt;color:#cc0000}
+      table{border-collapse:collapse;width:100%;margin-top:20px}
+      th{background:#cc0000;color:#fff;padding:6px 8px;font-size:11pt}
+      tr:nth-child(even){background:#fafafa}
+      td{border:1px solid #ddd;font-size:10pt}
+    </style></head>
+    <body>
+      <h1>SAB-5 | Registro de Evaluaciones</h1>
+      <p class="sub">Generado el ${fecha} &nbsp;|&nbsp; Total: ${data.length} registros</p>
+      <div style="text-align:center;margin-bottom:16px">
+        <span class="kpi"><b>${data.length}</b>Total</span>
+        <span class="kpi"><b style="color:#2e7d32">${aprobados}</b>Aprobados</span>
+        <span class="kpi"><b style="color:#b71c1c">${data.length-aprobados}</b>Desaprobados</span>
+        <span class="kpi"><b>${promedio}%</b>Promedio</span>
+      </div>
+      <table border="1">
+        <thead><tr>
+          <th>Nombre</th><th>Legajo</th><th>DNI</th><th>Sede/Turno</th>
+          <th>Final(%)</th><th>Resultado</th><th>Fecha</th>
+        </tr></thead>
+        <tbody>${filas}</tbody>
+      </table>
+    </body></html>`;
+  const blob = new Blob([html], {type:'application/msword;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'SAB5_Evaluaciones_'+new Date().toISOString().slice(0,10)+'.doc';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// ─── SUPER ADMIN Y GESTIÓN DE USUARIOS ───────────────────────────
+const SUPER_ADMIN = 'admin';
+let _currentAdmin = null; // { username, isSuperAdmin, perms }
+
+function getAdminUsers(){
+  return JSON.parse(localStorage.getItem('sab5_admins')||'[]');
+}
+
+function saveAdminUsers(list){
+  localStorage.setItem('sab5_admins', JSON.stringify(list));
+}
+
+function renderUserList(){
+  const list = getAdminUsers();
+  const container = gi('user-list');
+  const isSA = _currentAdmin && _currentAdmin.isSuperAdmin;
+  gi('btn-add-admin').style.display = isSA ? 'block' : 'none';
+
+  if(!list.length){
+    container.innerHTML = '<p style="text-align:center;color:var(--muted);padding:24px;font-size:13px">No hay administradores adicionales. El superadmin puede crear nuevos.</p>';
+    return;
+  }
+  container.innerHTML = list.map(u=>{
+    const perms = [
+      u.perms.resultados ? '📊 Resultados' : '',
+      u.perms.preguntas  ? '❓ Preguntas'  : '',
+      u.perms.portada    ? '🎨 Portada'    : ''
+    ].filter(Boolean).join(' · ') || 'Sin permisos';
+    return `<div class="user-card">
+      <div class="user-card-info">
+        <div class="user-card-name">👤 ${u.username}</div>
+        <div class="user-card-perms">${perms}</div>
+      </div>
+      ${isSA ? `<div class="user-card-actions">
+        <button class="btn-user-edit" onclick="openUserModal('${u.username}')">✏️ Editar</button>
+        <button class="btn-user-del"  onclick="deleteUser('${u.username}')">🗑</button>
+      </div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+let _editingUser = null;
+
+function openUserModal(username){
+  _editingUser = username;
+  const users = getAdminUsers();
+  const u = username ? users.find(x=>x.username===username) : null;
+  gi('modal-user-title').textContent = u ? 'Editar Administrador' : 'Nuevo Administrador';
+  gi('mu-user').value = u ? u.username : '';
+  gi('mu-user').disabled = !!u; // no cambiar username al editar
+  gi('mu-pass').value = '';
+  gi('mu-pass').placeholder = u ? 'Dejar vacío para no cambiar' : 'Mínimo 6 caracteres';
+  gi('p-resultados').checked = u ? u.perms.resultados : true;
+  gi('p-preguntas').checked  = u ? u.perms.preguntas  : false;
+  gi('p-portada').checked    = u ? u.perms.portada    : false;
+  gi('modal-user').style.display = 'flex';
+}
+
+function closeUserModal(){
+  gi('modal-user').style.display = 'none';
+  _editingUser = null;
+}
+
+function saveUser(){
+  const username = gi('mu-user').value.trim().toLowerCase();
+  const pass     = gi('mu-pass').value;
+  if(!username){ alert('Ingresá un nombre de usuario.'); return; }
+  if(username === SUPER_ADMIN){ alert('Ese nombre de usuario está reservado.'); return; }
+  if(!_editingUser && pass.length < 6){ alert('La contraseña debe tener al menos 6 caracteres.'); return; }
+  const users = getAdminUsers();
+  const perms = {
+    resultados: gi('p-resultados').checked,
+    preguntas:  gi('p-preguntas').checked,
+    portada:    gi('p-portada').checked
+  };
+  if(_editingUser){
+    const idx = users.findIndex(u=>u.username===_editingUser);
+    if(idx>=0){
+      if(pass.length >= 6) users[idx].pass = pass;
+      users[idx].perms = perms;
+    }
+  } else {
+    if(users.find(u=>u.username===username)){ alert('Ese usuario ya existe.'); return; }
+    users.push({username, pass, perms});
+  }
+  saveAdminUsers(users);
+  closeUserModal();
+  renderUserList();
+}
+
+function deleteUser(username){
+  if(!confirm(`¿Eliminar al administrador "${username}"?`)) return;
+  const users = getAdminUsers().filter(u=>u.username!==username);
+  saveAdminUsers(users);
+  renderUserList();
+}
+
 // ─── ADMIN TABS ──────────────────────────────────────────────────
 function switchTab(panelId, btn){
   document.querySelectorAll('.admin-tab-panel').forEach(p=>p.classList.remove('active'));
@@ -1149,6 +1433,7 @@ function switchTab(panelId, btn){
   btn.classList.add('active');
   if(panelId==='t-preguntas') renderQEditor();
   if(panelId==='t-portada')   loadCoverForm();
+  if(panelId==='t-usuarios')  renderUserList();
 }
 
 // ─── EDITOR DE PREGUNTAS ─────────────────────────────────────────
