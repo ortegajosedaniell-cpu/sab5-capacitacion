@@ -423,8 +423,21 @@
       <input type="text" id="i-dni" placeholder="Sin puntos ni espacios" inputmode="numeric">
     </div>
     <div class="form-group">
-      <label>Sede / Turno</label>
-      <input type="text" id="i-sede" placeholder="Ej: Sede Centro – Turno Noche">
+      <label>Tipo de Servicio</label>
+      <select id="i-tipo" style="width:100%;padding:14px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:15px;background:#fff;color:var(--navy);appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22><path d=%22M1 1l5 5 5-5%22 stroke=%22%23999%22 stroke-width=%222%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>');background-repeat:no-repeat;background-position:right 16px center;cursor:pointer">
+        <option value="">-- Seleccioná tu tipo de servicio --</option>
+        <option value="CONSTRUCCION">🏗️ CONSTRUCCION (obradores)</option>
+        <option value="INDUSTRIA">🏭 INDUSTRIA</option>
+        <option value="LOGISTICA">📦 OPERADOR LOGISTICO (logísticas gral)</option>
+        <option value="RETAIL">🛒 RETAIL (supermercado / shopping)</option>
+        <option value="SALUD">🏥 SALUD (sanatorios)</option>
+        <option value="SERVICIOS">🏢 SERVICIOS (prestadora de servicio)</option>
+        <option value="URBANIZACION">🏘️ URBANIZACION (barrios privados)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Turno</label>
+      <input type="text" id="i-turno" placeholder="Ej: Turno Noche, Turno Mañana">
     </div>
     <button class="btn btn-primary" onclick="doLogin()" style="margin-top:6px">COMENZAR CAPACITACIÓN →</button>
     <p style="text-align:center;font-size:11px;color:#aaa;margin-top:14px">Tus datos serán registrados con fines de capacitación.</p>
@@ -656,7 +669,7 @@
     <div id="final-card" style="display:none" class="final-card">
       <div style="font-size:40px;margin-bottom:8px">📝</div>
       <h3 style="color:var(--navy);margin-bottom:6px">Evaluación Final</h3>
-      <p style="font-size:13px;color:#666;margin-bottom:16px">20 preguntas · Mínimo para aprobar: 70%</p>
+      <p style="font-size:13px;color:#666;margin-bottom:16px">20 preguntas · Mínimo para aprobar: 80%</p>
       <button class="btn btn-primary" onclick="startFinal()">RENDIR AHORA →</button>
     </div>
   </div>
@@ -904,6 +917,346 @@ function mod4(){ return `
 <div class="alert-txt"><strong>Verificación al inicio de cada turno:</strong> Confirmá batería, señal y funcionamiento del botón. Si detectás alguna falla, asentala en el libro de novedades y reportala. No la ignores esperando que "se arregle sola".</div></div>
 `}
 
+// ─── MÓDULO 5 — ADAPTATIVO POR TIPO DE SERVICIO ─────────────────
+const MOD5_DATA = {
+  CONSTRUCCION: {
+    title:'Seguridad en Obras (Obradores)',
+    icon:'🏗️',
+    desc:'Herramientas, contingencias y control de acceso en obra',
+    html:`
+<div class="card"><h3>🏗️ El obrador: un entorno de riesgo permanente</h3>
+<p>La obra es uno de los entornos más complejos para un vigilador. Conviven personal propio, contratistas, vehículos pesados, maquinaria y materiales de alto valor. Tu rol es <strong>preventivo y de control</strong>, no reactivo.</p></div>
+
+<div class="divider">🔧 RESGUARDO DE HERRAMIENTAS Y MATERIALES</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Registro de ingreso y egreso de herramientas</h4><p>Todo equipo que ingresa o egresa debe quedar asentado: descripción, número de serie si aplica, quién lo lleva, autorización del capataz o jefe de obra. Sin registro, no hay control.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Control al final de cada turno</h4><p>Antes del retiro masivo de personal, verificá que no salga herramienta sin autorización escrita del responsable de obra. La salida de material sin respaldo es hurto, aunque sea "el propio trabajador".</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Camionetas y vehículos que retiran material</h4><p>Exigí remito o autorización firmada por el responsable de la obra. Si no la tiene, no puede salir. Llamá al jefe de obra para confirmar.</p></div></div>
+</div>
+
+<div class="divider">⚠️ CONTINGENCIAS EN OBRA</div>
+<div class="card">
+<div class="do-c"><div class="rtitle">✅ Accidente laboral</div><div class="rdesc">Llamar al 107/911 de inmediato. No mover al accidentado. Preservar el área. Notificar al responsable de obra y asentar todo en el libro de novedades con hora exacta. La ART debe ser notificada por la empresa.</div></div>
+<div class="do-c"><div class="rtitle">✅ Incidente entre trabajadores</div><div class="rdesc">Separar verbalmente, no intervenir físicamente. Llamar al capataz o responsable. Si hay violencia activa, llamar al 911 y preservar la escena.</div></div>
+<div class="do-c"><div class="rtitle">✅ Persona no autorizada en obra</div><div class="rdesc">Toda persona en el obrador debe tener razón de estar: personal contratado, proveedor con cita, inspector habilitado. Sin identificación y autorización, no entra.</div></div>
+</div>
+
+<div class="card"><h3>📋 Documentación clave en un obrador</h3>
+<ul class="rlist">
+<li class="ritem"><span class="rico">📄</span><div><strong>Credencial de trabajador:</strong> Todo el personal debe llevarla visible. Sin credencial, no accede.</div></li>
+<li class="ritem"><span class="rico">📄</span><div><strong>Constancia de ART vigente:</strong> Contratistas deben acreditar cobertura. Sin ART activa, no pueden trabajar en la obra.</div></li>
+<li class="ritem"><span class="rico">📄</span><div><strong>Remitos de material:</strong> Toda entrada y salida de materiales debe tener soporte documental firmado.</div></li>
+</ul></div>
+
+<div class="alert-box" style="background:#fff8e1;border-left-color:#f9a825"><span class="alert-ico">🎬</span>
+<div class="alert-txt"><strong>Caso real:</strong> Al finalizar el turno, un trabajador intenta salir con una amoladora en la mochila. Dice que es suya. El vigilador la ve en el inventario de herramientas del obrador.<br><br>
+<strong>Acción correcta:</strong> Retenerlo, llamar al capataz para verificar, asentar la novedad. Si el capataz confirma que es de la obra, no puede salir. Si confirma que es personal, puede pasar con nota del capataz. Nunca dejar salir material de obra sin confirmación.</div></div>`,
+    qs:[
+      {q:"Al finalizar el turno, un trabajador intenta salir con una amoladora. Dice que es suya. ¿Qué hacés?",
+       o:["Lo dejás pasar: si dice que es suya, te lo creés","La retenés y llamás al capataz para verificar en el inventario antes de permitir la salida","Le pedís que vuelva mañana con el recibo de compra","La dejás salir pero lo anotás en el libro"],c:1},
+      {q:"Llega una camioneta a llevarse material de obra. El chofer dice que 'el capataz lo autorizó'. ¿Qué hacés?",
+       o:["La dejás salir: la palabra del capataz es suficiente","La detenés y contactás directamente al capataz para confirmar. Sin confirmación escrita o verbal directa, no sale material","Le pedís el DNI y lo dejás pasar","Solo la detenés si el material parece mucho"],c:1},
+      {q:"Un contratista llega al obrador sin la constancia de ART vigente. Insiste en que 'siempre trabaja acá'. ¿Podés dejarlo entrar?",
+       o:["Sí: si el capataz lo conoce, la ART es un trámite","No: sin ART activa no puede ingresar al área de trabajo. Es un requisito legal, no opcional","Sí, pero solo a la oficina administrativa, no a la obra","Solo si firma una declaración jurada"],c:1},
+      {q:"Se produce un accidente: un trabajador cae de un andamio. Está consciente pero no puede moverse. ¿Qué hacés primero?",
+       o:["Lo levantás junto a otros compañeros para llevarlo a la sombra","Llamás al 107/911 de inmediato, no lo movés y notificás al responsable de obra","Esperás al responsable de obra antes de llamar a emergencias","Buscás el botiquín y lo atendés vos mismo"],c:1},
+      {q:"Encontrás herramientas costosas apiladas cerca del perímetro externo del obrador, fuera del área de almacenaje habitual. ¿Qué hacés?",
+       o:["Las dejás: alguien las habrá puesto ahí por alguna razón","Las llevás al almacén para que estén seguras","Reportás la novedad al supervisor con ubicación y descripción exacta: puede ser preparación para un hurto","Las fotografiás y las dejás donde están sin reportar"],c:2},
+      {q:"Un inspector del Ministerio de Trabajo llega al obrador para una inspección. ¿Cuál es el procedimiento correcto?",
+       o:["Lo dejás pasar de inmediato: tiene autoridad legal","Verificás su credencial oficial, notificás al responsable de obra ANTES de dejarlo ingresar y lo acompañás durante toda la inspección","Le pedís que vuelva con aviso previo","Solo lo dejás entrar si el responsable de obra está presente físicamente"],c:1},
+      {q:"Dos trabajadores tienen una pelea física dentro del obrador. ¿Cuál es tu intervención?",
+       o:["Intervenís físicamente para separarlos de inmediato","Gritás para que paren, llamás al capataz y al 911 si hay lesiones. No te metés físicamente entre dos personas que pelean","Te alejás y esperás a que se calmen solos","Solo intervenís si uno saca un elemento contundente"],c:1},
+      {q:"Un trabajador entra al obrador sin casco ni chaleco reflectivo, que son obligatorios según el protocolo de seguridad de la obra. ¿Qué hacés?",
+       o:["Lo dejás pasar: el EPP es responsabilidad del capataz, no tuya","Lo detenés en el acceso: sin EPP obligatorio no puede ingresar al área de obra. Le indicás que debe equiparse antes","Lo anotás pero lo dejás pasar porque no es tu área de decisión","Solo lo detenés si el capataz está mirando"],c:1},
+    ]
+  },
+
+  INDUSTRIA: {
+    title:'Seguridad Industrial',
+    icon:'🏭',
+    desc:'Control de acceso, EPP y protocolos en planta industrial',
+    html:`
+<div class="card"><h3>🏭 La planta industrial: control total en un entorno de riesgo</h3>
+<p>En una planta industrial conviven materiales peligrosos, maquinaria pesada, procesos críticos y personal diverso. El vigilador industrial es la primera línea de prevención de incidentes y hurto.</p></div>
+
+<div class="divider">🦺 CONTROL DE ACCESO EN PLANTA</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Todo acceso es controlado</h4><p>Cada persona que ingresa a planta debe identificarse, registrarse y tener un destino autorizado. El acceso a sectores de producción restringida requiere autorización específica del área.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>EPP obligatorio</h4><p>Ninguna persona entra a área de producción sin el equipo de protección personal requerido (casco, calzado de seguridad, chaleco, protección ocular según sector). No hay excepciones por rango o urgencia.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Vehículos y camiones</h4><p>Todo vehículo que ingresa o egresa con carga debe presentar documentación: remito, guía de transporte, autorización firmada. El pesaje y verificación de sellos es parte del protocolo.</p></div></div>
+</div>
+
+<div class="divider">🚨 INCIDENTES INDUSTRIALES</div>
+<div class="card">
+<div class="do-c"><div class="rtitle">✅ Derrame de sustancia no identificada</div><div class="rdesc">No te acerques. Aislá el área, evacuá si corresponde, llamá al responsable de seguridad industrial de inmediato. Solo personal capacitado con EPP específico puede intervenir.</div></div>
+<div class="do-c"><div class="rtitle">✅ Incendio en sector de producción</div><div class="rdesc">Activá la alarma, llamá al 100. Si hay materiales inflamables o explosivos en el sector, el protocolo de evacuación es prioritario sobre cualquier intento de extinción.</div></div>
+<div class="do-c"><div class="rtitle">✅ Acceso no autorizado a sector crítico</div><div class="rdesc">Detención en el acceso, identificación, reporte al supervisor de planta. Nunca dejes avanzar a alguien en un sector restringido sin autorización, aunque sea personal interno.</div></div>
+</div>
+
+<div class="alert-box" style="background:#fff8e1;border-left-color:#f9a825"><span class="alert-ico">🎬</span>
+<div class="alert-txt"><strong>Caso real:</strong> Un empleado de oficinas quiere entrar al sector de producción "solo para ver algo rápido" sin EPP y sin autorización del área.<br><br>
+<strong>Acción correcta:</strong> No lo dejás pasar. Le explicás que necesita EPP y autorización del jefe de producción. No importa el cargo: las reglas de seguridad industrial aplican para todos sin excepción.</div></div>`,
+    qs:[
+      {q:"Un empleado administrativo quiere entrar al sector de producción sin casco ni calzado de seguridad. Dice que 'es solo un momento'. ¿Qué hacés?",
+       o:["Lo dejás pasar: para una visita corta el EPP no es obligatorio","No lo dejás entrar: el EPP es obligatorio para cualquier persona en área de producción sin excepción de tiempo o cargo","Lo acompañás vos para asegurarte de que no haya problema","Lo dejás pasar si firma una declaración de responsabilidad"],c:1},
+      {q:"Sale un camión de la planta con carga. ¿Qué documentación mínima debés verificar?",
+       o:["Solo el nombre del chofer","Remito o guía de transporte, autorización de salida de mercadería firmada por el área correspondiente y, si aplica, verificación de sellos","Solo el DNI del chofer","No necesitás verificar nada si el camión ya estaba dentro"],c:1},
+      {q:"Detectás un derrame de líquido no identificado en el sector de producción. El color y el olor son inusuales. ¿Cuál es tu primera acción?",
+       o:["Te acercás para ver de qué se trata y si podés limpiarlo","Aislás el área, evacuás al personal y llamás de inmediato al responsable de seguridad industrial. No te acercás sin EPP específico","Avisás al capataz y esperás instrucciones","Lo reportás al finalizar el turno"],c:1},
+      {q:"Un empleado te pide acceso a la sala de servidores de la planta porque 'necesita revisar algo'. La sala es de acceso restringido y él no figura en la lista. ¿Qué hacés?",
+       o:["Lo dejás entrar: si es empleado de la empresa, es de confianza","Le explicás que la sala es de acceso restringido y que debe solicitar autorización al responsable del área antes de ingresar","Lo acompañás dentro para supervisar","Lo dejás entrar pero anotás la novedad"],c:1},
+      {q:"Un trabajador fotografía maquinaria de producción con su celular. ¿Qué hacés?",
+       o:["No intervenís: no está robando nada","Le preguntás si tiene autorización para fotografiar. Si no la tiene, le pedís que deje de hacerlo y reportás la novedad al supervisor","Lo ignorás si parece empleado conocido","Solo intervenís si el jefe de planta está presente"],c:1},
+      {q:"Llega una persona que se identifica como inspector del Ministerio de Trabajo. ¿Cuál es el procedimiento?",
+       o:["Lo dejás pasar de inmediato: tiene autoridad legal para inspeccionar","Verificás su credencial oficial, llamás al responsable de la planta ANTES de permitir el acceso y lo acompañás en todo momento durante la inspección","Le pedís que espere afuera hasta que llegue el gerente","Le negás el acceso hasta tener una orden judicial"],c:1},
+      {q:"Hay un accidente: un operario se aplasta la mano con una prensa. Está consciente y grita de dolor. ¿Qué hacés?",
+       o:["Lo llevás a la enfermería de la planta vos mismo","Llamás al 107/911 de inmediato, no movés a la persona sin indicación médica, avisás al responsable de planta y preservás la escena","Buscás al enfermero o médico de la planta primero antes de llamar al 911","Intentás liberar la mano vos mismo antes de llamar a emergencias"],c:1},
+      {q:"Un camionero insiste en que su carga no puede abrirse para verificación según un 'protocolo del cliente'. Sin embargo, el protocolo interno de la planta exige verificación de toda carga entrante. ¿Qué prevalece?",
+       o:["El protocolo del cliente: el cliente siempre tiene razón","El protocolo interno de la planta: es la norma de seguridad de las instalaciones que debés hacer cumplir. Sin verificación no ingresa","Dependés de lo que diga el supervisor en ese momento","Dejás entrar el camión pero lo acompañás hasta el depósito"],c:1},
+    ]
+  },
+
+  LOGISTICA: {
+    title:'Operador Logístico',
+    icon:'📦',
+    desc:'Precintos, decomiso, informes CCTV y control de carga',
+    html:`
+<div class="card"><h3>📦 La logística: donde el control documental es seguridad</h3>
+<p>En el depósito logístico, el vigilador no solo cuida el perímetro: <strong>es parte del proceso de control de mercadería</strong>. Un precinto violado, un remito mal verificado o una cámara ignorada pueden costar millones.</p></div>
+
+<div class="divider">🔒 PRECINTOS: TU PRIMERA LÍNEA DE VERIFICACIÓN</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>¿Qué es un precinto y para qué sirve?</h4><p>Es un dispositivo de seguridad numerado que garantiza que un contenedor, camión o caja no fue abierto desde su origen. El número debe coincidir exactamente con la documentación de transporte.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Cómo verificar un precinto</h4><p>Número visible e íntegro, sin cortes ni manipulación. Comparar con el número en el remito o guía de transporte. Si hay discrepancia o daño: <strong>no se descarga sin reportar</strong>.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Precinto violado o roto: protocolo</h4><p>No abrir ni descargar. Fotografiar el estado. Notificar al supervisor y al cliente/transportista. Asentar en el libro con hora, número de precinto, número de unidad y descripción del daño.</p></div></div>
+</div>
+
+<div class="divider">📋 DECOMISO Y DIFERENCIAS DE STOCK</div>
+<div class="card">
+<div class="do-c"><div class="rtitle">✅ ¿Cuándo se decomisa mercadería?</div><div class="rdesc">Cuando hay mercadería que no figura en la documentación, cuando hay sobrante sin origen justificado, o cuando la mercadería está en condiciones que no corresponden al remito (rotura, sustitución). El decomiso debe quedar documentado con protocolo formal.</div></div>
+<div class="do-c"><div class="rtitle">✅ Diferencia entre físico y remito</div><div class="rdesc">Si al descargar encontrás más o menos bultos de los que figura en el remito, la descarga se detiene, se documenta la diferencia y se notifica al supervisor. No se puede falsear la documentación para "que cuadre".</div></div>
+</div>
+
+<div class="divider">📹 CCTV EN DEPÓSITO</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Monitoreo de zonas críticas</h4><p>Zonas de carga/descarga, depósitos de alto valor y accesos son prioritarios. Si una cámara pierde imagen durante una operación de carga o descarga, es una novedad crítica.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Lo que el CCTV permite detectar</h4><p>Empleados sacando bultos por salidas no autorizadas, intercambio de mercadería entre operarios, acceso a sectores sin autorización. La cámara es evidencia: preservá las grabaciones.</p></div></div>
+</div>
+
+<div class="alert-box" style="background:#fff8e1;border-left-color:#f9a825"><span class="alert-ico">🎬</span>
+<div class="alert-txt"><strong>Caso real:</strong> Un chofer te ofrece $5.000 para "apurar el ingreso" sin la verificación completa de precintos. Dice que tiene prisa y que "siempre lo hacen así".<br><br>
+<strong>Acción correcta:</strong> Rechazás el ofrecimiento, reportás el intento de soborno al supervisor de inmediato y lo asentás en el libro con todos los datos del chofer y el vehículo. Ninguna prisa justifica saltear el protocolo de verificación.</div></div>`,
+    qs:[
+      {q:"Un camión llega al depósito con el precinto roto. El chofer dice que 'se rompió en el viaje'. ¿Qué hacés?",
+       o:["Lo dejás entrar: si el chofer lo dice, es suficiente","No descargás. Fotografiás el precinto, notificás al supervisor y al cliente, asentás la novedad con todos los datos antes de cualquier acción","Lo descargás y contás la mercadería para ver si falta algo","Lo dejás entrar pero lo vigilás mientras se descarga"],c:1},
+      {q:"Al descargar un camión encontrás 3 cajas que no figuran en el remito. ¿Qué hacés?",
+       o:["Las descargás y las guardás para ver si alguien las reclama","Detenés la descarga, documentás las diferencias, notificás al supervisor. No continuás hasta tener autorización del responsable de logística","Las descargás y las reportás al finalizar el turno","Completás el remito con las cajas extra para que cuadre la documentación"],c:1},
+      {q:"Un chofer te ofrece dinero para ingresar sin la verificación completa de precintos. ¿Qué hacés?",
+       o:["Aceptás si el monto no es significativo","Rechazás, reportás el intento de soborno al supervisor de inmediato y asentás todos los datos del chofer en el libro","Rechazás pero no reportás para no generar conflictos","Le decís que no puede y lo dejás entrar de todas formas para no perder tiempo"],c:1},
+      {q:"¿Cuándo es válido un precinto y cuándo se considera comprometido?",
+       o:["Es válido si el número coincide; está comprometido solo si está completamente cortado","Es válido cuando el número coincide exactamente con la documentación y el dispositivo está íntegro. Cualquier daño, manipulación o discrepancia de número lo compromete","Es válido si el chofer lo confirma verbalmente","Es válido siempre que la mercadería esté completa al contarla"],c:1},
+      {q:"El CCTV del depósito muestra a un empleado sacando cajas por una puerta lateral no autorizada. ¿Cuál es el orden correcto de acciones?",
+       o:["Vas directamente a enfrentarlo","Notificás al supervisor de inmediato con descripción de lo que muestra la cámara. No toques las grabaciones. Esperás instrucciones antes de actuar solo","Lo seguís para ver adónde lleva las cajas","Anotás la novedad para reportarla al finalizar el turno"],c:1},
+      {q:"Un chofer insiste en que su camión no puede abrirse para verificación según instrucciones del cliente. ¿Qué prevalece?",
+       o:["Las instrucciones del cliente del transportista","El protocolo de verificación de tu empresa. Sin verificación según el procedimiento establecido, el camión no ingresa. Escalás al supervisor si hay conflicto","Hacés lo que el chofer diga para evitar problemas","Abrís el camión sin importar lo que diga el chofer"],c:1},
+      {q:"¿Qué información mínima debe incluir el informe de una diferencia entre el físico y el remito?",
+       o:["Solo la cantidad de la diferencia","Número de remito, transportista, número de unidad, descripción de la diferencia (cantidad y tipo), hora del hallazgo, nombre del vigilador que lo detecta y firma del supervisor","Solo el nombre del chofer y la cantidad","La diferencia y una foto"],c:1},
+      {q:"Una cámara del sector de carga pierde imagen justo cuando comienza una operación de descarga de alto valor. ¿Qué hacés?",
+       o:["Continuás la operación: puede ser una falla técnica común","Detenés la operación o aumentás la supervisión presencial, reportás la falla al supervisor de inmediato y asentás la novedad. La falla de cámara durante una operación crítica puede ser intencional","Avisás al área técnica y seguís la operación con normalidad","No hacés nada: las cámaras no son tu responsabilidad"],c:1},
+    ]
+  },
+
+  RETAIL: {
+    title:'Retail — Supermercado / Shopping',
+    icon:'🛒',
+    desc:'Arco detector, prevención de pérdidas y atención al cliente',
+    html:`
+<div class="card"><h3>🛒 Retail: donde la seguridad convive con el público masivo</h3>
+<p>En supermercados y shoppings el vigilador trabaja en un entorno de alto flujo de personas y alto riesgo de pérdidas. Tu actitud <strong>visible, serena y profesional</strong> es la principal herramienta de disuasión.</p></div>
+
+<div class="divider">🚨 ARCO DETECTOR DE ARTÍCULOS (EAS)</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>¿Qué es el EAS y cómo funciona?</h4><p>El sistema EAS (Electronic Article Surveillance) detecta etiquetas de seguridad que no fueron desactivadas en la caja. Cuando el arco suena, indica una etiqueta activa, no necesariamente una intención de hurto.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Protocolo cuando suena el arco</h4><p><strong>1)</strong> Acercarte con tono amable, no acusatorio. <strong>2)</strong> Pedir el ticket de compra. <strong>3)</strong> Verificar si hay artículo con etiqueta sin desactivar. <strong>4)</strong> Si el ticket cubre el artículo, acompañar a la caja para desactivar. <strong>5)</strong> Si no hay ticket o el artículo no figura: llamar al supervisor.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Lo que NUNCA debés hacer</h4><p>Acusar directamente de robo, tocar al cliente, revisar el bolso por la fuerza, retener al cliente sin llamar al supervisor. Toda acción incorrecta puede costar una demanda legal a la empresa.</p></div></div>
+</div>
+
+<div class="divider">👁️ PREVENCIÓN DE PÉRDIDAS</div>
+<div class="card">
+<div class="do-c"><div class="rtitle">✅ Presencia disuasiva</div><div class="rdesc">Tu sola presencia en zonas estratégicas reduce significativamente el hurto. Patrullá las zonas de mayor riesgo (electrónica, perfumería, carnicería) sin dejar de monitorear el resto.</div></div>
+<div class="do-c"><div class="rtitle">✅ Coordinación con CCTV</div><div class="rdesc">Si el local tiene sala de monitoreo, coordiná. Si ves algo sospechoso, reportá a quien monitorea para que lo siga por cámara mientras vos mantenés distancia discreta.</div></div>
+<div class="dont-c"><div class="rtitle">❌ No actuar solo ante sospecha de organización</div><div class="rdesc">Los hurtos organizados (uno distrae, otro hurta) requieren coordinar con el equipo, no actuar solo. Un vigilador solo puede quedar expuesto o frustrar la captura del grupo.</div></div>
+</div>
+
+<div class="alert-box" style="background:#fff8e1;border-left-color:#f9a825"><span class="alert-ico">🎬</span>
+<div class="alert-txt"><strong>Caso real:</strong> El arco suena. El cliente dice agresivamente "¡es mi celular, no me toquen!". Sin ticket de compra visible.<br><br>
+<strong>Acción correcta:</strong> Tono calmado y profesional: "Disculpe, es protocolo del local verificar cuando suena el arco. ¿Me puede mostrar su ticket de compra?". Si se niega y se retira, no lo retenés por la fuerza: llamás al supervisor y describís al cliente. La seguridad física del vigilador y de los presentes es más importante que el artículo.</div></div>`,
+    qs:[
+      {q:"El arco detector suena cuando un cliente sale. El cliente muestra su ticket y el artículo tiene etiqueta sin desactivar en la caja. ¿Qué hacés?",
+       o:["Lo acusás de intentar robar y llamás al supervisor","Le explicás que fue un error de caja, lo acompañás amablemente para que desactiven la etiqueta y le pedís disculpas por la molestia","Lo dejás ir: si tiene ticket, no hay problema","Lo retenés mientras verifican la cámara"],c:1},
+      {q:"Ves en la cámara que alguien esconde un producto dentro de su ropa en el pasillo. ¿Cuál es la secuencia correcta?",
+       o:["Vas directamente a enfrentarlo en el pasillo","Reportás al supervisor con descripción del cliente y ubicación. Esperás a que el cliente pase por el arco. Si suena, el protocolo del arco aplica. No lo acusás antes","Lo seguís de cerca sin hacer nada hasta que salga","Avisás a las cámaras y dejás que ellos manejen todo"],c:1},
+      {q:"El arco suena y el cliente se pone agresivo, grita que 'siempre pasa lo mismo' y quiere irse. ¿Qué hacés?",
+       o:["Lo retenés físicamente hasta que el supervisor llegue","Mantenés tono calmado y profesional. Si se va, no lo retenés por la fuerza. Describís al supervisor y, si corresponde, llamás al 911 para reportar el incidente","Le pedís disculpas y lo dejás ir directamente","Lo amenazás con llamar a la policía para que coopere"],c:1},
+      {q:"¿En qué momento podés abrir el bolso de un cliente en el contexto de un supermercado?",
+       o:["Siempre que el arco suene","Cuando el cliente lo consiente voluntariamente. Nunca podés abrir el bolso de alguien por la fuerza","Cuando tenés prueba en cámara de que guardó algo ahí","Con autorización del supervisor del local"],c:1},
+      {q:"Detectás un grupo de 4 personas actuando de forma coordinada: uno distrae al personal, otros están en pasillos distintos. ¿Cómo actuás?",
+       o:["Enfrentás al grupo para desmotivarlos","Reportás al supervisor y al monitoreo de cámaras con descripción de cada persona. Coordinás una respuesta en equipo sin actuar solo ni alertar al grupo","Seguís a uno de ellos para ver qué hace","Avisás a la caja para que estén atentos"],c:1},
+      {q:"¿Podés retener a un menor de edad sospechoso de hurto sin la presencia de la policía?",
+       o:["Sí, podés retenerlo y llamar a los padres","Solo podés retenerlo si lo atrapás en flagrante delito, debés llamar de inmediato a la policía y al supervisor. No podés interrogarlo ni separarlo de un adulto acompañante sin autorización","No: los menores no pueden ser retenidos bajo ninguna circunstancia","Sí, siempre que el supervisor esté presente"],c:1},
+      {q:"Un cliente acusa a un empleado del local de haberle faltado el respeto. ¿Cuál es tu intervención?",
+       o:["Tomás partido por el empleado: son compañeros","Intervenís para calmar la situación, separás a las partes si es necesario, llamás al supervisor del área comercial. Vos no juzgás quién tiene razón: eso es del área comercial","Ignorás la situación: es un conflicto comercial, no de seguridad","Pedís al cliente que se retire del local"],c:1},
+      {q:"El arco suena pero la persona que sale es un empleado del local saliendo por la puerta de clientes. ¿Qué hacés?",
+       o:["No hacés nada: es empleado del local","Igual le pedís que muestre su ticket o la autorización para llevar el artículo. El protocolo aplica para todos, incluido el personal del establecimiento","Lo dejás pasar pero lo reportás al supervisor","Lo retenés y llamás al gerente del área"],c:1},
+    ]
+  },
+
+  SALUD: {
+    title:'Seguridad en Salud (Sanatorios)',
+    icon:'🏥',
+    desc:'Control de acceso, pacientes, visitas y emergencias médicas',
+    html:`
+<div class="card"><h3>🏥 El sanatorio: un entorno donde la seguridad protege vidas</h3>
+<p>En un establecimiento de salud, la seguridad no solo protege bienes: <strong>protege la integridad de pacientes, personal médico y visitantes</strong>. El contexto emocional es siempre intenso. Calma, firmeza y empatía son tus herramientas principales.</p></div>
+
+<div class="divider">🚪 CONTROL DE ACCESO Y SECTORES RESTRINGIDOS</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Zonas de acceso restringido</h4><p>UCI/UTI, quirófanos, sala de partos, farmacia, depósito de medicamentos, sala de rayos X, server de datos clínicos. Solo personal habilitado con credencial puede ingresar. Sin credencial visible y válida, no entra nadie.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Visitas fuera de horario</h4><p>El horario de visitas está establecido por dirección médica por razones clínicas. Excepciones solo pueden autorizarlas el médico de guardia o la jefa de enfermería. No es tu decisión.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Personal externo y proveedores</h4><p>Médicos de guardia, proveedores, técnicos de equipos: todos deben identificarse, registrarse y ser anunciados antes de ingresar a sectores clínicos.</p></div></div>
+</div>
+
+<div class="divider">🚨 SITUACIONES CRÍTICAS EN SALUD</div>
+<div class="card">
+<div class="do-c"><div class="rtitle">✅ Código azul (paro cardiorrespiratorio)</div><div class="rdesc">Tu función: despejar el corredor o área de acceso, llamar al equipo de código azul si no fue alertado, mantener libres las vías de acceso para el carro de reanimación y el personal médico. No intentés reanimar: eso es del equipo médico.</div></div>
+<div class="do-c"><div class="rtitle">✅ Familiar en crisis emocional</div><div class="rdesc">Empatía antes que norma. Escuchá, acompañá, llevalo a un área privada si es posible. Si se pone agresivo físicamente, separarlo y llamar al supervisor o guardia médica. Nunca confrontes en público en un sanatorio.</div></div>
+<div class="do-c"><div class="rtitle">✅ Paciente que quiere irse sin alta</div><div class="rdesc">Avisá de inmediato al personal médico. No podés retenerlo físicamente: solo el equipo médico puede intervenir legalmente en ese caso. Tu rol es demorar y avisar, no detener.</div></div>
+</div>
+
+<div class="alert-box" style="background:#fff8e1;border-left-color:#f9a825"><span class="alert-ico">🎬</span>
+<div class="alert-txt"><strong>Caso real:</strong> Un familiar llega llorando a las 2 AM a la UCI diciendo que "su madre se está muriendo". El horario de visitas terminó a las 20 hs.<br><br>
+<strong>Acción correcta:</strong> Con empatía y calma: llevarlo a la guardia médica para que el médico de guardia tome la decisión de autorizar o no la visita. No sos vos quien decide. No lo mandás de vuelta a la puerta: lo acompañás al área correcta.</div></div>`,
+    qs:[
+      {q:"Un familiar angustiado quiere entrar a la UCI a las 2 AM. El horario de visitas terminó a las 20 hs. ¿Qué hacés?",
+       o:["Lo dejás entrar: es una situación de emergencia familiar","Lo mandás de vuelta: las reglas son las reglas","Con empatía, lo acompañás a la guardia médica para que el médico de guardia decida si autoriza la visita excepcional","Le pedís que espere en la puerta y avisás por radio"],c:2},
+      {q:"Un paciente intenta salir del sanatorio sin el alta médica. ¿Cuál es tu intervención?",
+       o:["Lo retenés físicamente: no puede irse sin alta","Avisás de inmediato al personal médico. No lo retenés físicamente: solo el equipo médico puede intervenir legalmente. Tu rol es demorar y avisar","Lo dejás ir: es libre de irse cuando quiera","Lo acompañás hasta la puerta y le explicás que no puede salir"],c:1},
+      {q:"Se declara código azul en sala 204. ¿Cuál es tu función como vigilador?",
+       o:["Entrar a la sala a ayudar con la reanimación","Despejar el corredor de acceso a la sala, mantener libres las vías para el carro de reanimación y el personal médico. No intentés reanimar: eso es exclusivo del equipo médico","Llamar al 911: el sanatorio no tiene recursos","Buscar a la familia del paciente para informarles"],c:1},
+      {q:"Una persona llega sin credencial diciendo ser médico de guardia que olvidó la credencial. ¿La dejás ingresar a sector restringido?",
+       o:["Sí: si es médico, necesita entrar","No: verificás con la jefa de enfermería o el médico de guardia en funciones antes de dejar ingresar a alguien sin credencial a un sector restringido","Lo dejás pasar solo a la guardia, no a la UCI","Lo acompañás en todo momento sin pedir verificación"],c:1},
+      {q:"Un familiar amenaza con 'hacer un escándalo' si no lo dejan ver al paciente ahora mismo. ¿Cómo respondés?",
+       o:["Cedés para evitar el escándalo público","Le explicás con firmeza y empatía que la decisión de visitas está en el área médica y lo acompañás a hablar con el médico de guardia. Si se pone físicamente agresivo, llamás al supervisor","Le decís que si hace escándalo llamás a la policía","Lo ignorás y continuás tu recorrida"],c:1},
+      {q:"Un periodista con cámara quiere filmar dentro del sanatorio 'para una nota de interés público'. ¿Qué hacés?",
+       o:["Lo dejás entrar: la libertad de prensa lo permite","No lo dejás filmar sin autorización expresa de la dirección del establecimiento. Lo derivás a administración o relaciones institucionales. La privacidad de los pacientes es un derecho legal","Lo dejás entrar solo a zonas comunes","Lo dejás filmar si no muestra pacientes"],c:1},
+      {q:"Una persona en estado de excitación ingresa al hall gritando. ¿Cuál es la secuencia correcta?",
+       o:["La interceptás físicamente de inmediato","Te acercás con calma, hablás en tono bajo para no escalar, la llevás a un área menos pública. Si hay riesgo físico inminente, llamás al supervisor y al 911. Nunca la confrontés en el hall con público alrededor","Gritás 'cálmese' desde la distancia","La ignorás hasta que el personal médico intervenga"],c:1},
+      {q:"¿Cuáles de estas zonas son de acceso restringido exclusivo al personal habilitado en un sanatorio?",
+       o:["Solo los quirófanos","UCI/UTI, quirófanos, sala de partos, farmacia, depósito de medicamentos y server de datos clínicos","Solo farmacia y quirófanos","Todas las zonas del piso de internación"],c:1},
+    ]
+  },
+
+  SERVICIOS: {
+    title:'Seguridad en Servicios',
+    icon:'🏢',
+    desc:'Edificios de oficinas, acceso, visitas y evacuación',
+    html:`
+<div class="card"><h3>🏢 Servicios: el vigilador como primer punto de contacto</h3>
+<p>En edificios de oficinas y empresas de servicios, el vigilador es la <strong>primera imagen de la empresa</strong>. Tu trato, tu protocolo y tu presencia definen la experiencia de quienes interactúan con el lugar.</p></div>
+
+<div class="divider">🚪 CONTROL DE ACCESO Y VISITAS</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Visita sin cita previa</h4><p>Toda visita se anuncia. Llamás al área correspondiente, confirmás que te esperan, registrás nombre, DNI, destino, hora de entrada. Sin confirmación, la visita espera en el hall.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Empleado sin tarjeta magnética</h4><p>Identificás por documento, confirmás por teléfono con el área que efectivamente trabaja ahí, y hacés pasar por el libro de novedades. No por "conocerlo de vista". El sistema de control existe para todos.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Paquetes y correspondencia</h4><p>Todo paquete que llega se registra: remitente, destinatario, empresa de envío, hora. Nada queda sin registro. Los paquetes sospechosos (sin identificar, con daños, emitiendo olor o calor) no se manipulan: se aíslan y se avisa.</p></div></div>
+</div>
+
+<div class="divider">🚨 SITUACIONES CRÍTICAS EN EDIFICIOS</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Evacuación del edificio</h4><p>Al activarse la alarma, tu función es guiar la evacuación hacia los puntos de reunión, verificar que los pisos se desocupen según el plan, y NO usar ascensores. Coordiná con los responsables de piso.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Usuario conflictivo en sala de espera</h4><p>Primero la palabra: acercarte, escuchar, ofrecer solución dentro de tus posibilidades. Si escala a agresión verbal o física: separar, llamar al supervisor y si es necesario al 911. No toques al usuario si no hay riesgo físico directo.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Paquete sospechoso</h4><p>No lo manipulés. Aislá el área, evacuá si corresponde, llamá al 911 y al supervisor. Un paquete sin identificar con características inusuales siempre es una amenaza potencial hasta que se descarte.</p></div></div>
+</div>
+
+<div class="alert-box" style="background:#fff8e1;border-left-color:#f9a825"><span class="alert-ico">🎬</span>
+<div class="alert-txt"><strong>Caso real:</strong> Llega un técnico sin previo aviso diciendo que "la empresa lo mandó" a revisar los aires acondicionados.<br><br>
+<strong>Acción correcta:</strong> No lo dejás subir hasta verificar con el área de mantenimiento o administración que el servicio fue solicitado. Si no pueden confirmar, el técnico espera. Si es legítimo, lo registrás y lo acompañás o lo dejás pasar con acompañante interno.</div></div>`,
+    qs:[
+      {q:"Llega una persona a tener una reunión con el gerente de finanzas. El gerente no dejó ninguna indicación de visita. ¿Qué hacés?",
+       o:["La dejás pasar: si vino, por algo será","La hacés esperar en el hall, llamás al área del gerente para confirmar que la visita estaba esperada. Si confirman, la registrás y la dejás subir. Si no confirman, la visita espera o se reagenda","La dejás pasar solo si el gerente atiende el teléfono directamente","La registrás y la mandás al piso sin confirmar"],c:1},
+      {q:"Un empleado olvida la tarjeta magnética. Te pide que le abras la puerta 'porque me conocés hace años'. ¿Qué hacés?",
+       o:["Le abrís: es empleado conocido","Lo identificás por DNI, confirmás por teléfono con su área que está empleado, y lo hacés entrar por el registro manual. El sistema existe para todos, incluidos los conocidos","No lo dejás entrar bajo ninguna circunstancia: sin tarjeta no entra","Le pedís que espere al siguiente empleado que salga para entrar con él"],c:1},
+      {q:"Encontrás un paquete abandonado sin identificar en el hall del edificio. Nadie lo reclama. ¿Cuál es el protocolo?",
+       o:["Lo abrís para ver qué contiene","No lo manipulás. Aislás el área alrededor del paquete, evacuás si corresponde según el protocolo, llamás al supervisor y al 911. Un objeto abandonado sin identificar es una amenaza potencial","Lo llevás a la recepción y lo dejás ahí","Lo dejás donde está y esperás a que alguien lo reclame"],c:1},
+      {q:"Se activa la alarma de evacuación del edificio. ¿Cuál es tu primera acción?",
+       o:["Subís a ver qué está pasando en los pisos","Iniciás la evacuación según el plan establecido: guiás a las personas hacia las salidas de emergencia, te asegurás de que nadie use los ascensores y te dirigís a tu punto de reunión asignado","Esperás confirmación del supervisor antes de evacuar","Avisás solo a los pisos donde creés que hay problema"],c:1},
+      {q:"Un usuario lleva 40 minutos esperando en la sala y se pone agresivo con los demás. ¿Cómo actuás?",
+       o:["Lo sacás del edificio directamente","Te acercás con calma, escuchás el motivo, le ofrecés solución dentro de tus posibilidades (avisarle al área que tiene una espera larga). Si escala, llamás al supervisor. Solo llamás al 911 si hay riesgo físico real","Lo ignorás: es problema del área de atención al cliente","Le decís que si no se calma llamás a la policía"],c:1},
+      {q:"Un proveedor quiere dejar materiales en el depósito fuera del horario autorizado de entregas. ¿Podés autorizarlo?",
+       o:["Sí, si el material es urgente","No: sin autorización del área de administración o mantenimiento, no se autoriza ninguna entrega fuera del horario establecido. Lo hacés esperar o reagendar","Sí, si firmás vos el recibo","Lo dejás entrar si el material es pequeño"],c:1},
+      {q:"Llega un técnico sin aviso diciendo que 'la empresa lo mandó' a reparar los ascensores. ¿Qué verificás antes de dejarlo entrar?",
+       o:["Solo el DNI y el logo de la empresa en el uniforme","Confirmás con el área de mantenimiento o administración que el servicio fue solicitado y que esperaban a ese técnico. Sin confirmación, el técnico espera en el hall","Si tiene herramientas y uniforme es suficiente","Lo dejás entrar pero lo acompañás en todo momento sin verificar"],c:1},
+      {q:"¿Qué datos mínimos debe incluir el registro de un paquete recibido en el edificio?",
+       o:["Solo el nombre del destinatario","Remitente, destinatario, empresa de envío, hora de recepción y firma del vigilador que lo recibe","Solo el nombre de la empresa que lo envía","El peso y el tamaño del paquete"],c:1},
+    ]
+  },
+
+  URBANIZACION: {
+    title:'Urbanización — Barrios Privados',
+    icon:'🏘️',
+    desc:'Control de acceso vehicular, rondas y protocolo de visitas',
+    html:`
+<div class="card"><h3>🏘️ El barrio privado: comunidad y seguridad en equilibrio</h3>
+<p>En una urbanización privada, el vigilador protege a una <strong>comunidad</strong>, no solo un edificio. Las relaciones son más cercanas, los residentes se conocen entre sí, y eso crea dinámicas particulares que requieren criterio y firmeza.</p></div>
+
+<div class="divider">🚗 CONTROL DE ACCESO VEHICULAR Y PEATONAL</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Visitas: siempre con confirmación del residente</h4><p>Toda persona que ingresa como visita debe ser anunciada y confirmada por el residente antes de abrir. Confirmación verbal por teléfono o intercomunicador. Nadie entra "porque el vecino lo dijo".</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Registro completo de todos los ingresos</h4><p>Nombre, DNI, patente del vehículo, destino (número de lote), hora de entrada y salida. Sin excepciones, ni para residentes conocidos que ingresan a pie.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Proveedores y servicios</h4><p>Gas, electricidad, internet, delivery, construcción: todos deben identificarse y ser confirmados por el residente o la administración. Fuera de horario, sin confirmación, no ingresan.</p></div></div>
+</div>
+
+<div class="divider">🌙 RONDAS NOCTURNAS</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Recorrido sistemático y variado</h4><p>Las rondas no son paseatas: son patrullajes con ojos en puertas, ventanas, vehículos inusuales, personas fuera de lugar. Variá el horario y el recorrido para no ser predecible.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Hallazgos durante la ronda</h4><p>Puerta abierta en vivienda sin luces, vehículo desconocido estacionado por horas, persona en zona no residencial a horas inusuales: todo se reporta, nada se asume.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Vehículo que circula lentamente</h4><p>Un vehículo que recorre el perímetro o calles internas más de una vez sin destino claro es una señal de atención. Anotá la patente, reportá al supervisor, si vuelve llamá al 911.</p></div></div>
+</div>
+
+<div class="alert-box" style="background:#fff8e1;border-left-color:#f9a825"><span class="alert-ico">🎬</span>
+<div class="alert-txt"><strong>Caso real:</strong> Un vecino conocido te pide que dejes entrar a su "amigo" sin registro porque "siempre viene y ya lo conocés".<br><br>
+<strong>Acción correcta:</strong> Con amabilidad pero firmeza: el registro es obligatorio para todas las visitas, sin excepción. Si el vecino quiere que entre, lo llama por teléfono para confirmar y la visita se registra igual. Nadie entra sin registro, ni el amigo más conocido del vecino más antiguo.</div></div>`,
+    qs:[
+      {q:"Un vehículo quiere entrar. El residente dijo que 'venían unas personas' pero no dejó nombre ni datos. ¿Qué hacés?",
+       o:["Lo dejás entrar: el residente lo avisó genéricamente","Llamás al residente para que confirme quiénes son específicamente y autorice el ingreso. Sin confirmación de identidad, no entra el vehículo","Anotás la patente y lo dejás entrar","Lo hacés esperar 10 minutos y si no confirman, lo dejás entrar igual"],c:1},
+      {q:"Un vecino te pide que dejes entrar a su conocido 'de palabra' sin registrarlo 'porque siempre viene'. ¿Qué hacés?",
+       o:["Lo dejás entrar: si el vecino avala, es suficiente","Le explicás amablemente que el registro es obligatorio para todas las visitas sin excepción. El vecino puede llamar para confirmar, pero la visita igual se registra","Solo lo dejás pasar si el vecino baja personalmente a recibirlo","Lo registrás pero no le pedís el DNI para no incomodarlo"],c:1},
+      {q:"Durante una ronda nocturna encontrás una puerta de servicio abierta en una vivienda sin luces. ¿Cuál es el protocolo?",
+       o:["Entrás a verificar que todo esté bien","Llamás al residente o a la administración para verificar. Si no hay respuesta y hay indicios de intrusión, llamás al 911 y esperás con el área bajo vigilancia sin ingresar solo","Cerrás la puerta y seguís la ronda","La ignorás: probablemente el residente salió un momento"],c:1},
+      {q:"Dos vecinos tienen una discusión acalorada en la calle interna del barrio. Uno empuja al otro. ¿Cuál es tu intervención?",
+       o:["Intervenís físicamente para separarlos","Intentás mediar verbalmente con calma. Si hay violencia activa, llamás al supervisor y al 911. No tocás a ninguno si podés evitarlo","Ignorás el conflicto: es entre vecinos y no es tu problema","Solo intervenís si uno de los vecinos te llama"],c:1},
+      {q:"Un proveedor de gas llega de urgencia a las 11 PM por una fuga reportada. No hay aviso previo del residente. ¿Cómo actuás?",
+       o:["Lo dejás entrar de inmediato: es una emergencia de gas","Verificás la identidad del técnico, llamás al residente para confirmar la emergencia y/o a la empresa distribuidora. Si confirman la emergencia, lo dejás ingresar acompañado y reportás la novedad","No lo dejás entrar: sin aviso previo nadie entra de noche","Solo lo dejás entrar si muestra el uniforme de la empresa"],c:1},
+      {q:"Un vehículo sin identificar circula lentamente por la calle perimetral del barrio por segunda vez en 20 minutos. ¿Qué hacés?",
+       o:["Lo ignorás: puede estar buscando una dirección","Anotás la patente, descripción del vehículo y los horarios. Reportás al supervisor de inmediato. Si aparece una tercera vez, llamás al 911 para informar el comportamiento sospechoso","Lo interceptás y le preguntás qué busca","Cerrás el acceso vehicular como medida preventiva"],c:1},
+      {q:"Un residente dice que perdió el control del portón vehicular. Quiere entrar a pie y busca a alguien afuera para traerle el auto. ¿Qué verificás?",
+       o:["Solo que sea residente: si vive en el barrio, puede entrar sin problemas","Verificás su identidad, confirmás en el listado de residentes que efectivamente vive ahí, y lo dejás entrar a pie. El vehículo de afuera igual debe cumplir el protocolo de ingreso cuando venga","Lo dejás entrar sin verificar: es una situación de emergencia","Solo lo dejás entrar si hay otro vecino que lo reconozca"],c:1},
+      {q:"¿Por qué es importante variar el horario y el recorrido de las rondas nocturnas?",
+       o:["Para no aburrirse siempre haciendo el mismo recorrido","Para ser impredecible: si las rondas son fijas y conocidas, alguien con malas intenciones puede cronometrar cuándo el vigilador no está en un sector y actuar en ese intervalo","Porque el reglamento interno lo exige formalmente","Para cubrir más distancia en el mismo tiempo"],c:1},
+    ]
+  },
+};
+
+function initMod5(tipo){
+  const data = MOD5_DATA[tipo];
+  if(!data) return;
+  // Agregar o reemplazar el 5to módulo
+  if(MODS.length >= 5) MODS.splice(4, 1);
+  MODS.push({ id:5, icon:data.icon, title:data.title, desc:data.desc, html:data.html });
+  // Registrar las preguntas en QUIZZES
+  QUIZZES[5] = data.qs;
+}
+
 // ─── QUIZZES ────────────────────────────────────────────────────
 const QUIZZES = {
   1:[
@@ -980,19 +1333,30 @@ const QUIZZES = {
   ],
 };
 
-// El examen final selecciona 5 preguntas al azar de cada módulo (20 en total)
-// Las preguntas son casuísticas para evaluar comprensión real, no memoria
+// El examen final selecciona preguntas al azar de cada módulo (20 en total)
+// 4 de cada módulo si hay 5 módulos, 5 de cada uno si hay 4
 function buildExam(){
-  function pick5(arr){
+  function pickN(arr, n){
+    if(!arr || !arr.length) return [];
     const copy = [...arr];
     for(let i=copy.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]]; }
-    return copy.slice(0,5);
+    return copy.slice(0, Math.min(n, copy.length));
+  }
+  const hasMod5 = QUIZZES[5] && QUIZZES[5].length > 0;
+  if(hasMod5){
+    return [
+      ...pickN(QUIZZES[1], 4),
+      ...pickN(QUIZZES[2], 4),
+      ...pickN(QUIZZES[3], 4),
+      ...pickN(QUIZZES[4], 4),
+      ...pickN(QUIZZES[5], 4),
+    ];
   }
   return [
-    ...pick5(QUIZZES[1]),
-    ...pick5(QUIZZES[2]),
-    ...pick5(QUIZZES[3]),
-    ...pick5(QUIZZES[4]),
+    ...pickN(QUIZZES[1], 5),
+    ...pickN(QUIZZES[2], 5),
+    ...pickN(QUIZZES[3], 5),
+    ...pickN(QUIZZES[4], 5),
   ];
 }
 // EXAM es un proxy que siempre lee los módulos actuales
@@ -1024,10 +1388,14 @@ function go(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.rem
 
 // ─── LOGIN ───────────────────────────────────────────────────────
 function doLogin(){
-  const n=v('i-nombre'), l=v('i-legajo'), d=v('i-dni'), s=v('i-sede');
-  if(!n||!l||!d||!s){ alert('Completá todos los campos para continuar.'); return; }
-  user={nombre:n,legajo:l,dni:d,sede:s,inicio:new Date().toISOString()};
+  const n=v('i-nombre'), l=v('i-legajo'), d=v('i-dni');
+  const tipo = gi('i-tipo').value;
+  const turno = v('i-turno');
+  if(!n||!l||!d||!tipo){ alert('Completá todos los campos para continuar.'); return; }
+  const sede = tipo + (turno ? ' – ' + turno : '');
+  user={nombre:n,legajo:l,dni:d,sede,tipoServicio:tipo,inicio:new Date().toISOString()};
   t0=Date.now();
+  initMod5(tipo);
   renderHome(); go('s-home');
 }
 
