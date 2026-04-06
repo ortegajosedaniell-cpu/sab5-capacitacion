@@ -6,7 +6,6 @@
   <meta name="theme-color" content="#b71c1c">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <title>SAB-5 | Capacitación Seguridad Privada</title>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -394,18 +393,16 @@
   </div>
 </div>
 
-<!-- ===== EMAIL CERTIFICADO ===== -->
+<!-- ===== CERTIFICADO ===== -->
 <div class="screen" id="s-email-cert">
-  <div class="topbar" style="background:var(--navy)">📧 Tu Certificado</div>
+  <div class="topbar" style="background:var(--navy)">🏅 Tu Certificado</div>
   <div class="ecert-wrap">
     <div class="cert-preview-box">
       <canvas id="cert-preview-canvas"></canvas>
     </div>
-    <p class="ecert-instruc">Ingresá tu correo para recibir el certificado por email</p>
-    <input type="email" id="cert-email" class="input" placeholder="tu@correo.com" style="width:100%;max-width:320px">
-    <button class="btn btn-primary" style="width:100%;max-width:320px" onclick="enviarCertificado(this)">📨 ENVIAR CERTIFICADO</button>
-    <button class="btn btn-outline" style="width:100%;max-width:320px" onclick="descargarCertificado()">⬇️ Descargar PNG</button>
-    <button class="ecert-skip" onclick="go('s-fresult')">Omitir y ver resultado</button>
+    <p class="ecert-instruc">Tu certificado está listo. Descargalo en tu dispositivo.</p>
+    <button class="btn btn-primary" style="width:100%;max-width:320px;font-size:15px;padding:14px" onclick="descargarCertificado()">⬇️ DESCARGAR CERTIFICADO</button>
+    <button class="ecert-skip" onclick="go('s-fresult')">Ver resultado →</button>
   </div>
 </div>
 
@@ -856,10 +853,6 @@ const GAS_URL = 'TU_URL_AQUI'; // ← reemplazá con tu URL de Apps Script
 const MIN_MOD  = 80; // % mínimo para aprobar módulo
 const MIN_FINAL= 80; // % mínimo para aprobar evaluación
 
-// ─── EMAILJS (emailjs.com → cuenta gratuita) ────────────────────
-const EMAILJS_PUBLIC_KEY  = 'TU_PUBLIC_KEY';   // Account → Public Key
-const EMAILJS_SERVICE_ID  = 'TU_SERVICE_ID';   // Email Services → Service ID
-const EMAILJS_TEMPLATE_ID = 'TU_TEMPLATE_ID';  // Email Templates → Template ID
 
 // ─── CONTENIDO MÓDULOS ──────────────────────────────────────────
 const MODS = [
@@ -1783,85 +1776,131 @@ function getCertConfig(){ return JSON.parse(localStorage.getItem('sab5_cert_conf
 function saveCertConfig(cfg){ localStorage.setItem('sab5_cert_config', JSON.stringify(cfg)); }
 
 function generarCertificado(cb){
-  const cfg = getCertConfig();
-  const c = gi('cert-preview-canvas');
-  const W=800, H=580; c.width=W; c.height=H;
+  const cfg=getCertConfig();
+  const c=gi('cert-preview-canvas');
+  const W=900, H=640; c.width=W; c.height=H;
   const ctx=c.getContext('2d');
   const d=_certData;
-  // fondo
-  ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
-  // bordes decorativos
-  ctx.strokeStyle='#b71c1c'; ctx.lineWidth=8; ctx.strokeRect(12,12,W-24,H-24);
-  ctx.strokeStyle='#1a1a1a'; ctx.lineWidth=1.5; ctx.strokeRect(22,22,W-44,H-44);
-  // cabecera
-  ctx.fillStyle='#1a1a1a'; ctx.fillRect(0,0,W,115);
-  ctx.fillStyle='#b71c1c'; ctx.fillRect(0,108,W,7);
-  ctx.fillStyle='#fff'; ctx.textAlign='center';
-  ctx.font='bold 30px Arial'; ctx.fillText('SAB-5 SEGURIDAD PRIVADA',W/2,50);
-  ctx.font='17px Arial'; ctx.fillText('Certificado de Capacitación Profesional',W/2,86);
-  // cuerpo
-  ctx.fillStyle='#333'; ctx.font='17px Arial'; ctx.fillText('Por medio del presente se certifica que:',W/2,158);
-  ctx.fillStyle='#b71c1c'; ctx.font='bold 34px Arial'; ctx.fillText((d.data.nombre||'').toUpperCase(),W/2,206);
-  ctx.fillStyle='#555'; ctx.font='15px Arial';
-  ctx.fillText(`Legajo: ${d.data.legajo}  ·  DNI: ${d.data.dni}`,W/2,236);
-  ctx.fillText(`Tipo de servicio: ${d.data.sede}`,W/2,260);
-  ctx.fillStyle='#222'; ctx.font='17px Arial';
-  ctx.fillText('ha aprobado satisfactoriamente la capacitación',W/2,300);
-  ctx.font='bold 20px Arial'; ctx.fillText('SAB-5 SEGURIDAD PRIVADA',W/2,330);
-  ctx.fillStyle='#2e7d32'; ctx.font='bold 26px Arial'; ctx.fillText(`Nota final: ${d.sc}%`,W/2,372);
-  ctx.fillStyle='#777'; ctx.font='14px Arial';
-  ctx.fillText(`Fecha de aprobación: ${d.fecha}`,W/2,402);
-  // líneas de firma
-  ctx.strokeStyle='#bbb'; ctx.lineWidth=1;
-  // firma participante (izq)
-  ctx.beginPath(); ctx.moveTo(80,520); ctx.lineTo(320,520); ctx.stroke();
-  ctx.fillStyle='#999'; ctx.font='12px Arial'; ctx.textAlign='center';
-  ctx.fillText('Firma del participante',200,538);
-  // firma autorizada (der)
-  ctx.beginPath(); ctx.moveTo(480,520); ctx.lineTo(720,520); ctx.stroke();
-  const signerName = cfg.signerName || 'Coordinador SAB-5';
-  ctx.fillText(signerName, 600, 538);
-  ctx.fillText('Firma autorizada', 600, 552);
 
-  // cargar firma participante
-  const loadParticipant = () => {
+  // ── FONDO con patrón sutil ──
+  ctx.fillStyle='#f9f7f4'; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(183,28,28,0.045)'; ctx.lineWidth=1;
+  for(let i=-H;i<W+H;i+=32){ ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i+H,H); ctx.stroke(); }
+
+  // ── MARCOS ──
+  ctx.shadowColor='rgba(0,0,0,0.18)'; ctx.shadowBlur=14;
+  ctx.strokeStyle='#b71c1c'; ctx.lineWidth=10; ctx.strokeRect(14,14,W-28,H-28);
+  ctx.shadowBlur=0;
+  ctx.strokeStyle='#1a1a1a'; ctx.lineWidth=2;   ctx.strokeRect(26,26,W-52,H-52);
+  ctx.strokeStyle='#b71c1c'; ctx.lineWidth=0.8; ctx.strokeRect(32,32,W-64,H-64);
+
+  // ── ESQUINAS DECORATIVAS ──
+  const L=36; ctx.strokeStyle='#b71c1c'; ctx.lineWidth=2.5;
+  [[36,36],[W-36,36],[36,H-36],[W-36,H-36]].forEach(([x,y])=>{
+    const sx=x===36?1:-1, sy=y===36?1:-1;
+    ctx.beginPath(); ctx.moveTo(x,y+sy*L); ctx.lineTo(x,y); ctx.lineTo(x+sx*L,y); ctx.stroke();
+  });
+
+  // ── CABECERA ──
+  const hGrad=ctx.createLinearGradient(0,0,W,0);
+  hGrad.addColorStop(0,'#111'); hGrad.addColorStop(0.5,'#222'); hGrad.addColorStop(1,'#111');
+  ctx.fillStyle=hGrad; ctx.fillRect(0,0,W,128);
+  ctx.fillStyle='#b71c1c'; ctx.fillRect(0,122,W,6);
+  // línea dorada sutil
+  ctx.strokeStyle='rgba(255,220,100,0.25)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(70,100); ctx.lineTo(W-70,100); ctx.stroke();
+
+  ctx.textAlign='center'; ctx.fillStyle='#fff';
+  ctx.font='bold 28px Georgia,serif'; ctx.fillText('SAB-5  SEGURIDAD PRIVADA',W/2,52);
+  ctx.font='italic 14px Georgia,serif'; ctx.fillStyle='rgba(255,255,255,0.65)';
+  ctx.fillText('Sistema de Capacitación Profesional — República Argentina',W/2,80);
+  ctx.font='13px Arial'; ctx.fillStyle='rgba(255,255,255,0.4)';
+  ctx.fillText('──────────────────────────────────────────────────────────────────',W/2,108);
+
+  // ── TÍTULO ──
+  ctx.fillStyle='#1a1a1a'; ctx.font='bold 19px Georgia,serif'; ctx.letterSpacing='2px';
+  ctx.fillText('CERTIFICADO DE CAPACITACIÓN PROFESIONAL',W/2,168);
+  ctx.strokeStyle='#b71c1c'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(W/2-220,178); ctx.lineTo(W/2+220,178); ctx.stroke();
+  ctx.strokeStyle='rgba(0,0,0,0.12)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(W/2-240,183); ctx.lineTo(W/2+240,183); ctx.stroke();
+
+  // ── CUERPO ──
+  ctx.fillStyle='#666'; ctx.font='15px Georgia,serif';
+  ctx.fillText('Por medio del presente se certifica que:',W/2,218);
+
+  // Nombre destacado
+  ctx.fillStyle='#b71c1c'; ctx.font='bold 34px Georgia,serif';
+  ctx.fillText((d.data.nombre||'').toUpperCase(),W/2,264);
+  ctx.strokeStyle='#e0e0e0'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(W/2-260,275); ctx.lineTo(W/2+260,275); ctx.stroke();
+
+  ctx.fillStyle='#555'; ctx.font='14px Arial';
+  ctx.fillText('Legajo: '+d.data.legajo+'   ·   DNI: '+d.data.dni,W/2,300);
+  ctx.fillText('Tipo de servicio: '+d.data.sede,W/2,320);
+
+  ctx.fillStyle='#333'; ctx.font='15px Georgia,serif';
+  ctx.fillText('ha aprobado satisfactoriamente la capacitación',W/2,356);
+  ctx.font='bold 17px Georgia,serif'; ctx.fillText('SAB-5 SEGURIDAD PRIVADA',W/2,380);
+
+  // Nota con barra
+  ctx.fillStyle='#1b5e20'; ctx.font='bold 28px Arial';
+  ctx.fillText('NOTA FINAL: '+d.sc+'%',W/2,418);
+  const bx=W/2-200,bw=400,by=430,bh=10;
+  ctx.fillStyle='#e0e0e0'; ctx.beginPath(); ctx.roundRect(bx,by,bw,bh,5); ctx.fill();
+  const pg=ctx.createLinearGradient(bx,0,bx+bw,0);
+  pg.addColorStop(0,'#43a047'); pg.addColorStop(1,'#1b5e20');
+  ctx.fillStyle=pg; ctx.beginPath(); ctx.roundRect(bx,by,bw*(d.sc/100),bh,5); ctx.fill();
+
+  // Módulos
+  ctx.fillStyle='#888'; ctx.font='12px Arial';
+  const m1=d.data.mod1||0,m2=d.data.mod2||0,m3=d.data.mod3||0,m4=d.data.mod4||0;
+  ctx.fillText('⚖️ Legal '+m1+'%   ·   👮 Conducta '+m2+'%   ·   🚨 Emergencias '+m3+'%   ·   🔴 Pánico '+m4+'%',W/2,462);
+
+  // Fecha
+  ctx.fillStyle='#888'; ctx.font='13px Arial';
+  ctx.fillText('Fecha de aprobación: '+d.fecha,W/2,486);
+
+  // ── ÁREA FIRMAS ──
+  ctx.strokeStyle='#ddd'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(60,506); ctx.lineTo(W-60,506); ctx.stroke();
+
+  // Participante (izq)
+  ctx.strokeStyle='#aaa'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(90,584); ctx.lineTo(350,584); ctx.stroke();
+  ctx.fillStyle='#777'; ctx.font='11px Arial'; ctx.textAlign='center';
+  ctx.fillText('Firma del participante',220,598);
+  ctx.fillStyle='#555'; ctx.font='bold 11px Arial';
+  ctx.fillText(d.data.nombre,220,611);
+
+  // Autorizante (der)
+  ctx.strokeStyle='#aaa'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(550,584); ctx.lineTo(810,584); ctx.stroke();
+  ctx.fillStyle='#777'; ctx.font='11px Arial';
+  ctx.fillText(cfg.signerName||'Coordinador SAB-5',680,598);
+  ctx.fillText('Firma autorizada',680,611);
+
+  // ── IMÁGENES FIRMAS (async) ──
+  const loadParticipant=after=>{
     if(_firmaDataUrl){
-      const img=new Image(); img.onload=()=>{ ctx.drawImage(img,100,462,240,55); if(cb) cb(); }; img.src=_firmaDataUrl;
-    } else { if(cb) cb(); }
+      const img=new Image();
+      img.onload=()=>{ ctx.drawImage(img,95,524,240,56); if(after)after(); };
+      img.src=_firmaDataUrl;
+    } else { if(after)after(); }
   };
-  // cargar firma autorizada del admin
   if(cfg.signerImg){
     const img2=new Image();
-    img2.onload=()=>{ ctx.drawImage(img2,490,460,240,55); loadParticipant(); };
+    img2.onload=()=>{ ctx.drawImage(img2,548,524,240,56); loadParticipant(cb); };
     img2.src=cfg.signerImg;
-  } else { loadParticipant(); }
+  } else { loadParticipant(cb); }
 }
 
 function descargarCertificado(){
   const c=gi('cert-preview-canvas');
   const a=document.createElement('a');
   a.href=c.toDataURL('image/png');
-  a.download=`Certificado_SAB5_${(_certData.data.nombre||'vigilador').replace(/\s+/g,'_')}.png`;
+  a.download='Certificado_SAB5_'+((_certData.data.nombre||'vigilador').replace(/\s+/g,'_'))+'.png';
   a.click();
-}
-
-function enviarCertificado(btn){
-  const email=gi('cert-email').value.trim();
-  if(!email||!email.includes('@')){ alert('Ingresá un correo válido.'); return; }
-  if(!EMAILJS_PUBLIC_KEY||EMAILJS_PUBLIC_KEY==='TU_PUBLIC_KEY'){
-    alert('El servicio de email aún no está configurado.\nPodés descargar el certificado con el botón "Descargar PNG".');
-    return;
-  }
-  btn.disabled=true; btn.textContent='Enviando...';
-  const d=_certData;
-  emailjs.init(EMAILJS_PUBLIC_KEY);
-  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID,{
-    to_email:email, to_name:d.data.nombre,
-    legajo:d.data.legajo, dni:d.data.dni, sede:d.data.sede,
-    nota:d.sc+'%', fecha:d.fecha,
-    cert_img:gi('cert-preview-canvas').toDataURL('image/png')
-  }).then(()=>{ btn.textContent='✅ Enviado'; setTimeout(()=>go('s-fresult'),1500); })
-  .catch(()=>{ btn.disabled=false; btn.textContent='📨 ENVIAR CERTIFICADO'; alert('No se pudo enviar. Descargá el certificado manualmente.'); });
 }
 
 // ─── GUARDAR RESULTADO ───────────────────────────────────────────
