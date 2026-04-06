@@ -152,11 +152,17 @@
     .qcard{background:#fff;border-radius:var(--r);padding:18px 16px;box-shadow:var(--shadow);margin-bottom:14px}
     .qtxt{font-size:16px;font-weight:600;line-height:1.5;margin-bottom:18px;color:var(--text)}
     .opts{display:flex;flex-direction:column;gap:10px}
-    .opt{padding:14px 15px;border:2px solid var(--border);border-radius:10px;background:#fff;text-align:left;font-size:15px;cursor:pointer;transition:all .15s;color:var(--text);line-height:1.4}
+    .opt{padding:14px 15px;border:2px solid var(--border);border-radius:10px;background:#fff;text-align:left;font-size:15px;cursor:pointer;transition:all .15s;color:var(--text);line-height:1.4;position:relative}
     .opt:active{transform:scale(.98)}
+    .opt.selected{border-color:var(--navy);background:#eef2ff;color:var(--navy);font-weight:600}
+    .opt.selected::before{content:'✓ ';font-weight:800}
     .opt.ok{background:#e8f5e9;border-color:var(--green);color:var(--green);font-weight:600}
     .opt.bad{background:#ffebee;border-color:var(--red);color:var(--red);font-weight:600}
+    .opt.missed{background:#fff8e1;border-color:#f9a825;color:#e65100;font-weight:600}
     .opt.off{cursor:not-allowed}
+    .opt-hint{font-size:12px;color:var(--red);font-weight:700;text-align:center;padding:4px 0 8px;letter-spacing:.2px}
+    .btn-confirm{width:100%;margin-top:10px;padding:14px;background:var(--navy);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;opacity:.4;pointer-events:none;transition:opacity .2s}
+    .btn-confirm.ready{opacity:1;pointer-events:auto}
 
     .fb{border-radius:10px;padding:13px;margin-bottom:12px;font-size:14px;font-weight:600;display:flex;align-items:flex-start;gap:9px;line-height:1.5}
     .fb-ok{background:#e8f5e9;color:var(--green)}
@@ -963,21 +969,21 @@ const MOD5_DATA = {
 <strong>Acción correcta:</strong> Retenerlo, llamar al capataz para verificar, asentar la novedad. Si el capataz confirma que es de la obra, no puede salir. Si confirma que es personal, puede pasar con nota del capataz. Nunca dejar salir material de obra sin confirmación.</div></div>`,
     qs:[
       {q:"Al finalizar el turno, un trabajador intenta salir con una amoladora. Dice que es suya. ¿Qué hacés?",
-       o:["Lo dejás pasar: si dice que es suya, te lo creés","La retenés y llamás al capataz para verificar en el inventario antes de permitir la salida","Le pedís que vuelva mañana con el recibo de compra","La dejás salir pero lo anotás en el libro"],c:1},
+       o:["Lo dejás pasar: si dice que es suya, te lo creés","La retenés y llamás al capataz para verificar en el inventario antes de permitir la salida","Le pedís que vuelva mañana con el recibo de compra","La dejás salir pero lo anotás en el libro","La dejás salir: no es tu responsabilidad controlar herramientas personales","La acompañás hasta la salida para asegurarte de que no lleve nada más"],c:[1]},
       {q:"Llega una camioneta a llevarse material de obra. El chofer dice que 'el capataz lo autorizó'. ¿Qué hacés?",
-       o:["La dejás salir: la palabra del capataz es suficiente","La detenés y contactás directamente al capataz para confirmar. Sin confirmación escrita o verbal directa, no sale material","Le pedís el DNI y lo dejás pasar","Solo la detenés si el material parece mucho"],c:1},
+       o:["La dejás salir: la palabra del capataz es suficiente","La detenés y contactás directamente al capataz para confirmar. Sin confirmación directa, no sale material","Le pedís el DNI y lo dejás pasar","Solo la detenés si el material parece mucho","La dejás salir si el chofer muestra algún papel del cliente","Verificás solo si el material supera cierto peso o valor"],c:[1]},
       {q:"Un contratista llega al obrador sin la constancia de ART vigente. Insiste en que 'siempre trabaja acá'. ¿Podés dejarlo entrar?",
-       o:["Sí: si el capataz lo conoce, la ART es un trámite","No: sin ART activa no puede ingresar al área de trabajo. Es un requisito legal, no opcional","Sí, pero solo a la oficina administrativa, no a la obra","Solo si firma una declaración jurada"],c:1},
+       o:["Sí: si el capataz lo conoce, la ART es un trámite","No: sin ART activa no puede ingresar al área de trabajo. Es requisito legal, no opcional","Sí, pero solo a la oficina administrativa, no a la obra","Solo si firma una declaración jurada de responsabilidad","Lo dejás entrar solo si el capataz lo acompaña en todo momento","Lo dejás trabajar media jornada mientras consigue la constancia"],c:[1]},
       {q:"Se produce un accidente: un trabajador cae de un andamio. Está consciente pero no puede moverse. ¿Qué hacés primero?",
-       o:["Lo levantás junto a otros compañeros para llevarlo a la sombra","Llamás al 107/911 de inmediato, no lo movés y notificás al responsable de obra","Esperás al responsable de obra antes de llamar a emergencias","Buscás el botiquín y lo atendés vos mismo"],c:1},
-      {q:"Encontrás herramientas costosas apiladas cerca del perímetro externo del obrador, fuera del área de almacenaje habitual. ¿Qué hacés?",
-       o:["Las dejás: alguien las habrá puesto ahí por alguna razón","Las llevás al almacén para que estén seguras","Reportás la novedad al coordinador con ubicación y descripción exacta: puede ser preparación para un hurto","Las fotografiás y las dejás donde están sin reportar"],c:2},
+       o:["Lo levantás junto a otros compañeros para llevarlo a la sombra","Llamás al 107/911 de inmediato, no lo movés y notificás al responsable de obra","Esperás al responsable de obra antes de llamar a emergencias","Buscás el botiquín y lo atendés vos mismo","Lo movés solo si está expuesto al sol o a la lluvia","Esperás 5 minutos a ver si puede moverse por sus propios medios"],c:[1]},
+      {q:"Encontrás herramientas costosas apiladas cerca del perímetro externo, fuera del área de almacenaje habitual. ¿Qué hacés?",
+       o:["Las dejás: alguien las habrá puesto ahí por alguna razón","Las llevás al almacén para que estén seguras","Reportás la novedad al coordinador con ubicación y descripción exacta: puede ser preparación para un hurto","Las fotografiás y las dejás donde están sin reportar","Las llevás al puesto y esperás a que alguien las reclame","Preguntás a los trabajadores cercanos si saben de quién son"],c:[2]},
       {q:"Un inspector del Ministerio de Trabajo llega al obrador para una inspección. ¿Cuál es el procedimiento correcto?",
-       o:["Lo dejás pasar de inmediato: tiene autoridad legal","Verificás su credencial oficial, notificás al responsable de obra ANTES de dejarlo ingresar y lo acompañás durante toda la inspección","Le pedís que vuelva con aviso previo","Solo lo dejás entrar si el responsable de obra está presente físicamente"],c:1},
+       o:["Lo dejás pasar de inmediato: tiene autoridad legal","Verificás su credencial oficial, notificás al responsable de obra ANTES de dejarlo ingresar y lo acompañás durante toda la inspección","Le pedís que vuelva con aviso previo","Solo lo dejás entrar si el responsable de obra está presente físicamente","Lo dejás entrar y le avisás al responsable después","Le pedís que espere afuera hasta que el responsable llegue"],c:[1]},
       {q:"Dos trabajadores tienen una pelea física dentro del obrador. ¿Cuál es tu intervención?",
-       o:["Intervenís físicamente para separarlos de inmediato","Gritás para que paren, llamás al capataz y al 911 si hay lesiones. No te metés físicamente entre dos personas que pelean","Te alejás y esperás a que se calmen solos","Solo intervenís si uno saca un elemento contundente"],c:1},
-      {q:"Un trabajador entra al obrador sin casco ni chaleco reflectivo, que son obligatorios según el protocolo de seguridad de la obra. ¿Qué hacés?",
-       o:["Lo dejás pasar: el EPP es responsabilidad del capataz, no tuya","Lo detenés en el acceso: sin EPP obligatorio no puede ingresar al área de obra. Le indicás que debe equiparse antes","Lo anotás pero lo dejás pasar porque no es tu área de decisión","Solo lo detenés si el capataz está mirando"],c:1},
+       o:["Intervenís físicamente para separarlos de inmediato","Gritás para que paren, llamás al capataz y al 911 si hay lesiones. No te metés físicamente entre dos personas que pelean","Te alejás y esperás a que se calmen solos","Solo intervenís si uno saca un elemento contundente","Los separás verbalmente y los mandás a sus puestos sin reportar","Llamás solo al coordinador y esperás sus instrucciones antes de hacer nada"],c:[1]},
+      {q:"Un trabajador entra al obrador sin casco ni chaleco reflectivo, obligatorios según el protocolo de seguridad. ¿Qué hacés?",
+       o:["Lo dejás pasar: el EPP es responsabilidad del capataz, no tuya","Lo detenés en el acceso: sin EPP obligatorio no puede ingresar al área de obra. Le indicás que debe equiparse antes","Lo anotás pero lo dejás pasar porque no es tu área de decisión","Solo lo detenés si el capataz está mirando","Lo dejás pasar la primera vez con una advertencia verbal","Lo acompañás a buscar el EPP y lo dejás entrar sin reportar la novedad"],c:[1]},
     ]
   },
 
@@ -1008,21 +1014,21 @@ const MOD5_DATA = {
 <strong>Acción correcta:</strong> No lo dejás pasar. Le explicás que necesita EPP y autorización del jefe de producción. No importa el cargo: las reglas de seguridad industrial aplican para todos sin excepción.</div></div>`,
     qs:[
       {q:"Un empleado administrativo quiere entrar al sector de producción sin casco ni calzado de seguridad. Dice que 'es solo un momento'. ¿Qué hacés?",
-       o:["Lo dejás pasar: para una visita corta el EPP no es obligatorio","No lo dejás entrar: el EPP es obligatorio para cualquier persona en área de producción sin excepción de tiempo o cargo","Lo acompañás vos para asegurarte de que no haya problema","Lo dejás pasar si firma una declaración de responsabilidad"],c:1},
+       o:["Lo dejás pasar: para una visita corta el EPP no es obligatorio","No lo dejás entrar: el EPP es obligatorio para cualquier persona en área de producción sin excepción de tiempo o cargo","Lo acompañás vos para asegurarte de que no haya problema","Lo dejás pasar si firma una declaración de responsabilidad","Lo dejás pasar si viene acompañado de alguien del sector","Le conseguís un casco pero lo dejás entrar sin calzado de seguridad"],c:[1]},
       {q:"Sale un camión de la planta con carga. ¿Qué documentación mínima debés verificar?",
-       o:["Solo el nombre del chofer","Remito o guía de transporte, autorización de salida de mercadería firmada por el área correspondiente y, si aplica, verificación de sellos","Solo el DNI del chofer","No necesitás verificar nada si el camión ya estaba dentro"],c:1},
-      {q:"Detectás un derrame de líquido no identificado en el sector de producción. El color y el olor son inusuales. ¿Cuál es tu primera acción?",
-       o:["Te acercás para ver de qué se trata y si podés limpiarlo","Aislás el área, evacuás al personal y llamás de inmediato al responsable de seguridad industrial. No te acercás sin EPP específico","Avisás al capataz y esperás instrucciones","Lo reportás al finalizar el turno"],c:1},
-      {q:"Un empleado te pide acceso a la sala de servidores de la planta porque 'necesita revisar algo'. La sala es de acceso restringido y él no figura en la lista. ¿Qué hacés?",
-       o:["Lo dejás entrar: si es empleado de la empresa, es de confianza","Le explicás que la sala es de acceso restringido y que debe solicitar autorización al responsable del área antes de ingresar","Lo acompañás dentro para supervisar","Lo dejás entrar pero anotás la novedad"],c:1},
+       o:["Solo el nombre del chofer en el parte del día","Remito o guía de transporte, autorización de salida firmada por el área correspondiente y, si aplica, verificación de sellos","Solo el DNI del chofer y la patente del camión","No necesitás verificar nada si el camión ya estaba dentro de la planta","Solo la guía de transporte si la carga supera cierto valor","Verificás solo si el camión sale por una puerta no habitual"],c:[1]},
+      {q:"Detectás un derrame de líquido no identificado en el sector de producción. El color y el olor son inusuales. ¿Tu primera acción?",
+       o:["Te acercás para ver de qué se trata y si podés limpiarlo","Aislás el área, evacuás al personal y llamás al responsable de seguridad industrial. No te acercás sin EPP específico","Avisás al capataz y esperás instrucciones sin tomar otra acción","Lo reportás al finalizar el turno","Le pedís a un operario que identifique el líquido antes de actuar","Buscás un extintor para contener el derrame de inmediato"],c:[1]},
+      {q:"Un empleado te pide acceso a la sala de servidores. La sala es de acceso restringido y él no figura en la lista. ¿Qué hacés?",
+       o:["Lo dejás entrar: si es empleado de la empresa, es de confianza","Le explicás que la sala es de acceso restringido y que debe solicitar autorización al responsable del área antes de ingresar","Lo acompañás dentro para supervisar su trabajo","Lo dejás entrar pero anotás la novedad en el libro","Lo dejás entrar solo si tiene una urgencia técnica documentada","Lo dejás pasar la primera vez con advertencia verbal"],c:[1]},
       {q:"Un trabajador fotografía maquinaria de producción con su celular. ¿Qué hacés?",
-       o:["No intervenís: no está robando nada","Le preguntás si tiene autorización para fotografiar. Si no la tiene, le pedís que deje de hacerlo y reportás la novedad al coordinador","Lo ignorás si parece empleado conocido","Solo intervenís si el jefe de planta está presente"],c:1},
+       o:["No intervenís: no está robando nada tangible","Le preguntás si tiene autorización para fotografiar. Si no la tiene, le pedís que deje de hacerlo y reportás la novedad al coordinador","Lo ignorás si parece empleado conocido de hace tiempo","Solo intervenís si el jefe de planta está presente","Le pedís el celular para borrás las fotos vos mismo","Lo reportás solo si fotografía el exterior de la planta"],c:[1]},
       {q:"Llega una persona que se identifica como inspector del Ministerio de Trabajo. ¿Cuál es el procedimiento?",
-       o:["Lo dejás pasar de inmediato: tiene autoridad legal para inspeccionar","Verificás su credencial oficial, llamás al responsable de la planta ANTES de permitir el acceso y lo acompañás en todo momento durante la inspección","Le pedís que espere afuera hasta que llegue el gerente","Le negás el acceso hasta tener una orden judicial"],c:1},
-      {q:"Hay un accidente: un operario se aplasta la mano con una prensa. Está consciente y grita de dolor. ¿Qué hacés?",
-       o:["Lo llevás a la enfermería de la planta vos mismo","Llamás al 107/911 de inmediato, no movés a la persona sin indicación médica, avisás al responsable de planta y preservás la escena","Buscás al enfermero o médico de la planta primero antes de llamar al 911","Intentás liberar la mano vos mismo antes de llamar a emergencias"],c:1},
-      {q:"Un camionero insiste en que su carga no puede abrirse para verificación según un 'protocolo del cliente'. Sin embargo, el protocolo interno de la planta exige verificación de toda carga entrante. ¿Qué prevalece?",
-       o:["El protocolo del cliente: el cliente siempre tiene razón","El protocolo interno de la planta: es la norma de seguridad de las instalaciones que debés hacer cumplir. Sin verificación no ingresa","Dependés de lo que diga el coordinador en ese momento","Dejás entrar el camión pero lo acompañás hasta el depósito"],c:1},
+       o:["Lo dejás pasar de inmediato: tiene autoridad legal para inspeccionar","Verificás su credencial oficial, llamás al responsable de la planta ANTES de permitir el acceso y lo acompañás en todo momento durante la inspección","Le pedís que espere afuera hasta que llegue el gerente de planta","Le negás el acceso hasta tener una orden judicial firmada","Lo dejás entrar y le avisás al responsable mientras camina hacia la planta","Le permitís el acceso solo a la administración, no al sector productivo"],c:[1]},
+      {q:"Un operario se aplasta la mano con una prensa. Está consciente y grita de dolor. ¿Qué hacés?",
+       o:["Lo llevás a la enfermería de la planta vos mismo inmediatamente","Llamás al 107/911, no movés a la persona sin indicación médica, avisás al responsable de planta y preservás la escena","Buscás al enfermero de la planta primero antes de llamar al 911","Intentás liberar la mano vos mismo antes de llamar a emergencias","Le aplicás los primeros auxilios y luego llamás al 911","Le pedís al supervisor del área que decida qué hacer"],c:[1]},
+      {q:"Un camionero insiste en que su carga no puede abrirse según un 'protocolo del cliente'. El protocolo interno de la planta exige verificar toda carga entrante. ¿Qué prevalece?",
+       o:["El protocolo del cliente: el cliente siempre tiene razón","El protocolo interno de la planta: es la norma de seguridad de las instalaciones. Sin verificación, no ingresa. Escalás al coordinador si hay conflicto","Dependés de lo que diga el coordinador en ese momento concreto","Dejás entrar el camión pero lo acompañás hasta el depósito sin abrir","Consultás con el cliente antes de tomar cualquier decisión","Abrís solo una muestra de la carga como verificación parcial"],c:[1]},
     ]
   },
 
@@ -1058,21 +1064,21 @@ const MOD5_DATA = {
 <strong>Acción correcta:</strong> Rechazás el ofrecimiento, reportás el intento de soborno al coordinador de inmediato y lo asentás en el libro con todos los datos del chofer y el vehículo. Ninguna prisa justifica saltear el protocolo de verificación.</div></div>`,
     qs:[
       {q:"Un camión llega al depósito con el precinto roto. El chofer dice que 'se rompió en el viaje'. ¿Qué hacés?",
-       o:["Lo dejás entrar: si el chofer lo dice, es suficiente","No descargás. Fotografiás el precinto, notificás al coordinador y al cliente, asentás la novedad con todos los datos antes de cualquier acción","Lo descargás y contás la mercadería para ver si falta algo","Lo dejás entrar pero lo vigilás mientras se descarga"],c:1},
+       o:["Lo dejás entrar: si el chofer lo dice, es suficiente","No descargás. Fotografiás el precinto, notificás al coordinador y al cliente, asentás la novedad con todos los datos antes de cualquier acción","Lo descargás y contás la mercadería para ver si falta algo","Lo dejás entrar pero lo vigilás mientras se descarga","Aceptás la explicación del chofer y lo hacés firmar una declaración","Abrís el camión para verificar vos mismo si falta mercadería"],c:[1]},
       {q:"Al descargar un camión encontrás 3 cajas que no figuran en el remito. ¿Qué hacés?",
-       o:["Las descargás y las guardás para ver si alguien las reclama","Detenés la descarga, documentás las diferencias, notificás al coordinador. No continuás hasta tener autorización del responsable de logística","Las descargás y las reportás al finalizar el turno","Completás el remito con las cajas extra para que cuadre la documentación"],c:1},
+       o:["Las descargás y las guardás para ver si alguien las reclama","Detenés la descarga, documentás las diferencias y notificás al coordinador. No continuás hasta tener autorización del responsable de logística","Las descargás y las reportás al finalizar el turno","Completás el remito con las cajas extra para que cuadre la documentación","Las devolvés al chofer sin documentar nada","Las separás en un área y continuás con el resto de la descarga sin avisar"],c:[1]},
       {q:"Un chofer te ofrece dinero para ingresar sin la verificación completa de precintos. ¿Qué hacés?",
-       o:["Aceptás si el monto no es significativo","Rechazás, reportás el intento de soborno al coordinador de inmediato y asentás todos los datos del chofer en el libro","Rechazás pero no reportás para no generar conflictos","Le decís que no puede y lo dejás entrar de todas formas para no perder tiempo"],c:1},
+       o:["Aceptás si el monto no es significativo","Rechazás, reportás el intento de soborno al coordinador de inmediato y asentás todos los datos del chofer y el vehículo en el libro","Rechazás pero no reportás para no generar conflictos innecesarios","Le decís que no puede y lo dejás entrar igual para no perder tiempo","Le decís que vuelva cuando cambie de actitud y lo mandás a esperar","Aceptás y lo reportás al finalizar el turno"],c:[1]},
       {q:"¿Cuándo es válido un precinto y cuándo se considera comprometido?",
-       o:["Es válido si el número coincide; está comprometido solo si está completamente cortado","Es válido cuando el número coincide exactamente con la documentación y el dispositivo está íntegro. Cualquier daño, manipulación o discrepancia de número lo compromete","Es válido si el chofer lo confirma verbalmente","Es válido siempre que la mercadería esté completa al contarla"],c:1},
-      {q:"El CCTV del depósito muestra a un empleado sacando cajas por una puerta lateral no autorizada. ¿Cuál es el orden correcto de acciones?",
-       o:["Vas directamente a enfrentarlo","Notificás al coordinador de inmediato con descripción de lo que muestra la cámara. No toques las grabaciones. Esperás instrucciones antes de actuar solo","Lo seguís para ver adónde lleva las cajas","Anotás la novedad para reportarla al finalizar el turno"],c:1},
+       o:["Es válido si el número coincide; está comprometido solo si está completamente cortado","Es válido cuando el número coincide exactamente con la documentación y el dispositivo está íntegro. Cualquier daño, manipulación o discrepancia lo compromete","Es válido si el chofer lo confirma verbalmente y firma el remito","Es válido siempre que la mercadería esté completa al contarla","Es válido aunque tenga una pequeña marca, si el número coincide","Es válido si la empresa de transporte lo certifica por escrito"],c:[1]},
+      {q:"El CCTV muestra a un empleado sacando cajas por una puerta lateral no autorizada. ¿Cuál es el orden correcto?",
+       o:["Vas directamente a enfrentarlo en la puerta lateral","Notificás al coordinador de inmediato con descripción de lo que muestra la cámara. No tocás las grabaciones. Esperás instrucciones antes de actuar solo","Lo seguís para ver adónde lleva las cajas","Anotás la novedad para reportarla al finalizar el turno","Le pedís a un compañero que lo intercepte mientras vos filmás","Cerrás la puerta lateral remotamente si el sistema lo permite"],c:[1]},
       {q:"Un chofer insiste en que su camión no puede abrirse para verificación según instrucciones del cliente. ¿Qué prevalece?",
-       o:["Las instrucciones del cliente del transportista","El protocolo de verificación de tu empresa. Sin verificación según el procedimiento establecido, el camión no ingresa. Escalás al coordinador si hay conflicto","Hacés lo que el chofer diga para evitar problemas","Abrís el camión sin importar lo que diga el chofer"],c:1},
+       o:["Las instrucciones del cliente del transportista tienen precedencia","El protocolo de verificación de tu empresa. Sin verificación según el procedimiento establecido, el camión no ingresa. Escalás al coordinador si hay conflicto","Hacés lo que el chofer diga para evitar problemas y reportás después","Abrís el camión sin importar lo que diga el chofer","Verificás solo el exterior del camión como compromiso","Hacés firmar al chofer que se niega y lo dejás ingresar de todas formas"],c:[1]},
       {q:"¿Qué información mínima debe incluir el informe de una diferencia entre el físico y el remito?",
-       o:["Solo la cantidad de la diferencia","Número de remito, transportista, número de unidad, descripción de la diferencia (cantidad y tipo), hora del hallazgo, nombre del vigilador que lo detecta y firma del coordinador","Solo el nombre del chofer y la cantidad","La diferencia y una foto"],c:1},
-      {q:"Una cámara del sector de carga pierde imagen justo cuando comienza una operación de descarga de alto valor. ¿Qué hacés?",
-       o:["Continuás la operación: puede ser una falla técnica común","Detenés la operación o aumentás la supervisión presencial, reportás la falla al coordinador de inmediato y asentás la novedad. La falla de cámara durante una operación crítica puede ser intencional","Avisás al área técnica y seguís la operación con normalidad","No hacés nada: las cámaras no son tu responsabilidad"],c:1},
+       o:["Solo la cantidad de bultos que difiere","Número de remito, transportista, número de unidad, descripción de la diferencia (cantidad y tipo), hora del hallazgo, nombre del vigilador y firma del coordinador","Solo el nombre del chofer y la cantidad de la diferencia","La diferencia numérica y una foto del camión abierto","El nombre del destinatario y cuánto falta o sobra","Solo lo que el coordinador pida cuando venga a verificar"],c:[1]},
+      {q:"Una cámara del sector de carga pierde imagen justo cuando comienza una descarga de alto valor. ¿Qué hacés?",
+       o:["Continuás la operación: puede ser una falla técnica común","Detenés la operación o aumentás la supervisión presencial, reportás la falla al coordinador de inmediato y asentás la novedad. Una falla durante operación crítica puede ser intencional","Avisás al área técnica y seguís la operación con normalidad","No hacés nada: las cámaras no son responsabilidad del vigilador","Reiniciás el sistema de cámaras para ver si se soluciona y continuás","Esperás a que la cámara vuelva sola y documentás la falla al final del turno"],c:[1]},
     ]
   },
 
@@ -1103,21 +1109,21 @@ const MOD5_DATA = {
 <strong>Acción correcta:</strong> Tono calmado y profesional: "Disculpe, es protocolo del local verificar cuando suena el arco. ¿Me puede mostrar su ticket de compra?". Si se niega y se retira, no lo retenés por la fuerza: llamás al coordinador y describís al cliente. La seguridad física del vigilador y de los presentes es más importante que el artículo.</div></div>`,
     qs:[
       {q:"El arco detector suena cuando un cliente sale. El cliente muestra su ticket y el artículo tiene etiqueta sin desactivar en la caja. ¿Qué hacés?",
-       o:["Lo acusás de intentar robar y llamás al coordinador","Le explicás que fue un error de caja, lo acompañás amablemente para que desactiven la etiqueta y le pedís disculpas por la molestia","Lo dejás ir: si tiene ticket, no hay problema","Lo retenés mientras verifican la cámara"],c:1},
+       o:["Lo acusás de intentar robar y llamás al coordinador de inmediato","Le explicás que fue un error de caja, lo acompañás amablemente para que desactiven la etiqueta y le pedís disculpas por la molestia","Lo dejás ir: si tiene ticket, no hay ningún problema","Lo retenés mientras verifican la cámara para tener más evidencia","Le pedís que espere en la puerta hasta que llegue el coordinador","Le sacás el artículo y le decís que vuelva a la caja a comprarlo de nuevo"],c:[1]},
       {q:"Ves en la cámara que alguien esconde un producto dentro de su ropa en el pasillo. ¿Cuál es la secuencia correcta?",
-       o:["Vas directamente a enfrentarlo en el pasillo","Reportás al coordinador con descripción del cliente y ubicación. Esperás a que el cliente pase por el arco. Si suena, el protocolo del arco aplica. No lo acusás antes","Lo seguís de cerca sin hacer nada hasta que salga","Avisás a las cámaras y dejás que ellos manejen todo"],c:1},
+       o:["Vas directamente a enfrentarlo en el pasillo","Reportás al coordinador con descripción del cliente y ubicación. Esperás a que pase por el arco. Si suena, el protocolo del arco aplica. No lo acusás antes","Lo seguís de cerca sin hacer nada hasta que salga del local","Avisás a las cámaras y dejás que ellos manejen todo sin intervenir","Lo señalás discretamente a otro vigilador para que lo siga","Le decís que lo estás mirando para que se desanime"],c:[1]},
       {q:"El arco suena y el cliente se pone agresivo, grita que 'siempre pasa lo mismo' y quiere irse. ¿Qué hacés?",
-       o:["Lo retenés físicamente hasta que el coordinador llegue","Mantenés tono calmado y profesional. Si se va, no lo retenés por la fuerza. Describís al coordinador y, si corresponde, llamás al 911 para reportar el incidente","Le pedís disculpas y lo dejás ir directamente","Lo amenazás con llamar a la policía para que coopere"],c:1},
-      {q:"¿En qué momento podés abrir el bolso de un cliente en el contexto de un supermercado?",
-       o:["Siempre que el arco suene","Cuando el cliente lo consiente voluntariamente. Nunca podés abrir el bolso de alguien por la fuerza","Cuando tenés prueba en cámara de que guardó algo ahí","Con autorización del coordinador del local"],c:1},
-      {q:"Detectás un grupo de 4 personas actuando de forma coordinada: uno distrae al personal, otros están en pasillos distintos. ¿Cómo actuás?",
-       o:["Enfrentás al grupo para desmotivarlos","Reportás al coordinador y al monitoreo de cámaras con descripción de cada persona. Coordinás una respuesta en equipo sin actuar solo ni alertar al grupo","Seguís a uno de ellos para ver qué hace","Avisás a la caja para que estén atentos"],c:1},
+       o:["Lo retenés físicamente hasta que el coordinador llegue al lugar","Mantenés tono calmado y profesional. Si se va, no lo retenés por la fuerza. Describís al coordinador y llamás al 911 si corresponde","Le pedís disculpas y lo dejás ir sin reportar el incidente","Lo amenazás con llamar a la policía para que coopere contigo","Gritás para que el resto del personal escuche y venga a ayudar","Le bloqueás el paso sin tocarlo hasta que se calme"],c:[1]},
+      {q:"¿En qué momento podés abrir el bolso de un cliente en un supermercado?",
+       o:["Siempre que el arco suene, es suficiente razón","Cuando el cliente lo consiente voluntariamente. Nunca podés abrir el bolso de alguien por la fuerza","Cuando tenés prueba en cámara de que guardó algo ahí","Con autorización del coordinador o gerente del local","Cuando hay más de dos vigiladores presentes como testigos","Solo si hay al menos otro cliente que también vio la situación"],c:[1]},
+      {q:"Detectás un grupo de 4 personas actuando de forma coordinada: uno distrae al personal, otros en pasillos distintos. ¿Cómo actuás?",
+       o:["Enfrentás al grupo directamente para desmotivarlos de inmediato","Reportás al coordinador y al monitoreo de cámaras con descripción de cada persona. Coordinás respuesta en equipo sin actuar solo ni alertar al grupo","Seguís a uno de ellos para ver qué hace","Avisás solo a la caja para que estén atentos","Activás el botón de pánico porque puede ser una banda peligrosa","Te ponés visible cerca del grupo para que sepan que los estás mirando"],c:[1]},
       {q:"¿Podés retener a un menor de edad sospechoso de hurto sin la presencia de la policía?",
-       o:["Sí, podés retenerlo y llamar a los padres","Solo podés retenerlo si lo atrapás en flagrante delito, debés llamar de inmediato a la policía y al coordinador. No podés interrogarlo ni separarlo de un adulto acompañante sin autorización","No: los menores no pueden ser retenidos bajo ninguna circunstancia","Sí, siempre que el coordinador esté presente"],c:1},
+       o:["Sí, podés retenerlo y llamar a los padres para que vengan","Solo podés retenerlo en flagrante delito, debés llamar de inmediato a la policía y al coordinador. No podés interrogarlo ni separarlo de un adulto acompañante sin autorización","No: los menores no pueden ser retenidos bajo ninguna circunstancia legal","Sí, siempre que el coordinador esté presente como testigo","Solo si el artículo robado supera cierto valor económico","Sí, si el menor tiene más de 16 años y actuó solo"],c:[1]},
       {q:"Un cliente acusa a un empleado del local de haberle faltado el respeto. ¿Cuál es tu intervención?",
-       o:["Tomás partido por el empleado: son compañeros","Intervenís para calmar la situación, separás a las partes si es necesario, llamás al coordinador del área comercial. Vos no juzgás quién tiene razón: eso es del área comercial","Ignorás la situación: es un conflicto comercial, no de seguridad","Pedís al cliente que se retire del local"],c:1},
-      {q:"El arco suena pero la persona que sale es un empleado del local saliendo por la puerta de clientes. ¿Qué hacés?",
-       o:["No hacés nada: es empleado del local","Igual le pedís que muestre su ticket o la autorización para llevar el artículo. El protocolo aplica para todos, incluido el personal del establecimiento","Lo dejás pasar pero lo reportás al coordinador","Lo retenés y llamás al gerente del área"],c:1},
+       o:["Tomás partido por el empleado: son compañeros de trabajo","Intervenís para calmar la situación, separás a las partes si es necesario y llamás al coordinador del área comercial. No juzgás quién tiene razón: eso le corresponde al área comercial","Ignorás la situación: es un conflicto comercial, no de seguridad","Pedís al cliente que se retire del local inmediatamente","Escuchás al cliente y decidís vos quién tiene razón en el conflicto","Solo intervenís si hay riesgo de que se pongan físicamente agresivos"],c:[1]},
+      {q:"El arco suena pero quien sale es un empleado del local por la puerta de clientes. ¿Qué hacés?",
+       o:["No hacés nada: si es empleado del local no hay problema","Igual le pedís que muestre su ticket o la autorización para llevar el artículo. El protocolo aplica para todos, incluido el personal","Lo dejás pasar pero lo reportás al coordinador por si acaso","Lo retenés y llamás al gerente del área para que decida","Le avisás por radio al coordinador y esperás instrucciones sin decirle nada al empleado","Solo verificás si el empleado no tiene uniforme puesto en ese momento"],c:[1]},
     ]
   },
 
@@ -1148,21 +1154,21 @@ const MOD5_DATA = {
 <strong>Acción correcta:</strong> Con empatía y calma: llevarlo a la guardia médica para que el médico de guardia tome la decisión de autorizar o no la visita. No sos vos quien decide. No lo mandás de vuelta a la puerta: lo acompañás al área correcta.</div></div>`,
     qs:[
       {q:"Un familiar angustiado quiere entrar a la UCI a las 2 AM. El horario de visitas terminó a las 20 hs. ¿Qué hacés?",
-       o:["Lo dejás entrar: es una situación de emergencia familiar","Lo mandás de vuelta: las reglas son las reglas","Con empatía, lo acompañás a la guardia médica para que el médico de guardia decida si autoriza la visita excepcional","Le pedís que espere en la puerta y avisás por radio"],c:2},
+       o:["Lo dejás entrar: es una situación de emergencia familiar","Lo mandás de vuelta: las reglas son las reglas y no hay excepciones","Con empatía, lo acompañás a la guardia médica para que el médico de guardia decida si autoriza la visita excepcional","Le pedís que espere en la puerta y avisás por radio al coordinador","Lo dejás pasar solo hasta el pasillo de la UCI sin entrar a la sala","Le decís que vuelva mañana a primera hora cuando empiece el horario de visitas"],c:[2]},
       {q:"Un paciente intenta salir del sanatorio sin el alta médica. ¿Cuál es tu intervención?",
-       o:["Lo retenés físicamente: no puede irse sin alta","Avisás de inmediato al personal médico. No lo retenés físicamente: solo el equipo médico puede intervenir legalmente. Tu rol es demorar y avisar","Lo dejás ir: es libre de irse cuando quiera","Lo acompañás hasta la puerta y le explicás que no puede salir"],c:1},
+       o:["Lo retenés físicamente: no puede irse sin alta médica firmada","Avisás de inmediato al personal médico. No lo retenés físicamente: solo el equipo médico puede intervenir legalmente. Tu rol es demorar y avisar","Lo dejás ir: es libre de irse cuando quiera legalmente","Lo acompañás hasta la puerta y le explicás con firmeza que no puede salir","Le sacás las llaves o la mochila para que no pueda irse","Llamás al 911 para que la policía lo retenga en la puerta"],c:[1]},
       {q:"Se declara código azul en sala 204. ¿Cuál es tu función como vigilador?",
-       o:["Entrar a la sala a ayudar con la reanimación","Despejar el corredor de acceso a la sala, mantener libres las vías para el carro de reanimación y el personal médico. No intentés reanimar: eso es exclusivo del equipo médico","Llamar al 911: el sanatorio no tiene recursos","Buscar a la familia del paciente para informarles"],c:1},
-      {q:"Una persona llega sin credencial diciendo ser médico de guardia que olvidó la credencial. ¿La dejás ingresar a sector restringido?",
-       o:["Sí: si es médico, necesita entrar","No: verificás con la jefa de enfermería o el médico de guardia en funciones antes de dejar ingresar a alguien sin credencial a un sector restringido","Lo dejás pasar solo a la guardia, no a la UCI","Lo acompañás en todo momento sin pedir verificación"],c:1},
+       o:["Entrar a la sala a ayudar con la reanimación cardiopulmonar","Despejar el corredor de acceso, mantener libres las vías para el carro de reanimación y el personal médico. No intentés reanimar: es exclusivo del equipo médico","Llamar al 911 porque el sanatorio no tiene recursos suficientes","Buscar a la familia del paciente para informarles de inmediato","Ir a buscar el desfibrilador del piso aunque no estés entrenado","Cerrar las puertas de las otras salas para que los otros pacientes no se alteren"],c:[1]},
+      {q:"Llega alguien sin credencial diciendo ser médico de guardia que la olvidó. ¿La dejás ingresar a un sector restringido?",
+       o:["Sí: si dice que es médico de guardia, la urgencia justifica el ingreso","No: verificás con la jefa de enfermería o el médico de guardia en funciones antes de dejar ingresar a alguien sin credencial a un sector restringido","Lo dejás pasar solo a la guardia, no a la UCI ni quirófanos","Lo acompañás en todo momento sin pedir verificación formal","Lo dejás entrar si el uniforme es el correcto y parece médico","Lo dejás entrar solo si el portero electrónico del sector lo reconoce"],c:[1]},
       {q:"Un familiar amenaza con 'hacer un escándalo' si no lo dejan ver al paciente ahora mismo. ¿Cómo respondés?",
-       o:["Cedés para evitar el escándalo público","Le explicás con firmeza y empatía que la decisión de visitas está en el área médica y lo acompañás a hablar con el médico de guardia. Si se pone físicamente agresivo, llamás al coordinador","Le decís que si hace escándalo llamás a la policía","Lo ignorás y continuás tu recorrida"],c:1},
+       o:["Cedés para evitar el escándalo público en el sanatorio","Le explicás con firmeza y empatía que la decisión de visitas la toma el área médica y lo acompañás a hablar con el médico de guardia. Si se pone físicamente agresivo, llamás al coordinador","Le decís directamente que si hace escándalo llamás a la policía","Lo ignorás y continuás tu recorrida sin interactuar","Le pedís al familiar que se siente y esperás sin hacer nada más","Le decís que puede pasar pero solo 5 minutos para calmar la situación"],c:[1]},
       {q:"Un periodista con cámara quiere filmar dentro del sanatorio 'para una nota de interés público'. ¿Qué hacés?",
-       o:["Lo dejás entrar: la libertad de prensa lo permite","No lo dejás filmar sin autorización expresa de la dirección del establecimiento. Lo derivás a administración o relaciones institucionales. La privacidad de los pacientes es un derecho legal","Lo dejás entrar solo a zonas comunes","Lo dejás filmar si no muestra pacientes"],c:1},
+       o:["Lo dejás entrar: la libertad de prensa está por encima del reglamento","No lo dejás filmar sin autorización expresa de la dirección. Lo derivás a administración o relaciones institucionales. La privacidad de los pacientes es un derecho legal","Lo dejás entrar solo a zonas comunes donde no haya pacientes","Lo dejás filmar si promete no mostrar el interior ni a los pacientes","Lo dejás entrar si tiene una credencial de prensa válida y reconocida","Lo llevás a una sala de reuniones vacía para que grabe ahí solamente"],c:[1]},
       {q:"Una persona en estado de excitación ingresa al hall gritando. ¿Cuál es la secuencia correcta?",
-       o:["La interceptás físicamente de inmediato","Te acercás con calma, hablás en tono bajo para no escalar, la llevás a un área menos pública. Si hay riesgo físico inminente, llamás al coordinador y al 911. Nunca la confrontés en el hall con público alrededor","Gritás 'cálmese' desde la distancia","La ignorás hasta que el personal médico intervenga"],c:1},
+       o:["La interceptás físicamente de inmediato antes de que avance","Te acercás con calma, hablás en tono bajo para no escalar, la llevás a un área menos pública. Si hay riesgo físico inminente, llamás al coordinador y al 911. Nunca la confrontés en el hall con público","Gritás 'cálmese' desde la distancia para que todos oigan","La ignorás hasta que el personal médico intervenga por cuenta propia","Llamás al 911 de inmediato sin intentar ninguna intervención verbal","Le pedís al personal de enfermería que le dé un calmante"],c:[1]},
       {q:"¿Cuáles de estas zonas son de acceso restringido exclusivo al personal habilitado en un sanatorio?",
-       o:["Solo los quirófanos","UCI/UTI, quirófanos, sala de partos, farmacia, depósito de medicamentos y server de datos clínicos","Solo farmacia y quirófanos","Todas las zonas del piso de internación"],c:1},
+       o:["Solo los quirófanos y la sala de partos","UCI/UTI, quirófanos, sala de partos, farmacia, depósito de medicamentos y server de datos clínicos","Solo farmacia y quirófanos en los establecimientos grandes","Todas las zonas del piso de internación sin excepción","Cualquier zona donde haya equipos médicos de alto costo","Solo la farmacia: el resto depende de la categoría del establecimiento"],c:[1]},
     ]
   },
 
@@ -1192,22 +1198,22 @@ const MOD5_DATA = {
 <div class="alert-txt"><strong>Caso real:</strong> Llega un técnico sin previo aviso diciendo que "la empresa lo mandó" a revisar los aires acondicionados.<br><br>
 <strong>Acción correcta:</strong> No lo dejás subir hasta verificar con el área de mantenimiento o administración que el servicio fue solicitado. Si no pueden confirmar, el técnico espera. Si es legítimo, lo registrás y lo acompañás o lo dejás pasar con acompañante interno.</div></div>`,
     qs:[
-      {q:"Llega una persona a tener una reunión con el gerente de finanzas. El gerente no dejó ninguna indicación de visita. ¿Qué hacés?",
-       o:["La dejás pasar: si vino, por algo será","La hacés esperar en el hall, llamás al área del gerente para confirmar que la visita estaba esperada. Si confirman, la registrás y la dejás subir. Si no confirman, la visita espera o se reagenda","La dejás pasar solo si el gerente atiende el teléfono directamente","La registrás y la mandás al piso sin confirmar"],c:1},
-      {q:"Un empleado olvida la tarjeta magnética. Te pide que le abras la puerta 'porque me conocés hace años'. ¿Qué hacés?",
-       o:["Le abrís: es empleado conocido","Lo identificás por DNI, confirmás por teléfono con su área que está empleado, y lo hacés entrar por el registro manual. El sistema existe para todos, incluidos los conocidos","No lo dejás entrar bajo ninguna circunstancia: sin tarjeta no entra","Le pedís que espere al siguiente empleado que salga para entrar con él"],c:1},
-      {q:"Encontrás un paquete abandonado sin identificar en el hall del edificio. Nadie lo reclama. ¿Cuál es el protocolo?",
-       o:["Lo abrís para ver qué contiene","No lo manipulás. Aislás el área alrededor del paquete, evacuás si corresponde según el protocolo, llamás al coordinador y al 911. Un objeto abandonado sin identificar es una amenaza potencial","Lo llevás a la recepción y lo dejás ahí","Lo dejás donde está y esperás a que alguien lo reclame"],c:1},
+      {q:"Llega una persona a reunirse con el gerente de finanzas. El gerente no dejó ninguna indicación de visita. ¿Qué hacés?",
+       o:["La dejás pasar: si vino, por algo será","La hacés esperar en el hall, llamás al área del gerente para confirmar. Si confirman, la registrás y la dejás subir. Si no confirman, la visita espera o se reagenda","La dejás pasar solo si el gerente atiende el teléfono directamente","La registrás y la mandás al piso sin confirmar","La dejás pasar si viene bien vestida y parece profesional","Le decís que el gerente no puede atender y la mandás de vuelta sin llamar"],c:[1]},
+      {q:"Un empleado olvida la tarjeta magnética. Te pide que le abras 'porque me conocés hace años'. ¿Qué hacés?",
+       o:["Le abrís: es empleado conocido de hace mucho tiempo","Lo identificás por DNI, confirmás por teléfono con su área que está empleado, y lo hacés entrar por el registro manual. El sistema existe para todos, incluidos los conocidos","No lo dejás entrar bajo ninguna circunstancia: sin tarjeta magnética no entra","Le pedís que espere al siguiente empleado que salga para entrar junto a él","Lo dejás entrar solo hasta la planta baja y que llame a alguien del área","Le prestás tu tarjeta temporalmente y la recuperás cuando salga del edificio"],c:[1]},
+      {q:"Encontrás un paquete abandonado sin identificar en el hall. Nadie lo reclama. ¿Cuál es el protocolo?",
+       o:["Lo abrís para ver qué contiene y determinar si es peligroso","No lo manipulás. Aislás el área, evacuás si corresponde según el protocolo, llamás al coordinador y al 911. Un objeto abandonado sin identificar es amenaza potencial","Lo llevás a la recepción y lo dejás ahí hasta que alguien lo reclame","Lo dejás donde está y esperás a que alguien lo reclame naturalmente","Lo movés a un lugar más discreto para no alarmar al público","Lo revisás por fuera buscando pistas del remitente antes de reportar"],c:[1]},
       {q:"Se activa la alarma de evacuación del edificio. ¿Cuál es tu primera acción?",
-       o:["Subís a ver qué está pasando en los pisos","Iniciás la evacuación según el plan establecido: guiás a las personas hacia las salidas de emergencia, te asegurás de que nadie use los ascensores y te dirigís a tu punto de reunión asignado","Esperás confirmación del coordinador antes de evacuar","Avisás solo a los pisos donde creés que hay problema"],c:1},
-      {q:"Un usuario lleva 40 minutos esperando en la sala y se pone agresivo con los demás. ¿Cómo actuás?",
-       o:["Lo sacás del edificio directamente","Te acercás con calma, escuchás el motivo, le ofrecés solución dentro de tus posibilidades (avisarle al área que tiene una espera larga). Si escala, llamás al coordinador. Solo llamás al 911 si hay riesgo físico real","Lo ignorás: es problema del área de atención al cliente","Le decís que si no se calma llamás a la policía"],c:1},
-      {q:"Un proveedor quiere dejar materiales en el depósito fuera del horario autorizado de entregas. ¿Podés autorizarlo?",
-       o:["Sí, si el material es urgente","No: sin autorización del área de administración o mantenimiento, no se autoriza ninguna entrega fuera del horario establecido. Lo hacés esperar o reagendar","Sí, si firmás vos el recibo","Lo dejás entrar si el material es pequeño"],c:1},
+       o:["Subís a ver qué está pasando en los pisos antes de evacuar","Iniciás la evacuación según el plan establecido: guiás hacia las salidas de emergencia, te asegurás de que nadie use los ascensores y te ubicás en tu punto de reunión asignado","Esperás confirmación del coordinador antes de evacuar a nadie","Avisás solo a los pisos donde creés que hay un problema real","Abrís todas las puertas del edificio para facilitar la salida","Primero apagás los equipos del puesto de seguridad antes de salir"],c:[1]},
+      {q:"Un usuario lleva 40 minutos esperando y se pone agresivo con los demás. ¿Cómo actuás?",
+       o:["Lo sacás del edificio directamente sin dar explicaciones","Te acercás con calma, escuchás el motivo, le ofrecés solución dentro de tus posibilidades. Si escala, llamás al coordinador. Solo llamás al 911 si hay riesgo físico real","Lo ignorás: es problema del área de atención al cliente","Le decís que si no se calma llamás a la policía de inmediato","Le pedís que espere afuera en la puerta hasta que lo atiendan","Le decís que vuelva mañana porque hoy ya no puede ser atendido"],c:[1]},
+      {q:"Un proveedor quiere dejar materiales en el depósito fuera del horario autorizado. ¿Podés autorizarlo?",
+       o:["Sí, si el material es urgente para las operaciones del día","No: sin autorización del área de administración o mantenimiento, no se autoriza ninguna entrega fuera del horario establecido. Lo hacés esperar o reagendar","Sí, si firmás vos el recibo como responsable de la recepción","Lo dejás entrar si el material es pequeño y no ocupa espacio","Lo autorizás y lo reportás al coordinador al día siguiente","Lo dejás entrar si viene con factura de la empresa a nombre del cliente"],c:[1]},
       {q:"Llega un técnico sin aviso diciendo que 'la empresa lo mandó' a reparar los ascensores. ¿Qué verificás antes de dejarlo entrar?",
-       o:["Solo el DNI y el logo de la empresa en el uniforme","Confirmás con el área de mantenimiento o administración que el servicio fue solicitado y que esperaban a ese técnico. Sin confirmación, el técnico espera en el hall","Si tiene herramientas y uniforme es suficiente","Lo dejás entrar pero lo acompañás en todo momento sin verificar"],c:1},
+       o:["Solo el DNI y el logo de la empresa en el uniforme del técnico","Confirmás con el área de mantenimiento o administración que el servicio fue solicitado y que esperaban a ese técnico. Sin confirmación, espera en el hall","Si tiene herramientas y uniforme es suficiente para confiar en él","Lo dejás entrar pero lo acompañás en todo momento sin verificar nada","Lo dejás entrar si la empresa de ascensores tiene contrato con el edificio","Le pedís la orden de trabajo y, si la tiene, lo dejás entrar sin más verificación"],c:[1]},
       {q:"¿Qué datos mínimos debe incluir el registro de un paquete recibido en el edificio?",
-       o:["Solo el nombre del destinatario","Remitente, destinatario, empresa de envío, hora de recepción y firma del vigilador que lo recibe","Solo el nombre de la empresa que lo envía","El peso y el tamaño del paquete"],c:1},
+       o:["Solo el nombre del destinatario en el edificio","Remitente, destinatario, empresa de envío, hora de recepción y firma del vigilador que lo recibe","Solo el nombre de la empresa que envía el paquete","El peso, el tamaño y el estado exterior del paquete","Solo el número de seguimiento del envío si está visible","El nombre del destinatario y la hora, el resto no es necesario"],c:[1]},
     ]
   },
 
@@ -1238,21 +1244,21 @@ const MOD5_DATA = {
 <strong>Acción correcta:</strong> Con amabilidad pero firmeza: el registro es obligatorio para todas las visitas, sin excepción. Si el vecino quiere que entre, lo llama por teléfono para confirmar y la visita se registra igual. Nadie entra sin registro, ni el amigo más conocido del vecino más antiguo.</div></div>`,
     qs:[
       {q:"Un vehículo quiere entrar. El residente dijo que 'venían unas personas' pero no dejó nombre ni datos. ¿Qué hacés?",
-       o:["Lo dejás entrar: el residente lo avisó genéricamente","Llamás al residente para que confirme quiénes son específicamente y autorice el ingreso. Sin confirmación de identidad, no entra el vehículo","Anotás la patente y lo dejás entrar","Lo hacés esperar 10 minutos y si no confirman, lo dejás entrar igual"],c:1},
+       o:["Lo dejás entrar: el residente lo avisó genéricamente y eso alcanza","Llamás al residente para que confirme quiénes son específicamente y autorice el ingreso. Sin confirmación de identidad, no entra el vehículo","Anotás la patente y lo dejás entrar de todas formas","Lo hacés esperar 10 minutos y si nadie confirma, lo dejás entrar igual","Lo dejás entrar solo si los ocupantes muestran el DNI","Anotás los datos del vehículo pero lo dejás pasar para no generar conflicto"],c:[1]},
       {q:"Un vecino te pide que dejes entrar a su conocido 'de palabra' sin registrarlo 'porque siempre viene'. ¿Qué hacés?",
-       o:["Lo dejás entrar: si el vecino avala, es suficiente","Le explicás amablemente que el registro es obligatorio para todas las visitas sin excepción. El vecino puede llamar para confirmar, pero la visita igual se registra","Solo lo dejás pasar si el vecino baja personalmente a recibirlo","Lo registrás pero no le pedís el DNI para no incomodarlo"],c:1},
+       o:["Lo dejás entrar: si el vecino avala, es suficiente garantía","Le explicás amablemente que el registro es obligatorio para todas las visitas sin excepción. El vecino puede llamar para confirmar, pero la visita igual se registra","Solo lo dejás pasar si el vecino baja personalmente a recibirlo","Lo registrás pero no le pedís el DNI para no incomodarlo","Lo dejás pasar esta vez y le aclarás que la próxima debe registrarse","Lo registrás con solo el nombre que dice el vecino sin pedirle documentación"],c:[1]},
       {q:"Durante una ronda nocturna encontrás una puerta de servicio abierta en una vivienda sin luces. ¿Cuál es el protocolo?",
-       o:["Entrás a verificar que todo esté bien","Llamás al residente o a la administración para verificar. Si no hay respuesta y hay indicios de intrusión, llamás al 911 y esperás con el área bajo vigilancia sin ingresar solo","Cerrás la puerta y seguís la ronda","La ignorás: probablemente el residente salió un momento"],c:1},
-      {q:"Dos vecinos tienen una discusión acalorada en la calle interna del barrio. Uno empuja al otro. ¿Cuál es tu intervención?",
-       o:["Intervenís físicamente para separarlos","Intentás mediar verbalmente con calma. Si hay violencia activa, llamás al coordinador y al 911. No tocás a ninguno si podés evitarlo","Ignorás el conflicto: es entre vecinos y no es tu problema","Solo intervenís si uno de los vecinos te llama"],c:1},
+       o:["Entrás a verificar que todo esté bien dentro de la vivienda","Llamás al residente o a la administración para verificar. Si no hay respuesta y hay indicios de intrusión, llamás al 911 y vigilás el área sin ingresar solo","Cerrás la puerta y seguís la ronda como si nada","La ignorás: probablemente el residente salió un momento y vuelve","La dejás abierta y volvés a verificar en 15 minutos","Entrás solo hasta el jardín para ver si hay alguien dentro"],c:[1]},
+      {q:"Dos vecinos tienen una discusión acalorada en la calle interna. Uno empuja al otro. ¿Cuál es tu intervención?",
+       o:["Intervenís físicamente para separarlos de inmediato","Intentás mediar verbalmente con calma. Si hay violencia activa, llamás al coordinador y al 911. No tocás a ninguno si podés evitarlo","Ignorás el conflicto: es entre vecinos y no es asunto tuyo","Solo intervenís si uno de los vecinos te llama directamente","Te interpones entre los dos con los brazos abiertos para separarlos","Llamás al coordinador y esperás instrucciones antes de hacer cualquier cosa"],c:[1]},
       {q:"Un proveedor de gas llega de urgencia a las 11 PM por una fuga reportada. No hay aviso previo del residente. ¿Cómo actuás?",
-       o:["Lo dejás entrar de inmediato: es una emergencia de gas","Verificás la identidad del técnico, llamás al residente para confirmar la emergencia y/o a la empresa distribuidora. Si confirman la emergencia, lo dejás ingresar acompañado y reportás la novedad","No lo dejás entrar: sin aviso previo nadie entra de noche","Solo lo dejás entrar si muestra el uniforme de la empresa"],c:1},
-      {q:"Un vehículo sin identificar circula lentamente por la calle perimetral del barrio por segunda vez en 20 minutos. ¿Qué hacés?",
-       o:["Lo ignorás: puede estar buscando una dirección","Anotás la patente, descripción del vehículo y los horarios. Reportás al coordinador de inmediato. Si aparece una tercera vez, llamás al 911 para informar el comportamiento sospechoso","Lo interceptás y le preguntás qué busca","Cerrás el acceso vehicular como medida preventiva"],c:1},
-      {q:"Un residente dice que perdió el control del portón vehicular. Quiere entrar a pie y busca a alguien afuera para traerle el auto. ¿Qué verificás?",
-       o:["Solo que sea residente: si vive en el barrio, puede entrar sin problemas","Verificás su identidad, confirmás en el listado de residentes que efectivamente vive ahí, y lo dejás entrar a pie. El vehículo de afuera igual debe cumplir el protocolo de ingreso cuando venga","Lo dejás entrar sin verificar: es una situación de emergencia","Solo lo dejás entrar si hay otro vecino que lo reconozca"],c:1},
+       o:["Lo dejás entrar de inmediato: una fuga de gas es emergencia","Verificás la identidad del técnico, llamás al residente para confirmar la emergencia y/o a la distribuidora. Si confirman, lo dejás ingresar acompañado y reportás la novedad","No lo dejás entrar bajo ningún concepto: sin aviso previo nadie entra de noche","Solo lo dejás entrar si muestra el uniforme y la credencial de la empresa","Lo dejás entrar solo al sector del medidor sin acompañarlo","Le decís que vuelva mañana a primera hora para tramitar el acceso correctamente"],c:[1]},
+      {q:"Un vehículo sin identificar circula lentamente por la calle perimetral por segunda vez en 20 minutos. ¿Qué hacés?",
+       o:["Lo ignorás: puede estar buscando una dirección del barrio","Anotás la patente, descripción del vehículo y los horarios. Reportás al coordinador de inmediato. Si aparece una tercera vez, llamás al 911 para informar el comportamiento sospechoso","Lo interceptás y le preguntás directamente qué está buscando","Cerrás el acceso vehicular como medida preventiva hasta que se vaya","Esperás a que circule una tercera vez antes de reportar para tener más certeza","Le pedís por radio a otro vigilador que lo siga desde adentro del barrio"],c:[1]},
+      {q:"Un residente dice que perdió el control del portón vehicular. Quiere entrar a pie y busca a alguien afuera para traer el auto. ¿Qué verificás?",
+       o:["Solo que sea residente: si vive en el barrio, puede entrar sin problemas","Verificás su identidad, confirmás en el listado de residentes que vive ahí, y lo dejás entrar a pie. El vehículo de afuera igual debe cumplir el protocolo de ingreso cuando venga","Lo dejás entrar sin verificar nada: es una situación de emergencia","Solo lo dejás entrar si hay otro vecino presente que lo reconozca","Lo dejás entrar solo si tiene llaves de la vivienda que pueda mostrar","Le abrís el portón vehicular directamente para que entre sin registrarse"],c:[1]},
       {q:"¿Por qué es importante variar el horario y el recorrido de las rondas nocturnas?",
-       o:["Para no aburrirse siempre haciendo el mismo recorrido","Para ser impredecible: si las rondas son fijas y conocidas, alguien con malas intenciones puede cronometrar cuándo el vigilador no está en un sector y actuar en ese intervalo","Porque el reglamento interno lo exige formalmente","Para cubrir más distancia en el mismo tiempo"],c:1},
+       o:["Para no aburrirse siempre haciendo el mismo recorrido","Para ser impredecible: si las rondas son fijas y conocidas, alguien con malas intenciones puede cronometrar cuándo el vigilador no está en un sector y actuar en ese intervalo","Porque el reglamento interno del barrio lo exige formalmente","Para cubrir más distancia total en el mismo tiempo de turno","Para que los residentes no puedan anticipar cuándo pasa el vigilador por su lote","Para que cada turno sea diferente y el vigilador no caiga en la rutina"],c:[1]},
     ]
   },
 };
@@ -1271,75 +1277,75 @@ function initMod5(tipo){
 const QUIZZES = {
   1:[
     {q:"Un vigilador de supermercado sospecha que un cliente metió algo en la mochila. Lo detiene en la puerta y le exige abrirla. El cliente se niega. ¿Qué debería haber hecho el vigilador?",
-     o:["Tenía razón: puede exigir la apertura si hay sospecha fundada","Solo podía invitarlo voluntariamente; si se niega, llamar a la policía","Podía retenerlo físicamente hasta que llegue la policía","Debía pedirle que espere y llamar al coordinador para que autorice la revisión"],c:1},
+     o:["Tenía razón: puede exigir la apertura si hay sospecha fundada","Solo podía invitarlo voluntariamente; si se niega, llamar a la policía","Podía retenerlo físicamente hasta que llegue la policía","Pedirle al coordinador que autorice la revisión","Filmarlo con el celular como evidencia","Pedirle el ticket de compra y retenerlo hasta que llegue la policía"],c:[1]},
     {q:"¿Cuál es la ley que regula la seguridad privada específicamente en la Ciudad Autónoma de Buenos Aires (CABA)?",
-     o:["Ley 12.297","Ley 24.192","Ley 1.913","Decreto 1139/02"],c:2},
+     o:["Ley 12.297 (PBA)","Ley 24.192 (espectáculos deportivos)","Ley 1.913 (CABA)","Decreto 1139/02 nacional","Ley 23.950 de detención policial","Ley 25.520 de inteligencia nacional"],c:[2]},
     {q:"Tu credencial de habilitación venció ayer. Tu coordinador te dice 'arrancá igual, hoy la renovamos'. ¿Cuál es la respuesta correcta?",
-     o:["Asumís el turno porque la renovación está en trámite","No podés asumir: sin credencial vigente no podés ejercer legalmente","Podés asumir solo si el puesto no tiene inspecciones ese día","Asumís y avisás a la empresa por escrito"],c:1},
+     o:["Asumís el turno porque la renovación está en trámite","No podés asumir: sin credencial vigente no podés ejercer legalmente","Podés asumir solo si el puesto no tiene inspecciones ese día","Asumís y avisás a la empresa por escrito","Asumís y le pedís al coordinador que firme una autorización especial","Asumís solo el primer turno hasta que llegue la credencial nueva"],c:[1]},
     {q:"Un vigilador se identifica ante una persona como 'agente de civil' para que coopere con una revisión. ¿Qué delito comete?",
-     o:["Ninguno, si la intención fue buena","Falta administrativa leve","Usurpación de título y función pública: delito penal","Abuso de autoridad menor"],c:2},
-    {q:"Ley 12.297 (PBA): ¿Qué autoridad tiene potestad para sancionar y habilitar empresas de seguridad privada en la Provincia de Buenos Aires?",
-     o:["La Policía Bonaerense directamente","El Ministerio de Seguridad de la PBA a través de la Dirección de Seguridad Privada","El Ministerio de Justicia Nacional","Cualquier juzgado de primera instancia provincial"],c:1},
-    {q:"Te piden firmar el libro de novedades de un colega porque 'se olvidó'. El libro dice que durante ese turno 'sin novedades'. ¿Qué hacés?",
-     o:["Firmás porque es un trámite rutinario y no hay problema","Firmás solo si sabés que efectivamente no hubo novedades","No firmás: cada firma implica tu responsabilidad personal sobre lo asentado","Firmás y aclarás al lado 'firma en representación'"],c:2},
-    {q:"La revisión corporal (cacheo) de una persona, ¿cuándo puede realizarla un vigilador?",
-     o:["Cuando hay sospecha fundada de que lleva un arma","Nunca: el cacheo corporal es exclusivo de la autoridad policial","Con autorización escrita del cliente del servicio","Solo en eventos masivos con protocolo especial"],c:1},
-    {q:"Un vigilador retiene a alguien que intentó robar, lo tiene sujeto esperando a la policía. La persona logra soltarse y se va. ¿El vigilador cometió algún error?",
-     o:["Sí: nunca debió haberlo retenido sin importar el delito","No: en flagrante delito puede retenerlo, pero no puede impedirle irse a la fuerza si logra escapar","No cometió ningún error, debió haberlo reducido con más fuerza","Sí: debió haberlo esposado de inmediato"],c:1},
+     o:["Ninguno, si la intención fue buena","Falta administrativa leve sin consecuencias penales","Usurpación de título y función pública: delito penal","Abuso de autoridad menor","Violación de domicilio","Coacción ilegal solamente"],c:[2]},
+    {q:"Ley 12.297 (PBA): ¿Qué autoridad habilita y sanciona empresas de seguridad privada en Buenos Aires?",
+     o:["La Policía Bonaerense directamente","El Ministerio de Seguridad de la PBA a través de la Dirección de Seguridad Privada","El Ministerio de Justicia Nacional","Cualquier juzgado de primera instancia provincial","La Secretaría de Comercio Interior","El Ministerio de Trabajo de la PBA"],c:[1]},
+    {q:"Te piden firmar el libro de novedades de un colega porque 'se olvidó'. Dice 'sin novedades'. ¿Qué hacés?",
+     o:["Firmás porque es un trámite rutinario","Firmás solo si sabés que efectivamente no hubo novedades","No firmás: cada firma implica tu responsabilidad personal sobre lo asentado","Firmás y aclarás al lado 'firma en representación'","Firmás pero lo reportás al coordinador después","Consultás con el coordinador si podés firmar en su nombre"],c:[2]},
+    {q:"La revisión de pertenencias (mochilas, bolsos) en el ingreso a un establecimiento: ¿cuándo es válida legalmente?",
+     o:["Siempre que el vigilador tenga sospecha fundada","Cuando el reglamento interno del establecimiento lo prevé y el ingresante es notificado y acepta voluntariamente","Nunca: solo la policía puede revisar pertenencias","Solo en eventos masivos con más de 500 personas","Con autorización del juez de turno","Cuando el coordinador lo ordena expresamente por radio"],c:[1]},
+    {q:"Un vigilador retiene a alguien en flagrante delito esperando a la policía. La persona logra soltarse y huye. ¿El vigilador cometió algún error?",
+     o:["Sí: nunca debió haberlo retenido sin importar el delito","No: podía retenerlo en flagrancia, pero no puede impedirle huir usando fuerza desproporcionada","No cometió ningún error, debió haberlo reducido con más fuerza","Sí: debió haberlo esposado de inmediato","No: debió haber disparado al aire para asustar","Sí: la retención solo es válida con autorización judicial previa"],c:[1]},
   ],
   2:[
-    {q:"Son las 3 AM, no pasa nadie desde hace 2 horas. Decidís 'cerrar los ojos 5 minutos sin dormirte'. ¿Esto está permitido?",
-     o:["Sí, si es menos de 10 minutos y no hay movimiento","Solo si avisás al coordinador por radio","No: dormitar en el puesto tiene las mismas consecuencias que dormirse, es falta grave","Sí, en turnos nocturnos hay mayor tolerancia"],c:2},
-    {q:"El sistema de cámaras emite una alarma de movimiento en el depósito que debería estar vacío a las 11 PM. ¿Cuál es tu primera acción?",
-     o:["Ir inmediatamente al depósito a ver qué pasa","Verificar en el monitor qué muestra la cámara, informar al coordinador y esperar instrucciones antes de actuar solo","Activar el botón de pánico de inmediato sin verificar","Ignorarlo 10 minutos: puede ser una falla del sensor"],c:1},
-    {q:"Notás que la cámara del acceso principal lleva 90 minutos sin imagen: pantalla negra. ¿Qué hacés?",
-     o:["Esperás a que vuelva sola, puede ser una falla eléctrica temporal","Lo reportás al coordinador al final del turno para no interrumpirlo","Lo asentás en el libro de novedades con hora exacta y reportás al coordinador de inmediato: puede ser intencional","Lo ignorás si el resto de las cámaras funciona bien"],c:2},
+    {q:"Son las 3 AM, no pasa nadie desde hace 2 horas. Decidís 'cerrar los ojos 5 minutos sin dormirte'. ¿Está permitido?",
+     o:["Sí, si es menos de 10 minutos y no hay movimiento","Solo si avisás al coordinador por radio","No: dormitar en el puesto tiene las mismas consecuencias que dormirse, es falta grave","Sí, en turnos nocturnos hay mayor tolerancia","Podés hacerlo si dejás la radio encendida","Sí, mientras estés de pie y no pierdas el control"],c:[2]},
+    {q:"El sistema de cámaras emite alarma de movimiento en el depósito que debería estar vacío a las 11 PM. ¿Primera acción?",
+     o:["Ir inmediatamente al depósito a ver qué pasa","Verificar en el monitor qué muestra la cámara, informar al coordinador y esperar instrucciones antes de actuar solo","Activar el botón de pánico de inmediato sin verificar","Ignorarlo 10 minutos: puede ser una falla del sensor","Llamar directamente al 911 sin avisar al coordinador","Apagar y reiniciar el sistema para ver si la alarma persiste"],c:[1]},
+    {q:"La cámara del acceso principal lleva 90 minutos sin imagen: pantalla negra. ¿Qué hacés?",
+     o:["Esperás a que vuelva sola, puede ser falla eléctrica temporal","Lo reportás al coordinador al final del turno","Lo asentás en el libro con hora exacta y reportás al coordinador de inmediato: puede ser intencional","Lo ignorás si el resto de las cámaras funciona bien","Le avisás al cliente del servicio directamente sin pasar por el coordinador","Desenchufás y enchufás la cámara para resetearla"],c:[2]},
     {q:"El 'conocido del dueño' llega sin aviso y pide entrar sin registrarse diciendo 'siempre entro así'. ¿Qué hacés?",
-     o:["Lo dejás pasar: si el dueño lo conoce, es confiable","Le pedís que espere y llamás al dueño para confirmar, pero igual debe registrarse como cualquier persona","Lo dejás pasar pero anotás su ingreso de todas formas","Le explicás que necesitás una autorización del dueño por escrito"],c:1},
-    {q:"Llega al puesto una persona que se presenta como técnico de mantenimiento a arreglar el sistema de cámaras, pero no estaba en el parte del día. ¿Qué hacés?",
-     o:["Lo dejás pasar porque la urgencia técnica justifica el ingreso","Lo hacés esperar, verificás con el coordinador o el cliente si el servicio fue solicitado, y no lo dejás entrar sin confirmación","Lo dejás entrar pero lo acompañás en todo momento","Le pedís el DNI, lo anotás y lo dejás trabajar"],c:1},
-    {q:"Dos personas discuten acaloradamente en el acceso al establecimiento. Uno empuja al otro. ¿Cuál es tu respuesta correcta?",
-     o:["Intervenís físicamente para separarlos antes de que escale","Gritás 'basta' desde la distancia y llamás al 911 y al coordinador; intervenís físicamente solo si hay riesgo de vida inminente","Te mantenés alejado y esperás a que se calmen solos","Llamás solo al coordinador y esperás sus instrucciones antes de hacer cualquier cosa"],c:1},
-    {q:"El cliente del servicio te pide que guardes en el puesto un paquete que llegó para él porque no hay nadie en la oficina. ¿Podés hacerlo?",
-     o:["Sí: si el propio cliente lo pide, es tu obligación ayudarlo","Solo si el paquete está abierto y podés verificar el contenido","Lo consultás con tu coordinador antes de aceptar cualquier encomienda en el puesto","No recibís nada: el puesto no es depósito de objetos de terceros bajo ninguna circunstancia"],c:2},
-    {q:"Ves en el monitor que alguien fuerza una puerta trasera. Identificás que es el empleado de limpieza que trabaja de noche. ¿Qué hacés?",
-     o:["No hacés nada: ya sabés que es personal autorizado","Lo llamás por radio para confirmar que es él y que tiene autorización para estar en esa área a esa hora","Igual reportás la novedad: el acceso inusual debe quedar registrado aunque sea personal conocido","Vas personalmente a verificar sin avisar a nadie"],c:2},
+     o:["Lo dejás pasar: si el dueño lo conoce, es confiable","Le pedís que espere, llamás al dueño para confirmar, pero igual debe registrarse","Lo dejás pasar pero anotás su ingreso de todas formas","Le explicás que necesitás una autorización del dueño por escrito","Lo dejás pasar porque no querés conflictos con el cliente","Lo retenés hasta que llegue el dueño personalmente"],c:[1]},
+    {q:"Llega un 'técnico de mantenimiento' a arreglar las cámaras pero no estaba en el parte del día. ¿Qué hacés?",
+     o:["Lo dejás pasar porque la urgencia técnica justifica el ingreso","Lo hacés esperar, verificás con el coordinador o el cliente si el servicio fue solicitado, y no lo dejás entrar sin confirmación","Lo dejás entrar pero lo acompañás en todo momento","Le pedís el DNI, lo anotás y lo dejás trabajar","Lo dejás solo en el cuarto técnico porque es área no sensible","Le indicás que vuelva mañana con una orden de trabajo"],c:[1]},
+    {q:"Dos personas discuten acaloradamente en el acceso. Uno empuja al otro. ¿Tu respuesta correcta?",
+     o:["Intervenís físicamente para separarlos antes de que escale","Te interponés verbalmente, llamás al 911 y al coordinador; usás la fuerza física solo si hay riesgo de vida inminente","Te mantenés alejado y esperás a que se calmen solos","Llamás solo al coordinador y esperás sus instrucciones","Sacás el gas pimienta preventivamente","Pedís a los transeúntes que ayuden a separarlos"],c:[1]},
+    {q:"El cliente del servicio te pide guardar en el puesto un paquete que llegó para él. ¿Podés hacerlo?",
+     o:["Sí: si el propio cliente lo pide, es tu obligación ayudarlo","Solo si el paquete está abierto y podés verificar el contenido","Lo consultás con tu coordinador antes de aceptar cualquier encomienda en el puesto","No recibís nada: el puesto no es depósito de objetos bajo ninguna circunstancia","Aceptás y lo guardás en el cajón del puesto bajo tu llave","Aceptás solo si el paquete no supera cierto peso y tamaño"],c:[2]},
+    {q:"Ves en el monitor que alguien fuerza una puerta trasera. Identificás que es el empleado de limpieza nocturno. ¿Qué hacés?",
+     o:["No hacés nada: ya sabés que es personal autorizado","Lo llamás por radio para confirmar que es él y que tiene autorización para esa área a esa hora","Reportás la novedad igual: el acceso inusual debe quedar registrado aunque sea personal conocido","Vas personalmente a verificar sin avisar a nadie","Le abrís la puerta remotamente para que no tenga que forzarla","Lo grabás con el celular como evidencia antes de hacer nada"],c:[1,2]},
   ],
   3:[
-    {q:"Hay humo visible saliendo por la ranura de una puerta del depósito. Tenés un extintor a mano. ¿Cuál es tu primera acción?",
-     o:["Abrís la puerta y usás el extintor de inmediato","Activás la alarma de incendio y llamás al 100 PRIMERO; luego evaluás si podés usar el extintor con seguridad","Avisás solo al coordinador por radio antes de hacer nada","Evacuás a las personas del área sin llamar a bomberos todavía"],c:1},
-    {q:"Hay 3 heridos: uno sangra abundantemente de una herida en el brazo, uno está inconsciente en el suelo, uno tiene el tobillo torcido y grita de dolor. ¿A quién priorizás mientras esperás el SAME?",
-     o:["Al que grita: claramente es el más afectado","Al que sangra y al inconsciente: mayor riesgo de vida inmediato","Al del tobillo: es el único que puede comunicarse y guiarte","A los tres por igual: no podés hacer diferencias"],c:1},
-    {q:"Un robo acaba de ocurrir. La víctima pide que la ayudes a ordenar el local 'para que no se vea tan mal cuando llegue la policía'. ¿Qué hacés?",
-     o:["La ayudás: el orden facilita el trabajo policial","Le explicás que no podés tocar nada: la escena debe preservarse exactamente como está para la investigación","Sacás fotos primero y luego ordenás","Ordenás solo el área donde estuvo el ladrón"],c:1},
-    {q:"Estás evacuando un edificio por incendio en el piso 3. El ascensor está funcionando perfectamente. Una persona mayor con dificultad para caminar pide usarlo. ¿Qué hacés?",
-     o:["Lo autorizás: para personas con movilidad reducida el ascensor es la excepción","Buscás dos personas que la ayuden a bajar por la escalera: el ascensor nunca se usa en incendios","La dejás en el piso y esperás a bomberos","La llevás en el ascensor vos mismo para asegurarte"],c:1},
-    {q:"Llamás al 911 por un robo en curso. El operador te pregunta '¿cuántas personas?' y vos viste solo a una. ¿Qué respondés?",
-     o:["'Muchas, no sé, llamá refuerzos'","'Una que yo vi, pueden ser más, no tengo visibilidad del lugar completo'","'No sé, lleguen rápido' y colgás","'Dos o tres' para que manden más patrullas"],c:1},
-    {q:"Después de un incendio controlado, la policía y bomberos te piden que les muestres las grabaciones de las cámaras. ¿Qué hacés?",
-     o:["Las ponés a disposición de inmediato: tienen autoridad para pedirlas","Las ponés a disposición pero antes avisás al coordinador o empresa para que quede registrado","Te negás hasta tener una orden escrita firmada","Las exportás vos mismo a un USB y se las das"],c:1},
-    {q:"Una persona cae al suelo inconsciente. Un transeúnte dice 'hay que darle agua y levantarla'. ¿Cuál es tu respuesta?",
-     o:["Seguís el consejo: el movimiento ayuda a la circulación","No la movés ni le das agua: llamás al 107/911 y la mantenés en la posición en que cayó hasta que lleguen los médicos","La levantás con cuidado entre varios","Le ponés agua en la frente para que reaccione"],c:1},
-    {q:"¿Qué información es CRÍTICA dar primero al llamar al 107 (SAME)?",
-     o:["Tu nombre y número de habilitación","La dirección exacta del lugar: sin ella el SAME no puede llegar","El tipo de herida o situación médica","La cantidad de personas involucradas"],c:1},
+    {q:"Hay humo visible saliendo por la ranura de una puerta del depósito. Tenés un extintor a mano. ¿Primera acción?",
+     o:["Abrís la puerta y usás el extintor de inmediato","Activás la alarma de incendio y llamás al 100 PRIMERO; luego evaluás si podés usar el extintor con seguridad","Avisás solo al coordinador por radio antes de hacer nada","Evacuás el área sin llamar a bomberos todavía","Apagás el extintor para tenerlo listo y esperás que baje el humo","Mojás toallas y las ponés bajo la puerta para ganar tiempo"],c:[1]},
+    {q:"Hay 3 heridos: uno sangra abundantemente del brazo, uno está inconsciente, uno tiene el tobillo torcido y grita. ¿A quién priorizás esperando el SAME?",
+     o:["Al que grita: claramente es el más afectado","Al que sangra abundantemente y al inconsciente: mayor riesgo de vida inmediato","Al del tobillo: es el único que puede comunicarse","A los tres por igual: no podés hacer diferencias","Al inconsciente exclusivamente: es el que no puede pedir ayuda","Al que sangra: la pérdida de sangre es siempre lo más urgente"],c:[1]},
+    {q:"Un robo acaba de ocurrir. La víctima pide que la ayudes a ordenar el local 'para que no se vea tan mal'. ¿Qué hacés?",
+     o:["La ayudás: el orden facilita el trabajo policial","No podés tocar nada: la escena debe preservarse exactamente como está para la investigación","Sacás fotos primero y luego ordenás","Ordenás solo el área donde estuvo el ladrón","Ordenás solo lo que esté en el acceso para que el cliente no sufra más","Sacás todo lo valioso y lo guarás en la caja fuerte como protección"],c:[1]},
+    {q:"Evacuando un edificio por incendio en el piso 3. El ascensor funciona perfecto. Una persona mayor con dificultad para caminar pide usarlo. ¿Qué hacés?",
+     o:["Lo autorizás: para personas con movilidad reducida el ascensor es la excepción","Buscás personas que la ayuden a bajar por la escalera: el ascensor NUNCA se usa en incendios","La dejás en el piso y esperás a bomberos para que la rescaten","La llevás en el ascensor vos mismo para asegurarte","La dejás usar el ascensor si el incendio aún no afecta el piso 3","Llamás al 107 para que la atiendan ahí hasta que lleguen bomberos"],c:[1]},
+    {q:"Llamás al 911 por un robo en curso. El operador pregunta '¿cuántas personas?' y vos viste solo a una. ¿Qué respondés?",
+     o:["'Muchas, no sé, mandá refuerzos'","'Una que yo vi, pueden ser más, no tengo visibilidad completa del lugar'","'No sé, lleguen rápido' y colgás","'Dos o tres' para que manden más patrullas","Te callás y esperás que el operador pregunte otra cosa","Decís 'cinco o seis' para que la respuesta sea más rápida"],c:[1]},
+    {q:"Tras un incendio controlado, policía y bomberos piden las grabaciones de cámaras. ¿Qué hacés?",
+     o:["Las ponés a disposición de inmediato: tienen autoridad para pedirlas","Las ponés a disposición pero antes avisás al coordinador o empresa para que quede registrado","Te negás hasta tener una orden escrita firmada","Las exportás vos mismo a un USB y se las entregás sin avisar a nadie","Les decís que no tenés acceso y que llamen a la empresa","Solo las mostrás en el monitor; no permitís copias sin autorización escrita"],c:[1]},
+    {q:"Una persona cae inconsciente. Un transeúnte dice 'hay que darle agua y levantarla'. ¿Cuál es tu respuesta?",
+     o:["Seguís el consejo: el movimiento ayuda a la circulación","No la movés ni le das agua: llamás al 107/911 y la mantenés en la posición en que cayó","La levantás con cuidado entre varios para llevarla a un lugar más cómodo","Le ponés agua en la frente para que reaccione","Le ponés algo bajo la cabeza y le das agua en sorbos pequeños","La sentás apoyada contra la pared para que respire mejor"],c:[1]},
+    {q:"¿Qué información es CRÍTICA dar PRIMERO al llamar al 107 (SAME)?",
+     o:["Tu nombre y número de habilitación como vigilador","La dirección exacta del lugar: sin ella el SAME no puede llegar","El tipo de herida o situación médica en detalle","La cantidad de personas involucradas","El nombre del coordinador del establecimiento","Si el seguro médico del herido está vigente"],c:[1]},
   ],
   4:[
-    {q:"Al iniciar el turno verificás el botón de pánico y no tiene señal. Tu coordinador dice 'empezá igual, en un rato lo arreglan'. ¿Qué hacés?",
-     o:["Asumís: el coordinador tiene la responsabilidad, no vos","Te negás a asumir el puesto hasta que el dispositivo esté operativo, y asentás la novedad en el libro","Asumís pero llamás a la policía para avisarles que estás sin sistema de pánico","Asumís solo si el cliente del servicio acepta el riesgo"],c:1},
+    {q:"Al iniciar el turno el botón de pánico no tiene señal. Tu coordinador dice 'empezá igual, en un rato lo arreglan'. ¿Qué hacés?",
+     o:["Asumís: el coordinador tiene la responsabilidad, no vos","Te negás a asumir el puesto hasta que el dispositivo esté operativo, y asentás la novedad en el libro","Asumís pero llamás a la policía para avisarles que estás sin pánico","Asumís solo si el cliente del servicio acepta el riesgo por escrito","Asumís y le pedís al coordinador que venga él a cubrir si hay emergencia","Revisás el dispositivo vos mismo para ver si lo podés reparar"],c:[1]},
     {q:"Dos personas armadas entran al local. Podés activar el botón sin que te vean. ¿Cuándo lo hacés?",
-     o:["Esperás a que sea seguro: no querés provocarlos","Lo activás apenas podés hacerlo sin que lo noten: cada segundo de retraso es tiempo de respuesta perdido","Esperás a que se vayan y lo activás después","Solo lo activás si empiezan a golpear a alguien"],c:1},
-    {q:"La central te llama después del pánico. Estás frente al delincuente armado. El operador pregunta '¿todo bien?'. ¿Qué respondés?",
-     o:["'Sí, fue un error' para que el delincuente no reaccione","Guardás silencio absoluto: ese silencio es el protocolo que indica que estás bajo coerción","'Llamen a la policía' en voz baja","Colgás el teléfono"],c:1},
-    {q:"Activaste el botón de pánico por error al apoyarte en el dispositivo. ¿Qué hacés?",
-     o:["No decís nada: si no llaman, es que no detectaron nada","Llamás a la central de inmediato para cancelar la alerta y explicar lo sucedido","Esperás a que llegue el móvil y ahí explicás","Mandás un mensaje de texto a la empresa"],c:1},
-    {q:"Durante un asalto memorizás: 2 personas, uno con campera roja, uno con gorra azul, salieron por Av. Corrientes hacia el este en moto sin patente visible. ¿Este nivel de detalle es?",
-     o:["Excesivo: solo necesitás la cantidad y la dirección","Exactamente lo que se necesita: cada detalle puede ser clave para la identificación y captura","Insuficiente: deberías haber seguido la moto","Innecesario si activaste el botón de pánico"],c:1},
-    {q:"Un delincuente te exige la clave del sistema de alarma bajo amenaza. ¿Cuál es la respuesta más correcta?",
-     o:["No la entregás bajo ninguna circunstancia: es confidencial","Entregás solo una parte de la clave","Cooperás y entregás lo que pide: tu vida es lo primero. Reportás todo al coordinador después","Le das una clave falsa para ganar tiempo"],c:2},
-    {q:"El botón de pánico sirve TAMBIÉN para:",
-     o:["Registrar el inicio y fin de turno","Coordinación con el SAME ante emergencias médicas graves cuando se combina con el 107","Comunicarte con el coordinador en el día a día","Registrar las rondas de seguridad"],c:1},
+     o:["Esperás a que sea seguro: no querés provocarlos","Lo activás apenas podés hacerlo sin que lo noten: cada segundo de retraso es tiempo de respuesta perdido","Esperás a que se vayan y lo activás después","Solo lo activás si empiezan a golpear a alguien","Primero contás cuántos son y qué armas tienen, luego activás","Esperás que el cliente o un empleado lo active ellos primero"],c:[1]},
+    {q:"La central llama después del pánico. Estás frente al delincuente armado. El operador pregunta '¿todo bien?'. ¿Qué respondés?",
+     o:["'Sí, fue un error' para que el delincuente no reaccione","Guardás silencio absoluto: el silencio indica que estás bajo coerción","'Llamen a la policía' en voz baja","Colgás el teléfono para no delatar la llamada","Respondés 'sí' y en la siguiente frase insertás la clave de coerción acordada","Decís 'todo bien' y gesticulás con la cabeza para que el operador entienda"],c:[1]},
+    {q:"Activaste el botón de pánico por error. ¿Qué hacés?",
+     o:["No decís nada: si no llaman, no pasó nada","Llamás a la central de inmediato para cancelar la alerta y explicar lo sucedido","Esperás a que llegue el móvil y ahí explicás","Mandás un mensaje de texto a la empresa","Llamás al coordinador para que él lo cancele","Lo anotás en el libro y no hacés nada más porque fue un error"],c:[1]},
+    {q:"Durante un asalto memorizás: 2 personas, campera roja, gorra azul, salieron por Av. Corrientes hacia el este en moto sin patente. ¿Este nivel de detalle es?",
+     o:["Excesivo: solo necesitás la cantidad y la dirección de fuga","Exactamente lo que se necesita: cada detalle puede ser clave para la identificación","Insuficiente: deberías haber seguido la moto para dar más datos","Innecesario si ya activaste el botón de pánico","Correcto solo si lo grabás también con el celular","Suficiente solo si hay cámaras que respalden el relato"],c:[1]},
+    {q:"Un delincuente te exige la clave del sistema de alarma bajo amenaza de arma. ¿Cuál es la respuesta más correcta?",
+     o:["No la entregás bajo ninguna circunstancia: es confidencial","Entregás solo una parte de la clave para ganar tiempo","Tu vida vale más que cualquier clave: cooperás y entregás lo pedido, y reportás todo en detalle al coordinador después","Le das una clave falsa para ganar tiempo y que el sistema lo bloquee","Activás el botón de pánico oculto mientras negociás","Decís que no sabés la clave: es lo más seguro"],c:[2]},
+    {q:"El botón de pánico de tu puesto sirve TAMBIÉN para:",
+     o:["Registrar el inicio y fin de cada turno","Coordinar con el SAME en emergencias médicas graves cuando se activa junto al 107","Comunicarte con el coordinador en el día a día","Registrar las rondas de seguridad periódicas","Habilitar el acceso remoto de cámaras al cliente","Confirmar que el vigilador está activo cada hora"],c:[1]},
     {q:"¿Qué información debés tener memorizada de tu empresa de monitoreo ANTES de asumir el turno?",
-     o:["Solo el nombre de la empresa","El número de contacto de la central, el protocolo de verificación y la clave del puesto","Solo la dirección de la empresa","El nombre del coordinador de turno"],c:1},
+     o:["Solo el nombre de la empresa de monitoreo","El número de contacto de la central, el protocolo de verificación y la clave del puesto","Solo la dirección física de la central de monitoreo","El nombre y apellido del coordinador de turno asignado","La marca y modelo del equipo de pánico que tenés en el puesto","Los turnos y horarios de todos los compañeros del sector"],c:[1]},
   ],
 };
 
@@ -1453,26 +1459,53 @@ function startModQuiz(){
   renderQ(); go('s-quiz');
 }
 
+function getCorrects(q){ return Array.isArray(q.c) ? q.c : [q.c]; }
+
 function renderQ(){
   const q=curQ[qIdx], tot=curQ.length;
   gi('q-counter').textContent='Pregunta '+(qIdx+1)+' de '+tot;
   gi('q-pbar').style.width=(qIdx/tot*100)+'%';
   buildDots('q-dots',tot,qIdx,qAns);
+  const cs=getCorrects(q);
+  const multi=cs.length>1;
   gi('q-txt').textContent=q.q;
   const c=gi('q-opts'); c.innerHTML='';
-  q.o.forEach((op,i)=>{ const b=document.createElement('button'); b.className='opt'; b.textContent=op; b.onclick=()=>ansQ(i,b,q); c.appendChild(b); });
+  if(multi){ const h=document.createElement('div'); h.className='opt-hint'; h.textContent='⚠️ Esta pregunta tiene '+cs.length+' respuestas correctas — seleccioná ambas'; c.appendChild(h); }
+  q.o.forEach((op,i)=>{
+    const b=document.createElement('button'); b.className='opt'; b.textContent=op;
+    b.onclick=()=>{
+      b.classList.toggle('selected');
+      const sel=c.querySelectorAll('.opt.selected').length;
+      const conf=c.querySelector('.btn-confirm');
+      if(conf) conf.classList.toggle('ready', sel>0);
+    };
+    c.appendChild(b);
+  });
+  const conf=document.createElement('button'); conf.className='btn-confirm';
+  conf.textContent='CONFIRMAR RESPUESTA →';
+  conf.onclick=()=>confirmQ(q);
+  c.appendChild(conf);
   gi('q-fb').style.display='none';
   gi('btn-qnext').style.display='none';
 }
 
-function ansQ(sel,btn,q){
-  const ok=sel===q.c;
-  gi('q-opts').querySelectorAll('.opt').forEach((b,i)=>{ b.classList.add('off'); b.onclick=null; if(i===q.c)b.classList.add('ok'); if(i===sel&&!ok)b.classList.add('bad'); });
+function confirmQ(q){
+  const cs=getCorrects(q);
+  const opts=gi('q-opts').querySelectorAll('.opt');
+  const sel=[...opts].map((b,i)=>b.classList.contains('selected')?i:-1).filter(i=>i>=0);
+  const ok=sel.length===cs.length && cs.every(c=>sel.includes(c));
+  opts.forEach((b,i)=>{
+    b.onclick=null; b.classList.remove('selected');
+    if(cs.includes(i)) b.classList.add('ok');
+    else if(sel.includes(i)) b.classList.add('bad');
+  });
+  gi('q-opts').querySelector('.btn-confirm').style.display='none';
   qAns[qIdx]={ok};
   const fb=gi('q-fb'); fb.style.display='block';
-  fb.innerHTML=`<div class="fb ${ok?'fb-ok':'fb-bad'}"><span>${ok?'✅':'❌'}</span><span>${ok?'¡Correcto!':'Incorrecto. Respuesta: '+q.o[q.c]}</span></div>`;
+  const correctTxt=cs.map(i=>q.o[i]).join(' / ');
+  fb.innerHTML=`<div class="fb ${ok?'fb-ok':'fb-bad'}"><span>${ok?'✅':'❌'}</span><span>${ok?'¡Correcto!':'Incorrecto. Correcta(s): '+correctTxt}</span></div>`;
   const nb=gi('btn-qnext'); nb.style.display='block';
-  nb.textContent = qIdx===curQ.length-1?'VER RESULTADO →':'SIGUIENTE →';
+  nb.textContent=qIdx===curQ.length-1?'VER RESULTADO →':'SIGUIENTE →';
 }
 
 function nextQ(){ if(qIdx===curQ.length-1) showQResult(); else { qIdx++; renderQ(); } }
@@ -1502,21 +1535,46 @@ function renderF(){
   gi('f-counter').textContent='Pregunta '+(fIdx+1)+' de '+tot;
   gi('f-pbar').style.width=(fIdx/tot*100)+'%';
   buildDots('f-dots',Math.min(10,tot),fIdx<10?fIdx:fIdx-10,fAns,fIdx<10?0:10);
+  const cs=getCorrects(q);
+  const multi=cs.length>1;
   gi('f-txt').textContent=q.q;
   const c=gi('f-opts'); c.innerHTML='';
-  q.o.forEach((op,i)=>{ const b=document.createElement('button'); b.className='opt'; b.textContent=op; b.onclick=()=>ansF(i,b,q); c.appendChild(b); });
+  if(multi){ const h=document.createElement('div'); h.className='opt-hint'; h.textContent='⚠️ Esta pregunta tiene '+cs.length+' respuestas correctas — seleccioná ambas'; c.appendChild(h); }
+  q.o.forEach((op,i)=>{
+    const b=document.createElement('button'); b.className='opt'; b.textContent=op;
+    b.onclick=()=>{
+      b.classList.toggle('selected');
+      const sel=c.querySelectorAll('.opt.selected').length;
+      const conf=c.querySelector('.btn-confirm');
+      if(conf) conf.classList.toggle('ready', sel>0);
+    };
+    c.appendChild(b);
+  });
+  const conf=document.createElement('button'); conf.className='btn-confirm';
+  conf.textContent='CONFIRMAR RESPUESTA →';
+  conf.onclick=()=>confirmF(q);
+  c.appendChild(conf);
   gi('f-fb').style.display='none';
   gi('btn-fnext').style.display='none';
 }
 
-function ansF(sel,btn,q){
-  const ok=sel===q.c;
-  gi('f-opts').querySelectorAll('.opt').forEach((b,i)=>{ b.classList.add('off'); b.onclick=null; if(i===q.c)b.classList.add('ok'); if(i===sel&&!ok)b.classList.add('bad'); });
+function confirmF(q){
+  const cs=getCorrects(q);
+  const opts=gi('f-opts').querySelectorAll('.opt');
+  const sel=[...opts].map((b,i)=>b.classList.contains('selected')?i:-1).filter(i=>i>=0);
+  const ok=sel.length===cs.length && cs.every(c=>sel.includes(c));
+  opts.forEach((b,i)=>{
+    b.onclick=null; b.classList.remove('selected');
+    if(cs.includes(i)) b.classList.add('ok');
+    else if(sel.includes(i)) b.classList.add('bad');
+  });
+  gi('f-opts').querySelector('.btn-confirm').style.display='none';
   fAns[fIdx]={ok};
   const fb=gi('f-fb'); fb.style.display='block';
-  fb.innerHTML=`<div class="fb ${ok?'fb-ok':'fb-bad'}"><span>${ok?'✅':'❌'}</span><span>${ok?'¡Correcto!':'Respuesta: '+q.o[q.c]}</span></div>`;
+  const correctTxt=cs.map(i=>q.o[i]).join(' / ');
+  fb.innerHTML=`<div class="fb ${ok?'fb-ok':'fb-bad'}"><span>${ok?'✅':'❌'}</span><span>${ok?'¡Correcto!':'Correcta(s): '+correctTxt}</span></div>`;
   const nb=gi('btn-fnext'); nb.style.display='block';
-  nb.textContent = fIdx===EXAM.length-1?'VER RESULTADO FINAL →':'SIGUIENTE →';
+  nb.textContent=fIdx===EXAM.length-1?'VER RESULTADO FINAL →':'SIGUIENTE →';
 }
 
 function nextF(){ if(fIdx===EXAM.length-1) showFResult(); else { fIdx++; renderF(); } }
@@ -1963,6 +2021,10 @@ function renderQEditor(){
   const container = gi('qed-list');
   container.innerHTML = '';
   qs.forEach((q,qi) => {
+    const cs = Array.isArray(q.c) ? q.c : [q.c];
+    // Asegurar 6 opciones
+    const opts6 = [...q.o];
+    while(opts6.length < 6) opts6.push('');
     const div = document.createElement('div');
     div.className = 'qcard-edit';
     div.id = 'qce-'+qi;
@@ -1975,10 +2037,10 @@ function renderQEditor(){
       <div class="qcard-edit-body">
         <div class="qed-label">Pregunta</div>
         <textarea class="qed-input" id="qe-q-${qi}" rows="3">${q.q}</textarea>
-        <div class="qed-label">Opciones (marcá el círculo verde = respuesta correcta)</div>
-        ${q.o.map((op,oi)=>`
-          <div class="opt-row ${oi===q.c?'correct':''}" id="optrow-${qi}-${oi}">
-            <input type="radio" class="opt-radio" name="correct-${qi}" value="${oi}" ${oi===q.c?'checked':''} onchange="markCorrect(${qi},${oi})">
+        <div class="qed-label">Opciones — ✅ marcá las correctas (puede ser más de una)</div>
+        ${opts6.map((op,oi)=>`
+          <div class="opt-row ${cs.includes(oi)?'correct':''}" id="optrow-${qi}-${oi}">
+            <input type="checkbox" class="opt-radio" id="chk-${qi}-${oi}" value="${oi}" ${cs.includes(oi)?'checked':''} onchange="markCorrect(${qi},${oi},this.checked)">
             <input type="text" class="opt-input" id="qe-o-${qi}-${oi}" value="${op}" placeholder="Opción ${oi+1}">
           </div>`).join('')}
         <button class="del-q-btn" onclick="deleteQuestion(${qi})">🗑 Eliminar esta pregunta</button>
@@ -1992,18 +2054,15 @@ function toggleQCard(qi){
   el.classList.toggle('open');
 }
 
-function markCorrect(qi, oi){
-  // Quitar estilo de todos los opts de esa pregunta
-  for(let i=0;i<4;i++){
-    const row = gi('optrow-'+qi+'-'+i);
-    if(row) row.classList.toggle('correct', i===oi);
-  }
+function markCorrect(qi, oi, checked){
+  const row = gi('optrow-'+qi+'-'+oi);
+  if(row) row.classList.toggle('correct', checked);
 }
 
 function addQuestion(){
   if(isRubroTab()){
     const all = getAllRubroQuestions();
-    all[qedTab].push({q:'Nueva pregunta',o:['Opción A','Opción B','Opción C','Opción D'],c:0});
+    all[qedTab].push({q:'Nueva pregunta',o:['Opción A','Opción B','Opción C','Opción D','Opción E','Opción F'],c:[0]});
     localStorage.setItem('sab5_rubro_questions', JSON.stringify(all));
     applyRubroQuestions(all);
     renderQEditor();
@@ -2012,7 +2071,7 @@ function addQuestion(){
   }
   const all = getAllQuestions();
   const arr = qedTab==='exam' ? all.exam : all[qedTab];
-  arr.push({q:'Nueva pregunta',o:['Opción A','Opción B','Opción C','Opción D'],c:0});
+  arr.push({q:'Nueva pregunta',o:['Opción A','Opción B','Opción C','Opción D','Opción E','Opción F'],c:[0]});
   if(qedTab==='exam') all.exam=arr; else all[qedTab]=arr;
   localStorage.setItem('sab5_questions', JSON.stringify(all));
   applyQuestions(all);
@@ -2043,9 +2102,10 @@ function saveQuestions(){
   const qs = getEditQuestions();
   const updated = qs.map((q,qi)=>{
     const pregunta = gi('qe-q-'+qi)?.value.trim() || q.q;
-    const opciones = q.o.map((_,oi)=> gi('qe-o-'+qi+'-'+oi)?.value.trim()||q.o[oi]);
-    const correcta = parseInt(document.querySelector(`input[name="correct-${qi}"]:checked`)?.value??q.c);
-    return {q:pregunta, o:opciones, c:correcta};
+    const opciones = [0,1,2,3,4,5].map(oi=> gi('qe-o-'+qi+'-'+oi)?.value.trim()||'').filter((_,oi)=>{ const el=gi('qe-o-'+qi+'-'+oi); return el&&el.value.trim()!==''; });
+    const opciones6 = [0,1,2,3,4,5].map(oi=> gi('qe-o-'+qi+'-'+oi)?.value.trim()||q.o[oi]||'');
+    const correctas = [0,1,2,3,4,5].filter(oi=>{ const cb=gi('chk-'+qi+'-'+oi); return cb&&cb.checked; });
+    return {q:pregunta, o:opciones6, c:correctas.length===1?correctas:correctas.length>1?correctas:[Array.isArray(q.c)?q.c[0]:q.c]};
   });
   if(isRubroTab()){
     const all = getAllRubroQuestions();
