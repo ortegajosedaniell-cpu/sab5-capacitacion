@@ -1,20 +1,20 @@
 [
   {
-    "nombre": "Sabrina Carmona",
-    "legajo": "9965",
-    "dni": "35757206",
-    "sede": "SALUD – Mañana",
-    "tipoServicio": "SALUD",
-    "inicio": "2026-04-06T18:46:16.607Z",
-    "fin": "2026-04-06T19:00:31.288Z",
-    "minutos": 14,
-    "mod1": 100,
-    "mod2": 88,
+    "nombre": "Emanuel Suarez",
+    "legajo": "03",
+    "dni": "31830210",
+    "sede": "SERVICIOS – Tarde",
+    "tipoServicio": "SERVICIOS",
+    "inicio": "2026-04-06T18:52:09.384Z",
+    "fin": "2026-04-06T19:08:08.496Z",
+    "minutos": 16,
+    "mod1": 88,
+    "mod2": 100,
     "mod3": 100,
-    "mod4": 100,
-    "final": 95,
+    "mod4": 88,
+    "final": 100,
     "resultado": "APROBADO",
-    "correctas": 19,
+    "correctas": 20,
     "total": 20
   }
 ]
