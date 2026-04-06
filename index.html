@@ -379,7 +379,7 @@
 
 <!-- ===== FIRMA DIGITAL ===== -->
 <div class="screen" id="s-firma">
-  <div class="topbar" style="background:var(--navy)">✍️ Firma Digital</div>
+  <div class="topbar" style="background:var(--navy)">Firma Digital</div>
   <div class="firma-wrap">
     <p class="firma-instruc">Firmá con tu dedo (o el cursor) en el recuadro para registrar tu participación</p>
     <div class="firma-canvas-wrap">
@@ -395,7 +395,7 @@
 
 <!-- ===== CERTIFICADO ===== -->
 <div class="screen" id="s-email-cert">
-  <div class="topbar" style="background:var(--navy)">🏅 Tu Certificado</div>
+  <div class="topbar" style="background:var(--navy)">Tu Certificado</div>
   <div class="ecert-wrap">
     <div class="cert-preview-box">
       <canvas id="cert-preview-canvas"></canvas>
@@ -542,11 +542,11 @@
 
   <!-- TABS -->
   <div class="admin-tabs" id="admin-tabs-bar">
-    <button class="admin-tab active" onclick="switchTab('t-resultados',this)">📊 Datos</button>
-    <button class="admin-tab" id="tab-preguntas" onclick="switchTab('t-preguntas',this)">❓ Preguntas</button>
-    <button class="admin-tab" id="tab-usuarios" onclick="switchTab('t-usuarios',this)">👥 Admins</button>
-    <button class="admin-tab" id="tab-portada" onclick="switchTab('t-portada',this)">🎨 Portada</button>
-    <button class="admin-tab" id="tab-certificado" onclick="switchTab('t-certificado',this);loadCertAdmin()">🏅 Certificado</button>
+    <button class="admin-tab active" onclick="switchTab('t-resultados',this)">Resultados</button>
+    <button class="admin-tab" id="tab-preguntas" onclick="switchTab('t-preguntas',this)">Preguntas</button>
+    <button class="admin-tab" id="tab-usuarios" onclick="switchTab('t-usuarios',this)">Administradores</button>
+    <button class="admin-tab" id="tab-portada" onclick="switchTab('t-portada',this)">Portada</button>
+    <button class="admin-tab" id="tab-certificado" onclick="switchTab('t-certificado',this);loadCertAdmin()">Certificado</button>
   </div>
 
   <div class="admin-body">
@@ -559,12 +559,15 @@
         <div class="kpi desaprobados"><div class="kpi-n" id="kpi-no">0</div><div class="kpi-l">Desaprobados</div></div>
         <div class="kpi promedio"><div class="kpi-n" id="kpi-avg">-</div><div class="kpi-l">Promedio</div></div>
       </div>
-      <div class="filter-bar">
-        <button class="filter-btn active" onclick="setFilter('todos',this)">Todos</button>
-        <button class="filter-btn" onclick="setFilter('APROBADO',this)">✅ Aprobados</button>
-        <button class="filter-btn" onclick="setFilter('DESAPROBADO',this)">❌ Desaprobados</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">
+        <div class="filter-bar" style="margin-bottom:0">
+          <button class="filter-btn active" onclick="setFilter('todos',this)">Todos</button>
+          <button class="filter-btn" onclick="setFilter('APROBADO',this)">✅ Aprobados</button>
+          <button class="filter-btn" onclick="setFilter('DESAPROBADO',this)">❌ Desaprobados</button>
+        </div>
+        <button onclick="loadAdmin()" id="btn-reload-admin" style="background:#1a1a1a;color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">↻ Actualizar datos</button>
       </div>
-      <input class="search-input" id="admin-search" placeholder="🔍 Buscar nombre, legajo o sede..." oninput="renderTable()">
+      <input class="search-input" id="admin-search" placeholder="Buscar nombre, legajo o sede..." oninput="renderTable()">
       <div style="overflow-x:auto">
         <table class="result-table" id="admin-table">
           <thead><tr><th>Nombre</th><th>Legajo</th><th>Sede/Turno</th><th>Nota</th><th>Resultado</th><th>Fecha</th></tr></thead>
@@ -1696,7 +1699,7 @@ function showFResult(){
     </div>
     ${pass?`
     <div class="cert">
-      <div class="cert-hdr">🏅 Constancia de Capacitación</div>
+      <div class="cert-hdr">Constancia de Capacitación</div>
       <div class="cert-name">${user.nombre}</div>
       <div class="cert-det">Legajo: ${user.legajo} · DNI: ${user.dni}</div>
       <div class="cert-det">${user.sede}</div>
@@ -1948,6 +1951,7 @@ const ADMIN_USER = 'admin';
 const ADMIN_PASS = 'sab5admin'; // ← cambiá esta contraseña
 
 let adminFilter = 'todos';
+let _adminData  = []; // datos consolidados (GitHub + local)
 
 function doAdminLogin(){
   const u = gi('a-user').value.trim();
@@ -1974,26 +1978,42 @@ function doAdminLogin(){
   gi('a-err').style.display = 'block';
 }
 
-function loadAdmin(){
-  const data = getLocal();
-  const total = data.length;
-  const ok    = data.filter(d=>d.resultado==='APROBADO').length;
-  const no    = data.filter(d=>d.resultado==='DESAPROBADO').length;
-  const avg   = total ? Math.round(data.reduce((s,d)=>s+(d.final||0),0)/total) : null;
+async function loadAdmin(){
+  // ── Fetch desde GitHub (datos de TODOS los dispositivos) ──────
+  let remoteData = [];
+  try {
+    const url = `https://raw.githubusercontent.com/${GH_REPO}/main/evaluaciones.json?_=${Date.now()}`;
+    const res  = await fetch(url);
+    if(res.ok) remoteData = await res.json();
+  } catch(e){ console.log('Sin datos remotos:', e.message); }
+
+  // ── Merge: remoto + local sin duplicados (por dni+fin) ────────
+  const localData = getLocal();
+  const keys = new Set(remoteData.map(d=>(d.dni||'')+'|'+(d.fin||'')));
+  for(const d of localData){
+    if(!keys.has((d.dni||'')+'|'+(d.fin||''))) remoteData.push(d);
+  }
+  remoteData.sort((a,b)=>new Date(b.fin||0)-new Date(a.fin||0));
+  _adminData = remoteData;
+
+  // ── KPIs ──────────────────────────────────────────────────────
+  const total = _adminData.length;
+  const ok    = _adminData.filter(d=>d.resultado==='APROBADO').length;
+  const no    = _adminData.filter(d=>d.resultado==='DESAPROBADO').length;
+  const avg   = total ? Math.round(_adminData.reduce((s,d)=>s+(d.final||0),0)/total) : null;
 
   gi('kpi-total').textContent = total;
   gi('kpi-ok').textContent    = ok;
   gi('kpi-no').textContent    = no;
   gi('kpi-avg').textContent   = avg !== null ? avg+'%' : '-';
 
-  // Aplicar visibilidad de tabs según permisos
+  // ── Tabs según permisos ───────────────────────────────────────
   const p = _currentAdmin ? _currentAdmin.perms : {};
   const sa = _currentAdmin && _currentAdmin.isSuperAdmin;
   gi('tab-preguntas').style.display = (sa || p.preguntas) ? '' : 'none';
   gi('tab-usuarios').style.display  = sa ? '' : 'none';
   gi('tab-portada').style.display   = (sa || p.portada)   ? '' : 'none';
 
-  // Activar tab Datos por defecto
   document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.admin-tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelector('.admin-tab').classList.add('active');
@@ -2012,7 +2032,7 @@ function setFilter(f, btn){
 
 function renderTable(){
   const search = (gi('admin-search')?.value||'').toLowerCase();
-  let data = getLocal();
+  let data = [..._adminData];
 
   if(adminFilter !== 'todos') data = data.filter(d=>d.resultado===adminFilter);
   if(search) data = data.filter(d=>
@@ -2056,7 +2076,7 @@ function renderTable(){
 }
 
 function exportCSV(){
-  const data = getLocal();
+  const data = _adminData;
   if(!data.length){ alert('No hay datos para exportar.'); return; }
   const cols = ['nombre','legajo','dni','sede','mod1','mod2','mod3','mod4','final','resultado','correctas','total','minutos','inicio','fin'];
   const heads = ['Nombre','Legajo','DNI','Sede/Turno','Mod1(%)','Mod2(%)','Mod3(%)','Mod4(%)','Final(%)','Resultado','Correctas','Total','Minutos','Inicio','Fin'];
@@ -2069,7 +2089,7 @@ function exportCSV(){
 }
 
 function exportExcel(){
-  const data = getLocal();
+  const data = _adminData;
   if(!data.length){ alert('No hay datos para exportar.'); return; }
   const heads = ['Nombre','Legajo','DNI','Sede/Turno','Mod1(%)','Mod2(%)','Mod3(%)','Mod4(%)','Final(%)','Resultado','Correctas','Total Preguntas','Minutos','Fecha'];
   const cols  = ['nombre','legajo','dni','sede','mod1','mod2','mod3','mod4','final','resultado','correctas','total','minutos','fin'];
@@ -2094,7 +2114,7 @@ function exportExcel(){
 }
 
 function exportWord(){
-  const data = getLocal();
+  const data = _adminData;
   if(!data.length){ alert('No hay datos para exportar.'); return; }
   const fecha = new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'});
   const aprobados = data.filter(d=>d.resultado==='APROBADO').length;
