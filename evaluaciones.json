@@ -1,19 +1,20 @@
 [
   {
-    "nombre": "Nestor Bufi",
-    "legajo": "1156248753",
-    "dni": "18301894",
-    "sede": "Tflz",
-    "inicio": "2026-04-06T00:54:02.598Z",
-    "fin": "2026-04-06T01:03:54.583Z",
-    "minutos": 10,
+    "nombre": "Sabrina Carmona",
+    "legajo": "9965",
+    "dni": "35757206",
+    "sede": "SALUD – Mañana",
+    "tipoServicio": "SALUD",
+    "inicio": "2026-04-06T18:46:16.607Z",
+    "fin": "2026-04-06T19:00:31.288Z",
+    "minutos": 14,
     "mod1": 100,
-    "mod2": 100,
+    "mod2": 88,
     "mod3": 100,
     "mod4": 100,
-    "final": 100,
+    "final": 95,
     "resultado": "APROBADO",
-    "correctas": 20,
+    "correctas": 19,
     "total": 20
   }
 ]
