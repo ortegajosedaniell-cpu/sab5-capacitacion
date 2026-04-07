@@ -1,9 +1,32 @@
+<!--
+  ════════════════════════════════════════════════════════════════
+  SAB-5 · Sistema de Capacitación Profesional en Seguridad Privada
+  ════════════════════════════════════════════════════════════════
+  © 2026 SAB-5 Seguridad Privada. Todos los derechos reservados.
+  Este software, su código fuente, contenido, preguntas, estructura
+  de evaluación y diseño son propiedad intelectual exclusiva de
+  SAB-5 Seguridad Privada y están protegidos por las leyes de
+  propiedad intelectual de la República Argentina (Ley 11.723)
+  y tratados internacionales de derechos de autor.
+
+  Queda expresamente prohibido:
+  · Copiar, reproducir o distribuir este software o su contenido
+  · Modificar o crear obras derivadas sin autorización escrita
+  · Usar este sistema o su metodología con fines comerciales
+    sin licencia expresa del titular
+
+  Violaciones serán perseguidas legalmente.
+  Contacto: joseortega@sab5.com.ar
+  ════════════════════════════════════════════════════════════════
+-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <meta name="theme-color" content="#b71c1c">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <title>SAB-5 | Capacitación Seguridad Privada</title>
   <style>
@@ -65,8 +88,9 @@
     .login-form{padding:0 20px 20px;flex:1}
     .form-group{margin-bottom:16px}
     label{display:block;font-size:12px;font-weight:700;color:var(--red2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px}
-    input,select{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:10px;font-size:16px;background:#fff;color:var(--text);-webkit-appearance:none;transition:border-color .2s}
-    input:focus,select:focus{outline:none;border-color:var(--red)}
+    input:not([type="checkbox"]):not([type="color"]):not([type="file"]):not([type="radio"]),select{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:10px;font-size:16px;background:#fff;color:var(--text);-webkit-appearance:none;transition:border-color .2s}
+    input:not([type="checkbox"]):not([type="color"]):not([type="file"]):not([type="radio"]):focus,select:focus{outline:none;border-color:var(--red)}
+    input[type="checkbox"]{width:20px;height:20px;min-width:20px;padding:0;margin:0;border:2px solid #ccc;border-radius:4px;accent-color:var(--red);cursor:pointer;appearance:auto;-webkit-appearance:checkbox;flex-shrink:0}
 
     /* BUTTONS */
     .btn{display:block;width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;text-align:center;transition:transform .1s,opacity .2s}
@@ -342,12 +366,15 @@
     #intro-skip:hover,#cierre-skip:hover{background:rgba(255,255,255,.18)}
     #intro-bar,#cierre-bar{position:absolute;bottom:0;left:0;height:3px;background:var(--red);width:0%;transition:width .3s linear;z-index:10}
     /* ── FIRMA ── */
-    .firma-wrap{padding:24px 20px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
-    .firma-instruc{font-size:15px;color:#555;max-width:300px}
-    .firma-canvas-wrap{border:2px dashed #bbb;border-radius:10px;background:#fafafa;touch-action:none;cursor:crosshair;overflow:hidden;box-shadow:inset 0 1px 4px rgba(0,0,0,.06)}
-    #firma-canvas{display:block}
-    .firma-hint{font-size:12px;color:#aaa;margin-top:-8px}
-    .firma-btns{display:flex;gap:12px;width:100%;max-width:320px}
+    .firma-wrap{padding:24px 20px 32px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+    .firma-header{background:linear-gradient(135deg,#1a1a1a,#2c0000);color:#fff;padding:18px 20px;text-align:center;width:100%}
+    .firma-header h2{font-size:18px;font-weight:800;margin-bottom:4px}
+    .firma-header p{font-size:12px;opacity:.75}
+    .firma-instruc{font-size:15px;color:#444;max-width:320px;font-weight:600}
+    .firma-canvas-wrap{border:3px solid #b71c1c;border-radius:12px;background:#fff;touch-action:none;cursor:crosshair;overflow:hidden;box-shadow:0 2px 16px rgba(183,28,28,.15);width:100%;max-width:360px}
+    #firma-canvas{display:block;width:100%;height:auto}
+    .firma-hint{font-size:12px;color:#aaa;margin-top:-6px}
+    .firma-btns{display:flex;gap:12px;width:100%;max-width:360px}
     /* ── EMAIL CERT ── */
     .ecert-wrap{padding:20px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
     .cert-preview-box{width:100%;max-width:320px;border-radius:8px;overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.18)}
@@ -379,16 +406,19 @@
 
 <!-- ===== FIRMA DIGITAL ===== -->
 <div class="screen" id="s-firma">
-  <div class="topbar" style="background:var(--navy)">Firma Digital</div>
+  <div class="firma-header">
+    <h2>¡Felicitaciones, aprobaste!</h2>
+    <p>Firmá para generar tu certificado oficial</p>
+  </div>
   <div class="firma-wrap">
-    <p class="firma-instruc">Firmá con tu dedo (o el cursor) en el recuadro para registrar tu participación</p>
+    <p class="firma-instruc">Usá tu dedo o el cursor para firmar en el recuadro</p>
     <div class="firma-canvas-wrap">
-      <canvas id="firma-canvas" width="300" height="150"></canvas>
+      <canvas id="firma-canvas" width="340" height="160"></canvas>
     </div>
-    <p class="firma-hint">Dibujá tu firma en el recuadro gris</p>
+    <p class="firma-hint">Tu firma quedará registrada en el certificado</p>
     <div class="firma-btns">
       <button class="btn btn-outline" style="flex:1" onclick="clearFirma()">🗑 Borrar</button>
-      <button class="btn btn-primary" style="flex:2" onclick="confirmarFirma()">Confirmar →</button>
+      <button class="btn btn-primary" style="flex:2" onclick="confirmarFirma()">Generar certificado →</button>
     </div>
   </div>
 </div>
@@ -482,20 +512,13 @@
       <label>Tipo de Servicio</label>
       <select id="i-tipo" style="width:100%;padding:14px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:15px;background:#fff;color:var(--navy);appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22><path d=%22M1 1l5 5 5-5%22 stroke=%22%23999%22 stroke-width=%222%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>');background-repeat:no-repeat;background-position:right 16px center;cursor:pointer">
         <option value="">-- Seleccioná tu tipo de servicio --</option>
-        <option value="CONSTRUCCION">🏗️ CONSTRUCCION (obradores)</option>
-        <option value="INDUSTRIA">🏭 INDUSTRIA</option>
-        <option value="LOGISTICA">📦 OPERADOR LOGISTICO (logísticas gral)</option>
-        <option value="RETAIL">🛒 RETAIL (supermercado / shopping)</option>
-        <option value="SALUD">🏥 SALUD (sanatorios)</option>
-        <option value="SERVICIOS">🏢 SERVICIOS (prestadora de servicio)</option>
-        <option value="URBANIZACION">🏘️ URBANIZACION (barrios privados)</option>
       </select>
     </div>
     <div class="form-group">
       <label>Turno</label>
       <input type="text" id="i-turno" placeholder="Ej: Turno Noche, Turno Mañana">
     </div>
-    <button class="btn btn-primary" onclick="doLogin()" style="margin-top:6px">COMENZAR CAPACITACIÓN →</button>
+    <button id="btn-login" class="btn btn-primary" onclick="doLogin()" style="margin-top:6px">COMENZAR CAPACITACIÓN →</button>
     <p style="text-align:center;font-size:11px;color:#aaa;margin-top:14px">Tus datos serán registrados con fines de capacitación.</p>
     <p style="text-align:center;margin-top:24px">
       <button onclick="go('s-admin-login')" style="background:none;border:1px solid #ddd;border-radius:20px;font-size:11px;color:#ccc;cursor:pointer;padding:5px 16px;letter-spacing:.5px">Administrador</button>
@@ -565,12 +588,15 @@
           <button class="filter-btn" onclick="setFilter('APROBADO',this)">✅ Aprobados</button>
           <button class="filter-btn" onclick="setFilter('DESAPROBADO',this)">❌ Desaprobados</button>
         </div>
-        <button onclick="loadAdmin()" id="btn-reload-admin" style="background:#1a1a1a;color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">↻ Actualizar datos</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button onclick="loadAdmin()" id="btn-reload-admin" style="background:#1a1a1a;color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">↻ Actualizar datos</button>
+          <button id="btn-delete-all" onclick="deleteAllRecords()" style="display:none;background:#7f1d1d;color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">🗑 Borrar todos</button>
+        </div>
       </div>
       <input class="search-input" id="admin-search" placeholder="Buscar nombre, legajo o sede..." oninput="renderTable()">
       <div style="overflow-x:auto">
         <table class="result-table" id="admin-table">
-          <thead><tr><th>Nombre</th><th>Legajo</th><th>Sede/Turno</th><th>Nota</th><th>Resultado</th><th>Fecha</th></tr></thead>
+          <thead><tr><th>Nombre</th><th>Legajo</th><th>Sede/Turno</th><th>Nota</th><th>Resultado</th><th>Fecha</th><th>Diploma</th></tr></thead>
           <tbody id="admin-tbody"></tbody>
         </table>
       </div>
@@ -676,19 +702,37 @@
       </div>
       <p id="cover-saved" style="text-align:center;color:var(--green);font-size:13px;font-weight:700;display:none;margin-bottom:16px">✅ Portada publicada — visible para todos.</p>
       <p id="cover-err" style="text-align:center;color:var(--red);font-size:12px;display:none;margin-bottom:16px"></p>
+
+      <div class="card" style="margin-top:16px">
+        <h3>🏢 Tipos de Servicio</h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Editá el texto que ve el vigilador en el desplegable de tipo de servicio</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div><label style="font-size:11px;font-weight:700;color:var(--muted)">CONSTRUCCION</label><input class="qed-input" id="svc-lbl-CONSTRUCCION"></div>
+          <div><label style="font-size:11px;font-weight:700;color:var(--muted)">INDUSTRIA</label><input class="qed-input" id="svc-lbl-INDUSTRIA"></div>
+          <div><label style="font-size:11px;font-weight:700;color:var(--muted)">LOGISTICA</label><input class="qed-input" id="svc-lbl-LOGISTICA"></div>
+          <div><label style="font-size:11px;font-weight:700;color:var(--muted)">RETAIL</label><input class="qed-input" id="svc-lbl-RETAIL"></div>
+          <div><label style="font-size:11px;font-weight:700;color:var(--muted)">SALUD</label><input class="qed-input" id="svc-lbl-SALUD"></div>
+          <div><label style="font-size:11px;font-weight:700;color:var(--muted)">SERVICIOS</label><input class="qed-input" id="svc-lbl-SERVICIOS"></div>
+          <div><label style="font-size:11px;font-weight:700;color:var(--muted)">URBANIZACION</label><input class="qed-input" id="svc-lbl-URBANIZACION"></div>
+        </div>
+        <button class="save-q-btn" onclick="saveServiceLabelsAdmin()" style="margin-top:12px">💾 GUARDAR TIPOS</button>
+        <p id="svc-lbl-saved" style="text-align:center;color:var(--green);font-size:13px;font-weight:700;display:none;margin-top:8px">✅ Guardado</p>
+      </div>
     </div>
 
     <!-- ── TAB CERTIFICADO ── -->
     <div id="t-certificado" class="admin-tab-panel">
-      <div class="card">
-        <h3>✏️ Nombre del autorizante</h3>
-        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Nombre y cargo que aparece al pie del certificado (ej: "Juan García – Jefe de Capacitación")</p>
-        <input class="qed-input" id="cert-signer-name" placeholder="Nombre y cargo del autorizante">
+
+      <div class="card" style="background:#f0f4ff;border-left:4px solid #1565c0">
+        <h3 style="color:#1565c0">ℹ️ Lado izquierdo — Vigilador</h3>
+        <p style="font-size:13px;color:#555">El lado izquierdo del certificado se completa automáticamente con el <strong>apellido y nombre del vigilador</strong> y su <strong>firma digital</strong> dibujada en el celular. No requiere configuración.</p>
       </div>
 
       <div class="card">
-        <h3>✍️ Firma del autorizante</h3>
-        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Firmá en el recuadro o subí una imagen de firma</p>
+        <h3>✍️ Gerencia (lado derecho)</h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Nombre completo y cargo de quien firma como Gerencia</p>
+        <input class="qed-input" id="cert-signer-name" placeholder="Ej: José Ortega – Gerencia SAB-5" style="margin-bottom:10px">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:8px">Firma de Gerencia (dibujá o subí imagen)</p>
         <div style="border:2px dashed #bbb;border-radius:8px;background:#fafafa;touch-action:none;cursor:crosshair;overflow:hidden;margin-bottom:10px">
           <canvas id="admin-firma-canvas" width="340" height="130" style="display:block;width:100%;height:auto"></canvas>
         </div>
@@ -699,9 +743,12 @@
         </div>
         <div id="admin-firma-preview" style="margin-top:10px;text-align:center;display:none">
           <img id="admin-firma-img-prev" style="max-height:60px;border:1px solid #eee;border-radius:6px">
-          <p style="font-size:11px;color:var(--muted);margin-top:4px">Vista previa de la firma cargada</p>
+          <p style="font-size:11px;color:var(--muted);margin-top:4px">Firma cargada</p>
         </div>
       </div>
+
+      <!-- Canvas oculto requerido por loadCertAdmin para capacitador (sin uso visual) -->
+      <canvas id="admin-cap-canvas" width="1" height="1" style="display:none"></canvas>
 
       <div class="card">
         <h3>👁 Vista previa del certificado</h3>
@@ -851,10 +898,67 @@
 </div>
 
 <script>
+// ─── PROTECCIÓN DE PROPIEDAD INTELECTUAL ────────────────────────
+(function(){
+  // 1. Bloquear clic derecho
+  document.addEventListener('contextmenu', e => e.preventDefault());
+
+  // 2. Bloquear atajos de teclado de inspección
+  document.addEventListener('keydown', e => {
+    const k = e.key.toLowerCase();
+    // F12 · Ctrl+U · Ctrl+S · Ctrl+Shift+I/J/C/K
+    if(
+      k === 'f12' ||
+      (e.ctrlKey && k === 'u') ||
+      (e.ctrlKey && k === 's') ||
+      (e.ctrlKey && e.shiftKey && ['i','j','c','k'].includes(k))
+    ){
+      e.preventDefault(); e.stopPropagation(); return false;
+    }
+  });
+
+  // 3. Detectar apertura de DevTools por tamaño de ventana
+  let _devWarned = false;
+  setInterval(()=>{
+    const diff = window.outerWidth - window.innerWidth > 200 ||
+                 window.outerHeight - window.innerHeight > 200;
+    const warn = document.getElementById('_dev-warn');
+    if(diff && !_devWarned){
+      _devWarned = true;
+      if(!warn){
+        const d = document.createElement('div');
+        d.id = '_dev-warn';
+        d.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Arial,sans-serif;text-align:center;padding:40px';
+        d.innerHTML = '<div style="font-size:48px;margin-bottom:16px">⚠️</div>' +
+          '<div style="font-size:22px;font-weight:700;margin-bottom:12px">Acceso no autorizado</div>' +
+          '<div style="font-size:14px;color:#ccc;max-width:400px;line-height:1.6">Este sistema y su contenido son propiedad intelectual de <strong style="color:#fff">SAB-5 Seguridad Privada</strong>.<br>Su reproducción o inspección no autorizada está prohibida por la Ley 11.723.<br><br><span style="color:#ef5350">joseortega@sab5.com.ar</span></div>';
+        document.body.appendChild(d);
+      }
+    } else if(!diff && _devWarned){
+      _devWarned = false;
+      if(warn) warn.remove();
+    }
+  }, 800);
+
+  // 4. Mensaje en consola para quien logre abrirla
+  const s = [
+    '%c© SAB-5 Seguridad Privada — Propiedad Intelectual Registrada',
+    'background:#b71c1c;color:#fff;font-size:14px;font-weight:bold;padding:8px 16px;border-radius:4px'
+  ];
+  const s2 = [
+    '%cEste código está protegido por la Ley 11.723 (Argentina).\nSu copia o uso no autorizado será perseguido legalmente.\nContacto: joseortega@sab5.com.ar',
+    'color:#b71c1c;font-size:12px;font-weight:600'
+  ];
+  setTimeout(()=>{ console.log(...s); console.log(...s2); }, 1000);
+})();
+
 // ─── CONFIG ─────────────────────────────────────────────────────
-const GAS_URL = 'TU_URL_AQUI'; // ← reemplazá con tu URL de Apps Script
-const MIN_MOD  = 80; // % mínimo para aprobar módulo
-const MIN_FINAL= 80; // % mínimo para aprobar evaluación
+const GAS_URL  = 'TU_URL_AQUI'; // ← reemplazá con tu URL de Apps Script
+const MIN_MOD  = 7.5; // nota mínima para aprobar módulo (escala 0-10)
+const MIN_FINAL= 7.5; // nota mínima para aprobar evaluación (escala 0-10)
+// Clave interna para generar códigos de verificación de certificados
+// Cambiá esta clave — no la compartas. Sin ella no se puede generar un código válido.
+const CERT_SECRET = 'SAB5-2026-SEGPRI-AR';
 
 
 // ─── CONTENIDO MÓDULOS ──────────────────────────────────────────
@@ -1447,21 +1551,27 @@ function buildExam(){
     for(let i=copy.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]]; }
     return copy.slice(0, Math.min(n, copy.length));
   }
+  // Usa solo las últimas 4 preguntas de cada módulo (las primeras 4 son para el quiz del módulo)
+  const pool1 = QUIZZES[1] ? QUIZZES[1].slice(4) : [];
+  const pool2 = QUIZZES[2] ? QUIZZES[2].slice(4) : [];
+  const pool3 = QUIZZES[3] ? QUIZZES[3].slice(4) : [];
+  const pool4 = QUIZZES[4] ? QUIZZES[4].slice(4) : [];
   const hasMod5 = QUIZZES[5] && QUIZZES[5].length > 0;
   if(hasMod5){
+    const pool5 = QUIZZES[5].slice(4);
     return [
-      ...pickN(QUIZZES[1], 4),
-      ...pickN(QUIZZES[2], 4),
-      ...pickN(QUIZZES[3], 4),
-      ...pickN(QUIZZES[4], 4),
-      ...pickN(QUIZZES[5], 4),
+      ...pickN(pool1, 4),
+      ...pickN(pool2, 4),
+      ...pickN(pool3, 4),
+      ...pickN(pool4, 4),
+      ...pickN(pool5, 4),
     ];
   }
   return [
-    ...pickN(QUIZZES[1], 5),
-    ...pickN(QUIZZES[2], 5),
-    ...pickN(QUIZZES[3], 5),
-    ...pickN(QUIZZES[4], 5),
+    ...pickN(pool1, 4),
+    ...pickN(pool2, 4),
+    ...pickN(pool3, 4),
+    ...pickN(pool4, 4),
   ];
 }
 // EXAM es un proxy que siempre lee los módulos actuales
@@ -1497,11 +1607,36 @@ let _firmaCanvas, _firmaCtx;
 function go(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
 
 // ─── LOGIN ───────────────────────────────────────────────────────
-function doLogin(){
+async function doLogin(){
   const n=v('i-nombre'), l=v('i-legajo'), d=v('i-dni');
   const tipo = gi('i-tipo').value;
   const turno = v('i-turno');
   if(!n||!l||!d||!tipo){ alert('Completá todos los campos para continuar.'); return; }
+
+  // ── Verificar si el DNI ya tiene capacitación aprobada ──
+  const btnLogin = gi('btn-login');
+  if(btnLogin){ btnLogin.disabled=true; btnLogin.textContent='Verificando...'; }
+  let yaAprobado = false;
+  try {
+    // Chequear local primero
+    const local = JSON.parse(localStorage.getItem('sab5_evaluaciones')||'[]');
+    if(local.some(r=>r.dni===d && r.resultado==='APROBADO')) yaAprobado=true;
+    // Chequear GitHub si no encontró local
+    if(!yaAprobado){
+      const res = await fetch(`https://raw.githubusercontent.com/${GH_REPO}/main/evaluaciones.json?_=${Date.now()}`);
+      if(res.ok){
+        const remote = await res.json();
+        if(remote.some(r=>r.dni===d && r.resultado==='APROBADO')) yaAprobado=true;
+      }
+    }
+  } catch(e){ /* si falla la red, permite continuar */ }
+  if(btnLogin){ btnLogin.disabled=false; btnLogin.textContent='COMENZAR CAPACITACIÓN →'; }
+
+  if(yaAprobado){
+    alert('⚠️ El DNI '+d+' ya tiene una capacitación aprobada registrada.\n\nSi creés que es un error, consultá con el administrador.');
+    return;
+  }
+
   const sede = tipo + (turno ? ' – ' + turno : '');
   user={nombre:n,legajo:l,dni:d,sede,tipoServicio:tipo,inicio:new Date().toISOString()};
   t0=Date.now();
@@ -1525,7 +1660,7 @@ function renderHome(){
     const isOk   = i===0 || prog[MODS[i-1].id]?.done;
     const st     = isDone?'✅':(isOk?'▶️':'🔒');
     const cls    = isDone?'completed':(isOk?'available':'locked');
-    const sc     = isDone?' · '+p.score+'%':'';
+    const sc     = isDone?' · Nota '+p.score.toFixed(1):'';
     const d=document.createElement('div');
     d.className='mcard '+cls;
     d.innerHTML=`<div class="mcard-ico">${m.icon}</div><div class="mcard-info"><div class="mcard-name">${m.title}</div><div class="mcard-desc">${m.desc}${sc}</div></div><div class="mcard-st">${st}</div>`;
@@ -1547,7 +1682,9 @@ function openMod(id){
 }
 
 function startModQuiz(){
-  curQ  = shuf([...QUIZZES[curMod.id]]);
+  // Usa solo las primeras 4 preguntas del módulo (las últimas 4 son para el examen final)
+  const pool = QUIZZES[curMod.id] ? QUIZZES[curMod.id].slice(0,4) : [];
+  curQ  = shuf([...pool]);
   qIdx  = 0; qAns = [];
   gi('qmod-title').textContent = 'Quiz: '+curMod.title;
   renderQ(); go('s-quiz');
@@ -1606,14 +1743,15 @@ function nextQ(){ if(qIdx===curQ.length-1) showQResult(); else { qIdx++; renderQ
 
 function showQResult(){
   const ok=qAns.filter(a=>a.ok).length, tot=curQ.length;
-  const sc=Math.round(ok/tot*100), pass=sc>=MIN_MOD;
+  const sc=Math.round(ok/tot*10*10)/10; // nota 0-10 con un decimal
+  const pass=sc>=MIN_MOD;
   prog[curMod.id]={done:pass,score:sc};
   const b=gi('qresult-body');
   b.innerHTML=`
     <div class="rico2">${pass?'🎉':'📚'}</div>
     <div class="rtitle2" style="color:${pass?'var(--green)':'var(--red)'}">${pass?'¡Módulo aprobado!':'Necesitás repasar'}</div>
-    <div class="rscore" style="color:${pass?'var(--green)':'var(--red)'}">${sc}%</div>
-    <div class="rmsg">${ok} de ${tot} correctas.<br>${pass?'Podés continuar al siguiente módulo.':'Necesitás '+MIN_MOD+'% para avanzar.'}</div>
+    <div class="rscore" style="color:${pass?'var(--green)':'var(--red)'}">Nota: ${sc.toFixed(1)}</div>
+    <div class="rmsg">${ok} de ${tot} correctas.<br>${pass?'Podés continuar al siguiente módulo.':'Nota mínima: '+MIN_MOD+' — seguí repasando.'}</div>
     <div style="width:100%;max-width:320px">
       ${pass?`<button class="btn btn-success mb12" onclick="renderHome();go('s-home')">CONTINUAR →</button>`:''}
       <button class="btn btn-outline" onclick="openMod(${curMod.id});go('s-mod')">${pass?'Repasar módulo':'Volver a estudiar'}</button>
@@ -1673,15 +1811,33 @@ function confirmF(q){
 
 function nextF(){ if(fIdx===EXAM.length-1) showFResult(); else { fIdx++; renderF(); } }
 
-function showFResult(){
+// ─── CÓDIGO DE VERIFICACIÓN ──────────────────────────────────
+async function genCertCode(dni, legajo, fin){
+  const msg = [CERT_SECRET, dni, legajo, fin].join('|');
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  const hex = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  // Formato legible: 4 bloques de 4 caracteres en mayúscula
+  const raw = hex.slice(0,16).toUpperCase();
+  return raw.match(/.{4}/g).join('-');
+}
+
+async function showFResult(){
   const ok=fAns.filter(a=>a.ok).length, tot=EXAM.length;
-  const sc=Math.round(ok/tot*100), pass=sc>=MIN_FINAL;
+  // Nota final = promedio de los módulos completados (escala 0-10)
+  const modIds = MODS.map(m=>m.id);
+  const modScores = modIds.map(id=>prog[id]?.score??0);
+  const sc = Math.round(modScores.reduce((a,b)=>a+b,0)/Math.max(1,modScores.length)*10)/10;
+  const pass=sc>=MIN_FINAL;
   const min=Math.round((Date.now()-t0)/60000);
   const now=new Date();
+  const fin=now.toISOString();
   const fecha=now.toLocaleDateString('es-AR')+' '+now.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
-  const data={...user,fin:now.toISOString(),minutos:min,
-    mod1:prog[1]?.score??0, mod2:prog[2]?.score??0, mod3:prog[3]?.score??0, mod4:prog[4]?.score??0,
-    final:sc, resultado:pass?'APROBADO':'DESAPROBADO', correctas:ok, total:tot};
+  const certCode = pass ? await genCertCode(user.dni, user.legajo, fin) : null;
+  const m1=prog[1]?.score??0, m2=prog[2]?.score??0, m3=prog[3]?.score??0, m4=prog[4]?.score??0;
+  const data={...user,fin,minutos:min,
+    mod1:m1, mod2:m2, mod3:m3, mod4:m4,
+    final:sc, resultado:pass?'APROBADO':'DESAPROBADO', correctas:ok, total:tot,
+    certCode: certCode||''};
   saveSheets(data);
   if(pass) _certData = {sc, ok, tot, min, fecha, data};
 
@@ -1689,13 +1845,13 @@ function showFResult(){
   b.innerHTML=`
     <div class="rico2">${pass?'🏆':'📋'}</div>
     <div class="rtitle2" style="color:${pass?'var(--green)':'var(--red)'}">${pass?'¡APROBADO!':'DESAPROBADO'}</div>
-    <div class="rscore" style="color:${pass?'var(--green)':'var(--red)'}">${sc}%</div>
-    <div class="rmsg">${ok} de ${tot} correctas · ${min} min · Mínimo: ${MIN_FINAL}%</div>
+    <div class="rscore" style="color:${pass?'var(--green)':'var(--red)'}">Nota: ${sc.toFixed(1)}</div>
+    <div class="rmsg">Promedio de módulos · ${min} min · Mínimo: ${MIN_FINAL}</div>
     <div class="stat-grid">
-      <div class="stat-box"><div class="stat-n">${prog[1]?.score??0}%</div><div class="stat-l">⚖️ Marco Legal</div></div>
-      <div class="stat-box"><div class="stat-n">${prog[2]?.score??0}%</div><div class="stat-l">👮 Conducta</div></div>
-      <div class="stat-box"><div class="stat-n">${prog[3]?.score??0}%</div><div class="stat-l">🚨 Emergencias</div></div>
-      <div class="stat-box"><div class="stat-n">${prog[4]?.score??0}%</div><div class="stat-l">🔴 Pánico</div></div>
+      <div class="stat-box"><div class="stat-n">${m1.toFixed(1)}</div><div class="stat-l">⚖️ Marco Legal</div></div>
+      <div class="stat-box"><div class="stat-n">${m2.toFixed(1)}</div><div class="stat-l">👮 Conducta</div></div>
+      <div class="stat-box"><div class="stat-n">${m3.toFixed(1)}</div><div class="stat-l">🚨 Emergencias</div></div>
+      <div class="stat-box"><div class="stat-n">${m4.toFixed(1)}</div><div class="stat-l">🔴 Pánico</div></div>
     </div>
     ${pass?`
     <div class="cert">
@@ -1703,11 +1859,11 @@ function showFResult(){
       <div class="cert-name">${user.nombre}</div>
       <div class="cert-det">Legajo: ${user.legajo} · DNI: ${user.dni}</div>
       <div class="cert-det">${user.sede}</div>
-      <div class="cert-stamp">✅ Aprobado el ${fecha} · Nota: ${sc}%</div>
+      <div class="cert-stamp">✅ Aprobado el ${fecha} · Nota: ${sc.toFixed(1)}</div>
     </div>`:`
     <div class="alert-box" style="max-width:320px;margin-bottom:16px">
       <span class="alert-ico">📚</span>
-      <div class="alert-txt">Necesitás ${MIN_FINAL}% para aprobar. Repasá los módulos y volvé a rendir.</div>
+      <div class="alert-txt">Nota mínima para aprobar: ${MIN_FINAL}. Repasá los módulos y volvé a rendir.</div>
     </div>`}
     <div style="width:100%;max-width:320px">
       ${!pass?`<button class="btn btn-primary mb12" onclick="renderHome();go('s-home')">VOLVER A REPASAR</button>`:''}
@@ -1805,23 +1961,31 @@ function generarCertificado(cb){
   });
 
   // ── CABECERA ──
+  // Fondo degradé rojo institucional oscuro → rojo institucional → oscuro
   const hGrad=ctx.createLinearGradient(0,0,W,0);
-  hGrad.addColorStop(0,'#111'); hGrad.addColorStop(0.5,'#222'); hGrad.addColorStop(1,'#111');
+  hGrad.addColorStop(0,'#5a0000');
+  hGrad.addColorStop(0.35,'#9b1010');
+  hGrad.addColorStop(0.5,'#b71c1c');
+  hGrad.addColorStop(0.65,'#9b1010');
+  hGrad.addColorStop(1,'#5a0000');
   ctx.fillStyle=hGrad; ctx.fillRect(0,0,W,128);
-  ctx.fillStyle='#b71c1c'; ctx.fillRect(0,122,W,6);
-  // línea dorada sutil
-  ctx.strokeStyle='rgba(255,220,100,0.25)'; ctx.lineWidth=1;
+
+  // Franja dorada inferior
+  const goldGrad=ctx.createLinearGradient(0,0,W,0);
+  goldGrad.addColorStop(0,'#7a5000');
+  goldGrad.addColorStop(0.3,'#d4a017');
+  goldGrad.addColorStop(0.5,'#f0c040');
+  goldGrad.addColorStop(0.7,'#d4a017');
+  goldGrad.addColorStop(1,'#7a5000');
+  ctx.fillStyle=goldGrad; ctx.fillRect(0,122,W,6);
+
+  // Línea dorada superior decorativa
+  ctx.strokeStyle='rgba(240,192,64,0.3)'; ctx.lineWidth=1;
   ctx.beginPath(); ctx.moveTo(70,100); ctx.lineTo(W-70,100); ctx.stroke();
 
-  ctx.textAlign='center'; ctx.fillStyle='#fff';
-  ctx.font='bold 28px Georgia,serif'; ctx.fillText('SAB-5  SEGURIDAD PRIVADA',W/2,52);
-  ctx.font='italic 14px Georgia,serif'; ctx.fillStyle='rgba(255,255,255,0.65)';
-  ctx.fillText('Sistema de Capacitación Profesional — República Argentina',W/2,80);
-  ctx.font='13px Arial'; ctx.fillStyle='rgba(255,255,255,0.4)';
-  ctx.fillText('──────────────────────────────────────────────────────────────────',W/2,108);
-
-  // ── TÍTULO ──
+  // Título (debajo del header — siempre visible)
   ctx.fillStyle='#1a1a1a'; ctx.font='bold 19px Georgia,serif'; ctx.letterSpacing='2px';
+  ctx.textAlign='center';
   ctx.fillText('CERTIFICADO DE CAPACITACIÓN PROFESIONAL',W/2,168);
   ctx.strokeStyle='#b71c1c'; ctx.lineWidth=2;
   ctx.beginPath(); ctx.moveTo(W/2-220,178); ctx.lineTo(W/2+220,178); ctx.stroke();
@@ -1848,7 +2012,7 @@ function generarCertificado(cb){
 
   // Nota con barra
   ctx.fillStyle='#1b5e20'; ctx.font='bold 28px Arial';
-  ctx.fillText('NOTA FINAL: '+d.sc+'%',W/2,418);
+  ctx.fillText('NOTA FINAL: '+(+d.sc).toFixed(1)+' / 10',W/2,418);
   const bx=W/2-200,bw=400,by=430,bh=10;
   ctx.fillStyle='#e0e0e0'; ctx.beginPath(); ctx.roundRect(bx,by,bw,bh,5); ctx.fill();
   const pg=ctx.createLinearGradient(bx,0,bx+bw,0);
@@ -1858,44 +2022,108 @@ function generarCertificado(cb){
   // Módulos
   ctx.fillStyle='#888'; ctx.font='12px Arial';
   const m1=d.data.mod1||0,m2=d.data.mod2||0,m3=d.data.mod3||0,m4=d.data.mod4||0;
-  ctx.fillText('⚖️ Legal '+m1+'%   ·   👮 Conducta '+m2+'%   ·   🚨 Emergencias '+m3+'%   ·   🔴 Pánico '+m4+'%',W/2,462);
+  ctx.fillText('⚖️ Legal '+(+m1).toFixed(1)+'   ·   👮 Conducta '+(+m2).toFixed(1)+'   ·   🚨 Emergencias '+(+m3).toFixed(1)+'   ·   🔴 Pánico '+(+m4).toFixed(1),W/2,462);
 
   // Fecha
   ctx.fillStyle='#888'; ctx.font='13px Arial';
   ctx.fillText('Fecha de aprobación: '+d.fecha,W/2,486);
 
+  // ── CÓDIGO DE VERIFICACIÓN ──
+  const code = d.data.certCode || '';
+  if(code){
+    // Fondo sutil
+    ctx.fillStyle='#f0f0f0'; ctx.beginPath(); ctx.roundRect(W/2-180,494,360,20,4); ctx.fill();
+    ctx.strokeStyle='#ddd'; ctx.lineWidth=0.8; ctx.beginPath(); ctx.roundRect(W/2-180,494,360,20,4); ctx.stroke();
+    ctx.fillStyle='#aaa'; ctx.font='9px Arial';
+    ctx.fillText('VERIFICACIÓN:',W/2-120,507);
+    ctx.fillStyle='#555'; ctx.font='bold 10px "Courier New",monospace';
+    ctx.fillText(code,W/2+30,507);
+  }
+
   // ── ÁREA FIRMAS ──
   ctx.strokeStyle='#ddd'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(60,506); ctx.lineTo(W-60,506); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(60,518); ctx.lineTo(W-60,518); ctx.stroke();
 
-  // Participante (izq)
-  ctx.strokeStyle='#aaa'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(90,584); ctx.lineTo(350,584); ctx.stroke();
-  ctx.fillStyle='#777'; ctx.font='11px Arial'; ctx.textAlign='center';
-  ctx.fillText('Firma del participante',220,598);
-  ctx.fillStyle='#555'; ctx.font='bold 11px Arial';
-  ctx.fillText(d.data.nombre,220,611);
+  // Helper: texto ajustado al ancho máximo
+  function fitTxt(text, maxW){
+    if(!text) return '';
+    if(ctx.measureText(text).width<=maxW) return text;
+    let t=text;
+    while(t.length>1 && ctx.measureText(t+'…').width>maxW) t=t.slice(0,-1);
+    return t+'…';
+  }
 
-  // Autorizante (der)
-  ctx.strokeStyle='#aaa'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(550,584); ctx.lineTo(810,584); ctx.stroke();
-  ctx.fillStyle='#777'; ctx.font='11px Arial';
-  ctx.fillText(cfg.signerName||'Coordinador SAB-5',680,598);
-  ctx.fillText('Firma autorizada',680,611);
+  const lx1=80, lx2=370, lx=225;
+  const rx1=530, rx2=820, rx=675;
+  const lineY=585, imgH=54, imgY=lineY-62;
 
-  // ── IMÁGENES FIRMAS (async) ──
-  const loadParticipant=after=>{
+  // ── Bloque IZQUIERDO: Vigilador ──
+  ctx.strokeStyle='#bbb'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(lx1,lineY); ctx.lineTo(lx2,lineY); ctx.stroke();
+  ctx.textAlign='center';
+  // Nombre en dos líneas si es largo: apellido / nombre
+  const vigFull=(d.data.nombre||'').toUpperCase();
+  ctx.fillStyle='#333'; ctx.font='bold 11px Arial';
+  ctx.fillText(fitTxt(vigFull,270),lx,lineY+15);
+  ctx.fillStyle='#999'; ctx.font='10px Arial';
+  ctx.fillText('Firma del vigilador',lx,lineY+28);
+
+  // ── Bloque DERECHO: Gerencia (desde admin) ──
+  ctx.strokeStyle='#bbb'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(rx1,lineY); ctx.lineTo(rx2,lineY); ctx.stroke();
+  const gerName=cfg.signerName||'Gerencia SAB-5';
+  ctx.fillStyle='#333'; ctx.font='bold 11px Arial';
+  ctx.fillText(fitTxt(gerName,270),rx,lineY+15);
+  ctx.fillStyle='#999'; ctx.font='10px Arial';
+  ctx.fillText('Gerencia',rx,lineY+28);
+
+  // ── IMÁGENES: logo + firmas en cadena async ──
+  // Orden: logo header → firma vigilador → firma gerencia → cb()
+
+  const drawHeader=after=>{
+    const logo=new Image();
+    logo.onload=()=>{
+      // Redibujar gradiente del header para pisar texto fallback
+      const hg=ctx.createLinearGradient(0,0,W,0);
+      hg.addColorStop(0,'#5a0000'); hg.addColorStop(0.35,'#9b1010');
+      hg.addColorStop(0.5,'#b71c1c'); hg.addColorStop(0.65,'#9b1010');
+      hg.addColorStop(1,'#5a0000');
+      ctx.fillStyle=hg; ctx.fillRect(0,0,W,122);
+      // Franja dorada
+      const gg=ctx.createLinearGradient(0,0,W,0);
+      gg.addColorStop(0,'#7a5000'); gg.addColorStop(0.3,'#d4a017');
+      gg.addColorStop(0.5,'#f0c040'); gg.addColorStop(0.7,'#d4a017');
+      gg.addColorStop(1,'#7a5000');
+      ctx.fillStyle=gg; ctx.fillRect(0,122,W,6);
+      // Logo proporciones originales 2998×1204 — altura 86px centrada
+      const lh=86, lw=Math.round(lh*2998/1204);
+      // multiply: blanco del logo desaparece, elementos oscuros y rojos se integran al fondo
+      ctx.globalCompositeOperation='multiply';
+      ctx.drawImage(logo,(W-lw)/2,(128-lh)/2,lw,lh);
+      ctx.globalCompositeOperation='source-over'; // restaurar
+      if(after)after();
+    };
+    logo.onerror=()=>{ if(after)after(); }; // si no carga, continúa igual
+    logo.src='logo.png';
+  };
+
+  const loadFirmaVig=after=>{
     if(_firmaDataUrl){
       const img=new Image();
-      img.onload=()=>{ ctx.drawImage(img,95,524,240,56); if(after)after(); };
+      img.onload=()=>{ ctx.drawImage(img,lx1+8,imgY,(lx2-lx1-16),imgH); if(after)after(); };
       img.src=_firmaDataUrl;
     } else { if(after)after(); }
   };
-  if(cfg.signerImg){
-    const img2=new Image();
-    img2.onload=()=>{ ctx.drawImage(img2,548,524,240,56); loadParticipant(cb); };
-    img2.src=cfg.signerImg;
-  } else { loadParticipant(cb); }
+
+  const loadFirmaGer=after=>{
+    if(cfg.signerImg){
+      const img=new Image();
+      img.onload=()=>{ ctx.drawImage(img,rx1+8,imgY,(rx2-rx1-16),imgH); if(after)after(); };
+      img.src=cfg.signerImg;
+    } else { if(after)after(); }
+  };
+
+  drawHeader(()=>loadFirmaVig(()=>loadFirmaGer(cb)));
 }
 
 function descargarCertificado(){
@@ -1904,6 +2132,71 @@ function descargarCertificado(){
   a.href=c.toDataURL('image/png');
   a.download='Certificado_SAB5_'+((_certData.data.nombre||'vigilador').replace(/\s+/g,'_'))+'.png';
   a.click();
+}
+
+function downloadDiplomaAdmin(d){
+  const prev=_certData, prevFirma=_firmaDataUrl;
+  const fin=d.fin?new Date(d.fin):new Date();
+  const fecha=fin.toLocaleDateString('es-AR')+' '+fin.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+  _certData={sc:d.final||0, ok:d.correctas||0, tot:d.total||20, min:d.minutos||0, fecha, data:d};
+  _firmaDataUrl=null;
+  const tmpCanvas=document.createElement('canvas');
+  const realCanvas=gi('cert-preview-canvas');
+  tmpCanvas.id='cert-preview-canvas';
+  realCanvas.id='cert-preview-canvas-bak';
+  document.body.appendChild(tmpCanvas);
+  generarCertificado(()=>{
+    tmpCanvas.id='';
+    realCanvas.id='cert-preview-canvas';
+    const a=document.createElement('a');
+    a.href=tmpCanvas.toDataURL('image/png');
+    a.download='Diploma_SAB5_'+(d.nombre||'vigilador').replace(/\s+/g,'_')+'.png';
+    a.click();
+    document.body.removeChild(tmpCanvas);
+    _certData=prev; _firmaDataUrl=prevFirma;
+  });
+}
+
+// ─── TIPOS DE SERVICIO ───────────────────────────────────────
+const _DEFAULT_SVC={
+  CONSTRUCCION:'🏗️ CONSTRUCCION (obradores)',
+  INDUSTRIA:'🏭 INDUSTRIA',
+  LOGISTICA:'📦 OPERADOR LOGISTICO (logísticas gral)',
+  RETAIL:'🛒 RETAIL (supermercado / shopping)',
+  SALUD:'🏥 SALUD (sanatorios)',
+  SERVICIOS:'🏢 SERVICIOS (prestadora de servicio)',
+  URBANIZACION:'🏘️ URBANIZACION (barrios privados)'
+};
+function getServiceLabels(){ return JSON.parse(localStorage.getItem('sab5_service_labels')||'null')||{..._DEFAULT_SVC}; }
+function saveServiceLabels(l){ localStorage.setItem('sab5_service_labels',JSON.stringify(l)); }
+
+function renderServiceSelect(){
+  const sel=gi('i-tipo'), labels=getServiceLabels(), cur=sel.value;
+  sel.innerHTML='<option value="">-- Seleccioná tu tipo de servicio --</option>';
+  Object.entries(labels).forEach(([k,v])=>{
+    const o=document.createElement('option'); o.value=k; o.textContent=v;
+    if(k===cur) o.selected=true;
+    sel.appendChild(o);
+  });
+}
+
+function loadServiceLabelsAdmin(){
+  const labels=getServiceLabels();
+  Object.keys(_DEFAULT_SVC).forEach(k=>{
+    const el=gi('svc-lbl-'+k); if(el) el.value=labels[k]||_DEFAULT_SVC[k];
+  });
+}
+
+function saveServiceLabelsAdmin(){
+  const labels={};
+  Object.keys(_DEFAULT_SVC).forEach(k=>{
+    const el=gi('svc-lbl-'+k);
+    labels[k]=(el&&el.value.trim())||_DEFAULT_SVC[k];
+  });
+  saveServiceLabels(labels);
+  renderServiceSelect();
+  gi('svc-lbl-saved').style.display='block';
+  setTimeout(()=>gi('svc-lbl-saved').style.display='none',2500);
 }
 
 // ─── GUARDAR RESULTADO ───────────────────────────────────────────
@@ -2000,19 +2293,20 @@ async function loadAdmin(){
   const total = _adminData.length;
   const ok    = _adminData.filter(d=>d.resultado==='APROBADO').length;
   const no    = _adminData.filter(d=>d.resultado==='DESAPROBADO').length;
-  const avg   = total ? Math.round(_adminData.reduce((s,d)=>s+(d.final||0),0)/total) : null;
+  const avg = total ? Math.round(_adminData.reduce((s,d)=>s+(d.final||0),0)/total*10)/10 : null;
 
   gi('kpi-total').textContent = total;
   gi('kpi-ok').textContent    = ok;
   gi('kpi-no').textContent    = no;
-  gi('kpi-avg').textContent   = avg !== null ? avg+'%' : '-';
+  gi('kpi-avg').textContent   = avg !== null ? avg.toFixed(1) : '-';
 
   // ── Tabs según permisos ───────────────────────────────────────
   const p = _currentAdmin ? _currentAdmin.perms : {};
   const sa = _currentAdmin && _currentAdmin.isSuperAdmin;
-  gi('tab-preguntas').style.display = (sa || p.preguntas) ? '' : 'none';
-  gi('tab-usuarios').style.display  = sa ? '' : 'none';
-  gi('tab-portada').style.display   = (sa || p.portada)   ? '' : 'none';
+  gi('tab-preguntas').style.display  = (sa || p.preguntas) ? '' : 'none';
+  gi('tab-usuarios').style.display   = sa ? '' : 'none';
+  gi('tab-portada').style.display    = (sa || p.portada)   ? '' : 'none';
+  gi('btn-delete-all').style.display = sa ? '' : 'none';
 
   document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.admin-tab-panel').forEach(p=>p.classList.remove('active'));
@@ -2055,7 +2349,7 @@ function renderTable(){
   data.forEach(d=>{
     const ok = d.resultado === 'APROBADO';
     const score = d.final || 0;
-    const color = score >= 70 ? '#2e7d32' : score >= 50 ? '#e65100' : '#c62828';
+    const color = score >= 7.5 ? '#2e7d32' : score >= 5 ? '#e65100' : '#c62828';
     const fecha = d.fin ? new Date(d.fin).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}) : '-';
 
     const tr = document.createElement('tr');
@@ -2065,14 +2359,43 @@ function renderTable(){
       <td style="font-size:12px">${d.sede||'-'}</td>
       <td>
         <div class="score-bar-wrap">
-          <strong style="color:${color};min-width:32px">${score}%</strong>
-          <div class="score-bar"><div class="score-bar-fill" style="width:${score}%;background:${color}"></div></div>
+          <strong style="color:${color};min-width:32px">${(+score).toFixed(1)}</strong>
+          <div class="score-bar"><div class="score-bar-fill" style="width:${score*10}%;background:${color}"></div></div>
         </div>
       </td>
       <td><span class="${ok?'badge-ok':'badge-no'}">${ok?'✅ APROBADO':'❌ DESAP.'}</span></td>
-      <td style="font-size:11px;color:#777">${fecha}</td>`;
+      <td style="font-size:11px;color:#777">${fecha}</td>
+      <td style="white-space:nowrap">
+        ${ok?`<button onclick='downloadDiplomaAdmin(${JSON.stringify(d).replace(/'/g,"&#39;")})' style='background:var(--red);color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;margin-bottom:4px'>⬇ Diploma</button>`:''}
+        ${(_currentAdmin&&_currentAdmin.isSuperAdmin)?`<br><button onclick="deleteRecord('${(d.dni||'')+'|'+(d.fin||'')}')" style='background:#444;color:#fff;border:none;border-radius:6px;padding:4px 9px;font-size:10px;cursor:pointer;margin-top:2px'>🗑 Borrar</button>`:''}
+      </td>`;
     tbody.appendChild(tr);
   });
+}
+
+async function deleteRecord(key){
+  if(!confirm('¿Borrar este registro? Esta acción no se puede deshacer.')) return;
+  _adminData = _adminData.filter(d=>((d.dni||'')+'|'+(d.fin||''))!==key);
+  localStorage.setItem('sab5_evaluaciones', JSON.stringify(_adminData));
+  await pushEvaluaciones(_adminData);
+  renderTable();
+  // Actualizar KPIs
+  const total=_adminData.length, ok=_adminData.filter(d=>d.resultado==='APROBADO').length;
+  const no=_adminData.filter(d=>d.resultado==='DESAPROBADO').length;
+  const avg=total?Math.round(_adminData.reduce((s,d)=>s+(d.final||0),0)/total*10)/10:null;
+  gi('kpi-total').textContent=total; gi('kpi-ok').textContent=ok;
+  gi('kpi-no').textContent=no; gi('kpi-avg').textContent=avg!==null?avg.toFixed(1):'-';
+}
+
+async function deleteAllRecords(){
+  if(!confirm('¿Borrar TODOS los registros de capacitación?\n\nEsta acción no se puede deshacer.')) return;
+  if(!confirm('Segunda confirmación: ¿Estás seguro? Se eliminarán todos los datos.')) return;
+  _adminData = [];
+  localStorage.setItem('sab5_evaluaciones', JSON.stringify([]));
+  await pushEvaluaciones([]);
+  renderTable();
+  gi('kpi-total').textContent='0'; gi('kpi-ok').textContent='0';
+  gi('kpi-no').textContent='0'; gi('kpi-avg').textContent='-';
 }
 
 function exportCSV(){
@@ -2274,7 +2597,7 @@ function switchTab(panelId, btn){
   gi(panelId).classList.add('active');
   btn.classList.add('active');
   if(panelId==='t-preguntas') renderQEditor();
-  if(panelId==='t-portada')   loadCoverForm();
+  if(panelId==='t-portada')   { loadCoverForm(); loadServiceLabelsAdmin(); }
   if(panelId==='t-usuarios')  renderUserList();
 }
 
@@ -2441,6 +2764,7 @@ function applyRubroQuestions(all){
   if(saved) applyQuestions(JSON.parse(saved));
   const savedR = localStorage.getItem('sab5_rubro_questions');
   if(savedR) applyRubroQuestions(JSON.parse(savedR));
+  renderServiceSelect();
 })();
 
 // ─── EDITOR DE PORTADA ───────────────────────────────────────────
@@ -2459,41 +2783,50 @@ function loadCoverForm(){
 }
 
 // ─── ADMIN CERTIFICADO ──────────────────────────────────────────
-let _adminFirmaDibujando=false, _adminFirmaCanvas, _adminFirmaCtx, _adminFirmaImgData=null;
+let _adminFirmaCanvas, _adminFirmaCtx, _adminFirmaImgData=null;
+let _adminCapCanvas,   _adminCapCtx,   _adminCapImgData=null;
+
+function initSignCanvas(canvas, onDone){
+  const ctx=canvas.getContext('2d');
+  ctx.strokeStyle='#1a1a1a'; ctx.lineWidth=2; ctx.lineCap='round'; ctx.lineJoin='round';
+  let drawing=false;
+  const pos=e=>{
+    const r=canvas.getBoundingClientRect();
+    const sx=canvas.width/r.width, sy=canvas.height/r.height;
+    if(e.touches) return{x:(e.touches[0].clientX-r.left)*sx,y:(e.touches[0].clientY-r.top)*sy};
+    return{x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy};
+  };
+  canvas.onmousedown =e=>{drawing=true; const p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y);};
+  canvas.onmousemove =e=>{if(!drawing)return; const p=pos(e); ctx.lineTo(p.x,p.y); ctx.stroke();};
+  canvas.onmouseup   =()=>{drawing=false; onDone(canvas.toDataURL());};
+  canvas.onmouseleave=()=>drawing=false;
+  canvas.ontouchstart=e=>{e.preventDefault();drawing=true; const p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y);};
+  canvas.ontouchmove =e=>{e.preventDefault();if(!drawing)return; const p=pos(e); ctx.lineTo(p.x,p.y); ctx.stroke();};
+  canvas.ontouchend  =()=>{drawing=false; onDone(canvas.toDataURL());};
+  return ctx;
+}
 
 function loadCertAdmin(){
   const cfg = getCertConfig();
   gi('cert-signer-name').value = cfg.signerName || '';
-  // init canvas firma admin
+
+  // Canvas firma Gerencia
   _adminFirmaCanvas = gi('admin-firma-canvas');
-  _adminFirmaCtx    = _adminFirmaCanvas.getContext('2d');
-  clearAdminFirma();
-  // si ya hay firma guardada, mostrarla
+  _adminFirmaImgData = cfg.signerImg || null;
+  _adminFirmaCtx = initSignCanvas(_adminFirmaCanvas, data=>{ _adminFirmaImgData=data; gi('admin-firma-preview').style.display='block'; gi('admin-firma-img-prev').src=data; previewAdminCert(); });
+  _adminFirmaCtx.clearRect(0,0,_adminFirmaCanvas.width,_adminFirmaCanvas.height);
   if(cfg.signerImg){
     const img=new Image();
     img.onload=()=>{
+      _adminFirmaCtx.clearRect(0,0,_adminFirmaCanvas.width,_adminFirmaCanvas.height);
       _adminFirmaCtx.drawImage(img,0,0,_adminFirmaCanvas.width,_adminFirmaCanvas.height);
       gi('admin-firma-img-prev').src=cfg.signerImg;
       gi('admin-firma-preview').style.display='block';
-      _adminFirmaImgData=cfg.signerImg;
       previewAdminCert();
     };
     img.src=cfg.signerImg;
   }
-  // eventos canvas
-  const pos=e=>{
-    const r=_adminFirmaCanvas.getBoundingClientRect();
-    const sx=_adminFirmaCanvas.width/r.width, sy=_adminFirmaCanvas.height/r.height;
-    if(e.touches) return{x:(e.touches[0].clientX-r.left)*sx,y:(e.touches[0].clientY-r.top)*sy};
-    return{x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy};
-  };
-  _adminFirmaCanvas.onmousedown =e=>{_adminFirmaDibujando=true; const p=pos(e); _adminFirmaCtx.beginPath(); _adminFirmaCtx.moveTo(p.x,p.y);};
-  _adminFirmaCanvas.onmousemove =e=>{if(!_adminFirmaDibujando)return; const p=pos(e); _adminFirmaCtx.lineTo(p.x,p.y); _adminFirmaCtx.stroke();};
-  _adminFirmaCanvas.onmouseup   =()=>{_adminFirmaDibujando=false; _adminFirmaImgData=_adminFirmaCanvas.toDataURL(); previewAdminCert();};
-  _adminFirmaCanvas.onmouseleave=()=>_adminFirmaDibujando=false;
-  _adminFirmaCanvas.ontouchstart=e=>{e.preventDefault();_adminFirmaDibujando=true; const p=pos(e); _adminFirmaCtx.beginPath(); _adminFirmaCtx.moveTo(p.x,p.y);};
-  _adminFirmaCanvas.ontouchmove =e=>{e.preventDefault();if(!_adminFirmaDibujando)return; const p=pos(e); _adminFirmaCtx.lineTo(p.x,p.y); _adminFirmaCtx.stroke();};
-  _adminFirmaCanvas.ontouchend  =()=>{_adminFirmaDibujando=false; _adminFirmaImgData=_adminFirmaCanvas.toDataURL(); previewAdminCert();};
+
   previewAdminCert();
 }
 
@@ -2502,6 +2835,14 @@ function clearAdminFirma(){
   _adminFirmaCtx.strokeStyle='#1a1a1a'; _adminFirmaCtx.lineWidth=2; _adminFirmaCtx.lineCap='round'; _adminFirmaCtx.lineJoin='round';
   _adminFirmaImgData=null;
   gi('admin-firma-preview').style.display='none';
+  previewAdminCert();
+}
+
+function clearAdminCapFirma(){
+  _adminCapCtx.clearRect(0,0,_adminCapCanvas.width,_adminCapCanvas.height);
+  _adminCapCtx.strokeStyle='#1a1a1a'; _adminCapCtx.lineWidth=2; _adminCapCtx.lineCap='round'; _adminCapCtx.lineJoin='round';
+  _adminCapImgData=null;
+  gi('admin-cap-preview').style.display='none';
   previewAdminCert();
 }
 
@@ -2547,10 +2888,30 @@ function previewAdminCert(){
   _certData=prev; _firmaDataUrl=savedFirma;
 }
 
+function loadAdminCapImg(input){
+  const file=input.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      _adminCapCtx.clearRect(0,0,_adminCapCanvas.width,_adminCapCanvas.height);
+      const scale=Math.min(_adminCapCanvas.width/img.width,_adminCapCanvas.height/img.height);
+      const w=img.width*scale, h=img.height*scale;
+      _adminCapCtx.drawImage(img,(_adminCapCanvas.width-w)/2,(_adminCapCanvas.height-h)/2,w,h);
+      _adminCapImgData=_adminCapCanvas.toDataURL();
+      gi('admin-cap-img-prev').src=_adminCapImgData;
+      gi('admin-cap-preview').style.display='block';
+      previewAdminCert();
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
 function saveCertAdmin(){
   const cfg={
     signerName: gi('cert-signer-name').value.trim(),
-    signerImg: _adminFirmaImgData || null
+    signerImg:  _adminFirmaImgData || null
   };
   saveCertConfig(cfg);
   gi('cert-admin-saved').style.display='block';
