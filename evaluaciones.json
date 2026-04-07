@@ -1,5 +1,23 @@
 [
   {
+    "nombre": "Ortega Walter",
+    "legajo": "0001",
+    "dni": "32513789",
+    "sede": "SERVICIOS – Noche",
+    "tipoServicio": "SERVICIOS",
+    "inicio": "2026-04-07T00:00:50.822Z",
+    "fin": "2026-04-07T00:12:01.423Z",
+    "minutos": 11,
+    "mod1": 100,
+    "mod2": 100,
+    "mod3": 88,
+    "mod4": 100,
+    "final": 100,
+    "resultado": "APROBADO",
+    "correctas": 20,
+    "total": 20
+  },
+  {
     "nombre": "Jose",
     "legajo": "2323",
     "dni": "32513789",
