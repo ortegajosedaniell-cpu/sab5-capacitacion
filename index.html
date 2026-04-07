@@ -2123,7 +2123,7 @@ function generarCertificado(cb){
     } else { if(after)after(); }
   };
 
-  drawHeader(()=>loadFirmaVig(()=>loadFirmaGer(cb)));
+  loadFirmaVig(()=>loadFirmaGer(cb));
 }
 
 function descargarCertificado(){
