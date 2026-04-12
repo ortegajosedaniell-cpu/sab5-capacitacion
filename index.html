@@ -804,7 +804,7 @@
     <button class="back-btn" onclick="go('s-home')">←</button>
     <div>
       <div class="hdr-title" id="mod-title">Módulo</div>
-      <div class="hdr-sub">Leé todo antes del quiz</div>
+      <div class="hdr-sub" id="mod-sub">Leé todo antes del quiz</div>
     </div>
   </div>
   <div class="mcontent" id="mod-body"></div>
@@ -913,10 +913,10 @@ const CERT_SECRET = 'SAB5-2026-SEGPRI-AR';
 
 // ─── CONTENIDO MÓDULOS ──────────────────────────────────────────
 const MODS = [
-  { id:1, icon:'🛡️', title:'Funciones del Vigilador',          desc:'Rol, obligaciones y prohibiciones del vigilador', html: mod1() },
-  { id:2, icon:'🔥', title:'Lucha contra Incendios',           desc:'Tipos de fuego, extintores y evacuación',         html: mod2() },
-  { id:3, icon:'❤️', title:'RCP / DEA / Primeros Auxilios',    desc:'Reanimación, desfibrilador y atención básica',    html: mod3() },
-  { id:4, icon:'🖥️', title:'Capacitación de Monitorista',      desc:'Central de monitoreo, cámaras y protocolos',      html: mod4() },
+  { id:1, icon:'🛡️', title:'Funciones del Vigilador',          desc:'Rol, obligaciones y prohibiciones del vigilador', duration:'⏱ 25 min', html: mod1() },
+  { id:2, icon:'🔥', title:'Lucha contra Incendios',           desc:'Tipos de fuego, extintores y evacuación',         duration:'⏱ 25 min', html: mod2() },
+  { id:3, icon:'❤️', title:'RCP / DEA / Primeros Auxilios',    desc:'Reanimación, desfibrilador y atención básica',    duration:'⏱ 25 min', html: mod3() },
+  { id:4, icon:'🖥️', title:'Capacitación de Monitorista',      desc:'Central de monitoreo, cámaras y protocolos',      duration:'⏱ 25 min', html: mod4() },
 ];
 
 function mod1(){ return `
@@ -1607,7 +1607,7 @@ function renderHome(){
     const sc     = isDone?' · Nota '+p.score.toFixed(1):'';
     const d=document.createElement('div');
     d.className='mcard '+cls;
-    d.innerHTML=`<div class="mcard-ico">${m.icon}</div><div class="mcard-info"><div class="mcard-name">${m.title}</div><div class="mcard-desc">${m.desc}${sc}</div></div><div class="mcard-st">${st}</div>`;
+    d.innerHTML=`<div class="mcard-ico">${m.icon}</div><div class="mcard-info"><div class="mcard-name">${m.title}</div><div class="mcard-desc">${m.desc}${sc}</div><div style="font-size:11px;color:var(--muted);margin-top:3px">${m.duration||''}</div></div><div class="mcard-st">${st}</div>`;
     d.onclick=()=>openMod(m.id);
     c.appendChild(d);
   });
@@ -1620,6 +1620,7 @@ function renderHome(){
 function openMod(id){
   curMod = MODS.find(m=>m.id===id);
   gi('mod-title').textContent = curMod.icon+' '+curMod.title;
+  gi('mod-sub').textContent   = (curMod.duration||'') + ' · Leé todo antes del quiz';
   gi('mod-body').innerHTML    = curMod.html;
   gi('btn-quiz').textContent  = prog[id]?.done ? 'REPASAR QUIZ →' : 'IR AL QUIZ →';
   go('s-mod');
@@ -2188,7 +2189,7 @@ function renderModuleSelect(){
   MODS.forEach(m=>{
     if(!enabled.includes(m.id)) return;
     const o = document.createElement('option');
-    o.value = m.id; o.textContent = m.icon+' '+m.title;
+    o.value = m.id; o.textContent = m.icon+' '+m.title+(m.duration?' — '+m.duration:'');
     if(String(m.id) === cur) o.selected = true;
     sel.appendChild(o);
   });
