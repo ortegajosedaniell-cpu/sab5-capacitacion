@@ -459,36 +459,20 @@
     <div class="ops-grid">
       <div class="op-box">
         <div class="op-ico">📞</div>
-        <div class="op-num">11 7613<br>0761</div>
+        <a href="tel:+541176130761" class="op-num" style="text-decoration:none;color:#1a1a1a">11 7613<br>0761</a>
         <div class="op-lbl">Operación 1</div>
       </div>
       <div class="op-box">
         <div class="op-ico">📞</div>
-        <div class="op-num">11 6418<br>1407</div>
+        <a href="tel:+541164181407" class="op-num" style="text-decoration:none;color:#1a1a1a">11 6418<br>1407</a>
         <div class="op-lbl">Operación 2</div>
       </div>
       <div class="op-box">
         <div class="op-ico">📞</div>
-        <div class="op-num">11 5874<br>6034</div>
+        <a href="tel:+541158746034" class="op-num" style="text-decoration:none;color:#1a1a1a">11 5874<br>6034</a>
         <div class="op-lbl">Operación 3</div>
       </div>
     </div>
-
-    <div class="contact-label">Atención al Asociado</div>
-    <a class="wa-card" href="https://wa.me/541158703627" target="_blank" rel="noopener">
-      <div class="wa-ico">
-        <!-- WhatsApp SVG oficial -->
-        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.668 4.61 1.824 6.504L4 29l7.698-1.797A12.93 12.93 0 0016 28c6.627 0 12-5.373 12-12S22.627 3 16 3z" fill="white"/>
-          <path d="M21.5 18.5c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.68-1.63-.93-2.23-.24-.58-.49-.5-.68-.51h-.58c-.2 0-.52.07-.79.37-.27.3-1.03 1-1.03 2.44s1.05 2.83 1.2 3.03c.15.2 2.07 3.16 5.01 4.43.7.3 1.25.48 1.67.61.7.22 1.34.19 1.84.12.56-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z" fill="#25D366"/>
-        </svg>
-      </div>
-      <div class="wa-info">
-        <div class="wa-title">Atención al Asociado</div>
-        <div class="wa-num">11 5870-3627</div>
-        <div class="wa-sub">Tocá para abrir WhatsApp →</div>
-      </div>
-    </a>
 
   </div>
 
@@ -500,22 +484,14 @@
       <input type="text" id="i-nombre" placeholder="Ej: Juan Pérez" autocomplete="name">
     </div>
     <div class="form-group">
-      <label>N° de Legajo</label>
-      <input type="text" id="i-legajo" placeholder="Ej: 00123" inputmode="numeric">
-    </div>
-    <div class="form-group">
       <label>DNI</label>
       <input type="text" id="i-dni" placeholder="Sin puntos ni espacios" inputmode="numeric">
     </div>
     <div class="form-group">
-      <label>Tipo de Servicio</label>
-      <select id="i-tipo" style="width:100%;padding:14px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:15px;background:#fff;color:var(--navy);appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22><path d=%22M1 1l5 5 5-5%22 stroke=%22%23999%22 stroke-width=%222%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>');background-repeat:no-repeat;background-position:right 16px center;cursor:pointer">
-        <option value="">-- Seleccioná tu tipo de servicio --</option>
+      <label>Coordinador a cargo</label>
+      <select id="i-coord">
+        <option value="">-- Seleccioná el coordinador --</option>
       </select>
-    </div>
-    <div class="form-group">
-      <label>Turno</label>
-      <input type="text" id="i-turno" placeholder="Ej: Turno Noche, Turno Mañana">
     </div>
     <button id="btn-login" class="btn btn-primary" onclick="doLogin()" style="margin-top:6px">COMENZAR CAPACITACIÓN →</button>
     <p style="text-align:center;font-size:11px;color:#aaa;margin-top:14px">Tus datos serán registrados con fines de capacitación.</p>
@@ -592,10 +568,10 @@
           <button id="btn-delete-all" onclick="deleteAllRecords()" style="display:none;background:#7f1d1d;color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">🗑 Borrar todos</button>
         </div>
       </div>
-      <input class="search-input" id="admin-search" placeholder="Buscar nombre, legajo o sede..." oninput="renderTable()">
+      <input class="search-input" id="admin-search" placeholder="Buscar nombre, DNI o coordinador..." oninput="renderTable()">
       <div style="overflow-x:auto">
         <table class="result-table" id="admin-table">
-          <thead><tr><th>Nombre</th><th>Legajo</th><th>Sede/Turno</th><th>Nota</th><th>Resultado</th><th>Fecha</th><th>Diploma</th></tr></thead>
+          <thead><tr><th>Nombre</th><th>Coordinador</th><th>Nota</th><th>Resultado</th><th>Fecha</th><th>Diploma</th></tr></thead>
           <tbody id="admin-tbody"></tbody>
         </table>
       </div>
@@ -620,21 +596,11 @@
     <!-- ── TAB PREGUNTAS ── -->
     <div id="t-preguntas" class="admin-tab-panel">
       <div class="qed-tabs">
-        <button class="qed-tab active" onclick="switchQTab(1,this)">⚖️ Mod.1</button>
-        <button class="qed-tab" onclick="switchQTab(2,this)">👮 Mod.2</button>
-        <button class="qed-tab" onclick="switchQTab(3,this)">🚨 Mod.3</button>
-        <button class="qed-tab" onclick="switchQTab(4,this)">🔴 Mod.4</button>
+        <button class="qed-tab active" onclick="switchQTab(1,this)">🛡️ Funciones</button>
+        <button class="qed-tab" onclick="switchQTab(2,this)">🔥 Incendios</button>
+        <button class="qed-tab" onclick="switchQTab(3,this)">❤️ RCP/DEA</button>
+        <button class="qed-tab" onclick="switchQTab(4,this)">🖥️ Monitorista</button>
         <button class="qed-tab" onclick="switchQTab('exam',this)">📝 Final</button>
-      </div>
-      <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;padding:6px 2px 4px;text-transform:uppercase">Módulos por Rubro</div>
-      <div class="qed-tabs" style="margin-bottom:14px">
-        <button class="qed-tab" onclick="switchQTab('CONSTRUCCION',this)">🏗️ Construc.</button>
-        <button class="qed-tab" onclick="switchQTab('INDUSTRIA',this)">🏭 Industria</button>
-        <button class="qed-tab" onclick="switchQTab('LOGISTICA',this)">📦 Logística</button>
-        <button class="qed-tab" onclick="switchQTab('RETAIL',this)">🛒 Retail</button>
-        <button class="qed-tab" onclick="switchQTab('SALUD',this)">🏥 Salud</button>
-        <button class="qed-tab" onclick="switchQTab('SERVICIOS',this)">🏢 Servicios</button>
-        <button class="qed-tab" onclick="switchQTab('URBANIZACION',this)">🏘️ Urbanic.</button>
       </div>
       <div id="qed-list"></div>
       <button class="add-q-btn" onclick="addQuestion()">+ Agregar pregunta</button>
@@ -703,19 +669,14 @@
       <p id="cover-err" style="text-align:center;color:var(--red);font-size:12px;display:none;margin-bottom:16px"></p>
 
       <div class="card" style="margin-top:16px">
-        <h3>🏢 Tipos de Servicio</h3>
-        <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Editá el texto que ve el vigilador en el desplegable de tipo de servicio</p>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <div><label style="font-size:11px;font-weight:700;color:var(--muted)">CONSTRUCCION</label><input class="qed-input" id="svc-lbl-CONSTRUCCION"></div>
-          <div><label style="font-size:11px;font-weight:700;color:var(--muted)">INDUSTRIA</label><input class="qed-input" id="svc-lbl-INDUSTRIA"></div>
-          <div><label style="font-size:11px;font-weight:700;color:var(--muted)">LOGISTICA</label><input class="qed-input" id="svc-lbl-LOGISTICA"></div>
-          <div><label style="font-size:11px;font-weight:700;color:var(--muted)">RETAIL</label><input class="qed-input" id="svc-lbl-RETAIL"></div>
-          <div><label style="font-size:11px;font-weight:700;color:var(--muted)">SALUD</label><input class="qed-input" id="svc-lbl-SALUD"></div>
-          <div><label style="font-size:11px;font-weight:700;color:var(--muted)">SERVICIOS</label><input class="qed-input" id="svc-lbl-SERVICIOS"></div>
-          <div><label style="font-size:11px;font-weight:700;color:var(--muted)">URBANIZACION</label><input class="qed-input" id="svc-lbl-URBANIZACION"></div>
+        <h3>👥 Coordinadores</h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Coordinadores disponibles en el desplegable del formulario de registro</p>
+        <div id="coord-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px"></div>
+        <div style="display:flex;gap:8px">
+          <input class="qed-input" id="coord-new-input" placeholder="Nombre del coordinador" style="flex:1">
+          <button class="save-q-btn" onclick="addCoordinator()" style="margin-top:0;white-space:nowrap">+ Agregar</button>
         </div>
-        <button class="save-q-btn" onclick="saveServiceLabelsAdmin()" style="margin-top:12px">💾 GUARDAR TIPOS</button>
-        <p id="svc-lbl-saved" style="text-align:center;color:var(--green);font-size:13px;font-weight:700;display:none;margin-top:8px">✅ Guardado</p>
+        <p id="coord-saved" style="text-align:center;color:var(--green);font-size:13px;font-weight:700;display:none;margin-top:8px">✅ Guardado</p>
       </div>
     </div>
 
@@ -916,28 +877,6 @@
     }
   });
 
-  // 3. Detectar apertura de DevTools por tamaño de ventana
-  let _devWarned = false;
-  setInterval(()=>{
-    const diff = window.outerWidth - window.innerWidth > 200 ||
-                 window.outerHeight - window.innerHeight > 200;
-    const warn = document.getElementById('_dev-warn');
-    if(diff && !_devWarned){
-      _devWarned = true;
-      if(!warn){
-        const d = document.createElement('div');
-        d.id = '_dev-warn';
-        d.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Arial,sans-serif;text-align:center;padding:40px';
-        d.innerHTML = '<div style="font-size:48px;margin-bottom:16px">⚠️</div>' +
-          '<div style="font-size:22px;font-weight:700;margin-bottom:12px">Acceso no autorizado</div>' +
-          '<div style="font-size:14px;color:#ccc;max-width:400px;line-height:1.6">Este sistema y su contenido son propiedad intelectual de <strong style="color:#fff">SAB-5 Seguridad Privada</strong>.<br>Su reproducción o inspección no autorizada está prohibida por la Ley 11.723.<br><br><span style="color:#ef5350">joseortega@sab5.com.ar</span></div>';
-        document.body.appendChild(d);
-      }
-    } else if(!diff && _devWarned){
-      _devWarned = false;
-      if(warn) warn.remove();
-    }
-  }, 800);
 
   // 4. Mensaje en consola para quien logre abrirla
   const s = [
@@ -962,15 +901,46 @@ const CERT_SECRET = 'SAB5-2026-SEGPRI-AR';
 
 // ─── CONTENIDO MÓDULOS ──────────────────────────────────────────
 const MODS = [
-  { id:1, icon:'⚖️', title:'Marco Legal',            desc:'Normativa, requisas y derechos del vigilador', html: mod1() },
-  { id:2, icon:'👮', title:'Conducta en el Puesto',  desc:'Comportamiento, cámaras y acceso',             html: mod2() },
-  { id:3, icon:'🚨', title:'Situaciones de Emergencia', desc:'Incendio, intrusión, persona herida',       html: mod3() },
-  { id:4, icon:'🔴', title:'Botón de Pánico',         desc:'Cuándo, cómo y qué pasa después',             html: mod4() },
+  { id:1, icon:'🛡️', title:'Funciones del Vigilador',          desc:'Rol, obligaciones y prohibiciones del vigilador', html: mod1() },
+  { id:2, icon:'🔥', title:'Lucha contra Incendios',           desc:'Tipos de fuego, extintores y evacuación',         html: mod2() },
+  { id:3, icon:'❤️', title:'RCP / DEA / Primeros Auxilios',    desc:'Reanimación, desfibrilador y atención básica',    html: mod3() },
+  { id:4, icon:'🖥️', title:'Capacitación de Monitorista',      desc:'Central de monitoreo, cámaras y protocolos',      html: mod4() },
 ];
 
 function mod1(){ return `
-<div class="card"><h3>⚖️ Normativa que te rige</h3>
-<p>Como vigilador de seguridad privada estás regulado por leyes nacionales y provinciales. <strong>Ignorar la ley no te exime de responsabilidad.</strong> Conocerla te protege a vos y a la empresa.</p></div>
+<div class="card"><h3>🛡️ El vigilador: quién es y qué hace</h3>
+<p>El vigilador de seguridad privada es el profesional responsable de <strong>proteger personas, bienes e instalaciones</strong> en el marco de la ley. Su trabajo requiere criterio, disciplina y conocimiento de sus atribuciones reales. No es un policía, pero tampoco un simple observador.</p></div>
+
+<div class="divider">📋 FUNCIONES PRINCIPALES</div>
+<div class="card">
+<div class="do-c"><div class="rtitle">✅ Control de acceso</div><div class="rdesc">Registrar el ingreso y egreso de personas, vehículos y materiales. Verificar identidades, acreditaciones y autorizaciones según el protocolo del puesto.</div></div>
+<div class="do-c"><div class="rtitle">✅ Vigilancia y rondas</div><div class="rdesc">Recorrer el perímetro y sectores asignados según la frecuencia establecida. Detectar anomalías: puertas abiertas, personas no autorizadas, objetos abandonados.</div></div>
+<div class="do-c"><div class="rtitle">✅ Registro de novedades</div><div class="rdesc">Asentar en el libro de novedades todo hecho relevante: hora exacta, descripción detallada, personas involucradas. Cada firma es responsabilidad personal.</div></div>
+<div class="do-c"><div class="rtitle">✅ Atención al público</div><div class="rdesc">Brindar información, orientación y asistencia con trato cortés y profesional. La imagen del servicio depende en gran medida del primer contacto.</div></div>
+<div class="do-c"><div class="rtitle">✅ Respuesta ante incidentes</div><div class="rdesc">Actuar con protocolo ante emergencias: alertar, comunicar, contener. Nunca improvisar ni actuar solo sin respaldo.</div></div>
+</div>
+
+<div class="divider">🚫 LO QUE NO PUEDE HACER UN VIGILADOR</div>
+<div class="card">
+<div class="dont-c"><div class="rtitle">❌ No puede identificarse como policía ni agente de la autoridad</div><div class="rdesc">Hacerse pasar por autoridad policial es usurpación de función pública — delito penal grave. Aunque sea para facilitar una situación.</div></div>
+<div class="dont-c"><div class="rtitle">❌ No puede detener personas salvo flagrante delito</div><div class="rdesc">Solo en caso de flagrante delito puede retener al infractor, y debe llamar a la policía de inmediato. Retener sin flagrante es privación ilegítima de la libertad.</div></div>
+<div class="dont-c"><div class="rtitle">❌ No puede obligar a abrir bolsos o revisar pertenencias</div><div class="rdesc">Solo puede invitar voluntariamente. Si la persona se niega, no puede insistir ni retenerla. Eso es exclusivo de la autoridad policial con orden judicial.</div></div>
+<div class="dont-c"><div class="rtitle">❌ No puede abandonar el puesto sin relevo formal</div><div class="rdesc">El abandono de puesto es falta grave con consecuencias laborales y posibles responsabilidades legales si ocurre un incidente en su ausencia.</div></div>
+<div class="dont-c"><div class="rtitle">❌ No puede portar armas sin habilitación específica</div><div class="rdesc">La habilitación de vigilador NO incluye automáticamente el uso de armas. Se requiere habilitación individual adicional y específica.</div></div>
+</div>
+
+<div class="divider">📜 MARCO LEGAL</div>
+<div class="card">
+<ul class="rlist">
+<li class="ritem"><span class="rico">🏛️</span><div><strong>Ley 12.297 – Provincia de Buenos Aires</strong><br>Regula la seguridad privada en PBA. Autoridad de aplicación: Ministerio de Seguridad de la PBA.</div></li>
+<li class="ritem"><span class="rico">🏙️</span><div><strong>Ley 1.913 – Ciudad Autónoma de Buenos Aires</strong><br>Rige la seguridad privada en CABA. Autoridad: Dirección General de Seguridad Privada del GCBA.</div></li>
+<li class="ritem"><span class="rico">📋</span><div><strong>Obligaciones básicas</strong><br>Portar credencial habilitante vigente, respetar la cadena de mando, nunca firmar algo sin leerlo, reportar toda novedad en tiempo y forma.</div></li>
+</ul>
+</div>
+
+<div class="alert-box"><span class="alert-ico">⚠️</span>
+<div class="alert-txt"><strong>Recordá:</strong> Tu credencial debe estar vigente durante todo el servicio. Sin credencial vigente no podés ejercer legalmente. Si vence, avisá a la empresa antes del próximo turno.</div></div>
+`}
 
 <div class="card"><h3>📋 Leyes que gobiernan tu trabajo</h3>
 <ul class="rlist">
@@ -1012,120 +982,114 @@ function mod1(){ return `
 `}
 
 function mod2(){ return `
-<div class="card"><h3>👮 Tu comportamiento define el servicio</h3>
-<p>La conducta en el puesto es lo más visible de tu trabajo. Un vigilador profesional <strong>no improvisa</strong>: actúa con protocolo en cada situación, desde las rutinarias hasta las críticas.</p></div>
+<div class="card"><h3>🔥 El fuego: enemigo silencioso y veloz</h3>
+<p>El incendio puede multiplicarse en segundos. Conocer los tipos de fuego, los extintores correctos y el protocolo de evacuación puede <strong>salvar tu vida y la de otros</strong>.</p></div>
 
-<div class="divider">✅ LO QUE SÍ DEBÉS HACER</div>
-<div class="do-c"><div class="rtitle">✅ Mantener presencia activa en todo momento</div><div class="rdesc">Alerta visual constante, postura firme, ojos en el sector. La presencia visible es en sí misma una herramienta de disuasión.</div></div>
-<div class="do-c"><div class="rtitle">✅ Registrar toda entrada y salida</div><div class="rdesc">Personas, vehículos, horarios. Un registro sin datos es inútil ante un incidente. Sé preciso: nombre, hora, destino.</div></div>
-<div class="do-c"><div class="rtitle">✅ Comunicarte ante cualquier novedad</div><div class="rdesc">Antes de actuar por tu cuenta, informá al coordinador. En seguridad, una decisión solitaria sin respaldo puede salir muy cara.</div></div>
-<div class="do-c"><div class="rtitle">✅ Tratar al público con firmeza y respeto</div><div class="rdesc">Tono firme no es tono agresivo. La mayor parte de los conflictos en el puesto se resuelven con buena comunicación.</div></div>
-<div class="do-c"><div class="rtitle">✅ Llevar libreta personal de novedades</div><div class="rdesc">Anotá matrículas, horarios, personas sospechosas, fallas. Es tu respaldo ante cualquier cuestionamiento posterior.</div></div>
-
-<div class="divider">❌ LO QUE NO DEBÉS HACER</div>
-<div class="dont-c"><div class="rtitle">❌ NO DORMIR NI DORMITAR EN EL PUESTO</div><div class="rdesc">No existe el "cerrar los ojos un momento". Dormitar en servicio es falta grave que puede costar el trabajo y la habilitación. Si estás al límite de cansancio, avisá al coordinador antes de asumir el turno.</div></div>
-<div class="dont-c"><div class="rtitle">❌ NO usar el celular personal en el puesto activo</div><div class="rdesc">Solo en descanso autorizado o ante una emergencia real. El celular es distracción visual y genera mala imagen ante el cliente. Te hace vulnerable.</div></div>
-<div class="dont-c"><div class="rtitle">❌ NO consumir alcohol ni drogas</div><div class="rdesc">Presentarse bajo sus efectos es causal inmediata de desvinculación y puede tener consecuencias penales. No hay excepciones.</div></div>
-<div class="dont-c"><div class="rtitle">❌ NO recibir paquetes o encomiendas sin autorización</div><div class="rdesc">Si llega un paquete sin previo aviso del cliente, no lo recibas. Avisá al coordinador. Un paquete no autorizado puede ser cualquier cosa.</div></div>
-<div class="dont-c"><div class="rtitle">❌ NO intervenir físicamente en peleas ajenas</div><div class="rdesc">Tu rol es contener, separar verbalmente y llamar a la policía. Intervenir físicamente en una pelea que no te involucra puede derivar en lesiones o responsabilidad legal.</div></div>
-
-<div class="divider">📹 SISTEMAS DE VIDEOVIGILANCIA</div>
-<div class="card"><h3>Cámaras: son tus ojos cuando no podés estar en todos lados</h3>
-<p style="font-size:13px;color:#555;margin-bottom:12px">El vigilador que trabaja con cámaras tiene una responsabilidad adicional: monitorear, reportar y actuar con protocolo ante cada alerta.</p>
-<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Monitoreo activo</h4><p>No alcanza con que las cámaras estén encendidas. Debés revisar los monitores periódicamente según la frecuencia indicada en el puesto.</p></div></div>
-<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Ante una alarma de movimiento</h4><p>Primero verificá por cámara qué está pasando. <strong>No te muevas al lugar solo</strong> sin evaluar la situación. Informá al coordinador y esperá instrucciones o refuerzo.</p></div></div>
-<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Cámara sin imagen o con imagen borrosa</h4><p>Es una novedad grave. Asentala en el libro con hora exacta, reportá al coordinador de inmediato y no asumas que "es una falla técnica". Puede ser intencional.</p></div></div>
-<div class="estep"><div class="enum">4</div><div class="etxt"><h4>Grabaciones como prueba</h4><p>Las grabaciones son evidencia legal. Ante un incidente, no borres, no toques, no exportes sin autorización del coordinador o la policía. Preservalas.</p></div></div>
+<div class="divider">🔺 TRIÁNGULO DEL FUEGO</div>
+<div class="card">
+<p style="font-size:13px;color:#555;margin-bottom:12px">El fuego necesita <strong>tres elementos simultáneos</strong> para existir. Eliminar cualquiera de los tres lo apaga.</p>
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Combustible</h4><p>Todo material que puede arder: madera, papel, tela, combustible líquido, gas. Sin combustible no hay fuego.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Calor / Temperatura</h4><p>La energía que inicia y mantiene la combustión. Enfriar un material (ej: agua) rompe el ciclo.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Comburente (Oxígeno)</h4><p>Sin oxígeno el fuego se apaga. Cubrir o sufocar las llamas elimina el comburente.</p></div></div>
 </div>
 
-<div class="alert-box" style="background:#fff8e1;border-left-color:#f9a825"><span class="alert-ico">🎬</span>
-<div class="alert-txt"><strong>Caso real:</strong> El monitor de cámaras muestra que alguien está forzando la puerta del depósito a las 2 AM. El vigilador, sin avisar a nadie, va solo a "ver qué pasa".<br><br>
-<strong>Error:</strong> Sin respaldo, sin protocolo, sin información. Lo correcto: verificar por cámara, llamar al coordinador, activar el botón de pánico y llamar al 911. <strong>Nunca ir solo ante una posible intrusión.</strong></div></div>
+<div class="divider">🧯 CLASES DE FUEGO Y EXTINTOR CORRECTO</div>
+<div class="card">
+<div class="do-c"><div class="rtitle">🅰 Clase A — Sólidos (madera, papel, tela)</div><div class="rdesc">Extintor de agua o polvo ABC. Son los más comunes en oficinas y depósitos.</div></div>
+<div class="do-c"><div class="rtitle">🅱 Clase B — Líquidos inflamables (nafta, aceite)</div><div class="rdesc">Extintor de polvo ABC o CO₂. NUNCA usar agua: esparce el líquido y agrava el incendio.</div></div>
+<div class="do-c"><div class="rtitle">🅲 Clase C — Eléctricos (tableros, computadoras)</div><div class="rdesc">Solo CO₂ o polvo BC. El agua conduce electricidad y puede electrocutarte.</div></div>
+<div class="do-c"><div class="rtitle">🅳 Clase D — Metales en combustión</div><div class="rdesc">Extintores especiales. No usar agua ni polvo convencional. Son raros pero existen en industrias.</div></div>
+</div>
+
+<div class="divider">🚪 PROTOCOLO DE EVACUACIÓN</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Dar la alarma PRIMERO</h4><p>Activá la alarma de incendio antes de hacer cualquier otra cosa. Gritá "¡INCENDIO!" para alertar a todos.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Llamar al 100 – Bomberos</h4><p>Dirección exacta, tipo de incendio, si hay personas atrapadas. Hablá claro y despacio.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Guiar la evacuación — NUNCA por ascensores</h4><p>Dirigí a todos hacia salidas de emergencia por escaleras. El ascensor puede quedar atrapado si falla la energía.</p></div></div>
+<div class="estep"><div class="enum">4</div><div class="etxt"><h4>No arriesgar tu vida</h4><p>Si el fuego es grande o el humo es intenso, no intentés apagarlo. Tu función es evacuar y coordinar, no combatir incendios.</p></div></div>
+</div>
+
+<div class="divider">🧯 CÓMO USAR UN EXTINTOR — Método PASS</div>
+<div class="card">
+<div class="estep"><div class="enum">P</div><div class="etxt"><h4>Jalar (Pull)</h4><p>Retirá el seguro / pasador de la manija.</p></div></div>
+<div class="estep"><div class="enum">A</div><div class="etxt"><h4>Apuntar (Aim)</h4><p>Dirigí la manguera a la base del fuego, no a las llamas.</p></div></div>
+<div class="estep"><div class="enum">S</div><div class="etxt"><h4>Apretar (Squeeze)</h4><p>Presioná la palanca firmemente para descargar el agente extintor.</p></div></div>
+<div class="estep"><div class="enum">S</div><div class="etxt"><h4>Barrer (Sweep)</h4><p>Mové la manguera de lado a lado barriendo la base del fuego hasta extinguirlo.</p></div></div>
+</div>
+
+<div class="alert-box" style="background:#fff8e1;border-left-color:#f9a825"><span class="alert-ico">⚠️</span>
+<div class="alert-txt"><strong>Recordá:</strong> Un extintor estándar dura entre 15 y 30 segundos de descarga continua. Solo es eficaz en fuegos pequeños en su etapa inicial. Si el fuego ya es grande, evacuá y esperá a bomberos.</div></div>
 `}
 
 function mod3(){ return `
-<div class="card"><h3>🚨 Los primeros 60 segundos son los que cuentan</h3>
-<p>Ante una emergencia, quien improvisa pone vidas en riesgo. Quien actúa con protocolo <strong>salva vidas</strong>. Memorizá estos pasos y actuá siempre en orden.</p></div>
+<div class="card"><h3>❤️ RCP, DEA y Primeros Auxilios: vos podés salvar una vida</h3>
+<p>El paro cardíaco puede ocurrir en cualquier lugar. Si el paro dura más de 4 minutos sin atención, el daño cerebral es irreversible. Con RCP básico y un DEA, las chances de sobrevida se multiplican.</p></div>
 
-<div class="divider">🔥 INCENDIO — Protocolo obligatorio</div>
+<div class="divider">❤️ RCP — Reanimación Cardiopulmonar</div>
 <div class="card">
-<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Dar la alarma PRIMERO</h4><p>Activá la alarma de incendio. Gritá "¡INCENDIO!" para alertar a todos. <strong>Antes de tocar el extintor, la alarma ya debe estar activada.</strong></p></div></div>
-<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Llamar al 100 – Bomberos</h4><p>Dirección exacta, tipo de incendio (eléctrico, combustible, materiales), si hay personas atrapadas. Hablá despacio y claro.</p></div></div>
-<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Guiar la evacuación</h4><p>Dirigí a las personas hacia salidas de emergencia. <strong>NUNCA usar ascensores</strong> — pueden convertirse en una trampa mortal si falla la energía.</p></div></div>
-<div class="estep"><div class="enum">4</div><div class="etxt"><h4>No arriesgar tu vida</h4><p>Si el fuego es grande o produce humo intenso, no intentés apagarlo. Tu función es evacuar y coordinar, no combatir incendios.</p></div></div>
+<p style="font-size:13px;color:#555;margin-bottom:10px"><strong>Indicado:</strong> Persona inconsciente que no respira o solo hace gasping (boqueos irregulares). Llamar al 107/911 PRIMERO.</p>
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Verificar consciencia y respiración</h4><p>Sacudí suavemente los hombros: "¿Estás bien?". Mirá el pecho durante 10 segundos. Si no respira con normalidad, iniciá RCP.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Llamar al 107 / 911</h4><p>Pedile a alguien específico que llame ("¡Vos, de rojo, llamá al 107!"). Si estás solo, activá el altavoz del celular y continuá con la RCP.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Compresiones torácicas</h4><p>Talón de la mano en el centro del pecho. Brazos rectos. Comprimir <strong>5-6 cm</strong> de profundidad, ritmo de <strong>100-120 por minuto</strong>. "Stayin' Alive" de Bee Gees tiene el ritmo exacto.</p></div></div>
+<div class="estep"><div class="enum">4</div><div class="etxt"><h4>Ventilaciones (si estás entrenado)</h4><p>30 compresiones + 2 ventilaciones. Si no estás entrenado: solo compresiones continuas también es efectivo.</p></div></div>
+<div class="estep"><div class="enum">5</div><div class="etxt"><h4>Continuar hasta que llegue ayuda</h4><p>No pares salvo que llegue el SAME, aparezca un DEA, o la persona recupere la consciencia. Si hay alguien más, rotad cada 2 minutos para no agotaros.</p></div></div>
 </div>
 
-<div class="alert-box" style="background:#fff8e1;border-left-color:#f9a825"><span class="alert-ico">🎬</span>
-<div class="alert-txt"><strong>Caso real:</strong> Hay humo saliendo del depósito. El vigilador agarra el extintor y va a apagarlo. Nadie llamó a bomberos todavía, nadie evacuó.<br><br>
-<strong>Error:</strong> La alarma y la llamada al 100 son PRIMERO, siempre. Un extintor puede fallar, el fuego puede crecer. Sin evacuación en curso, el daño puede ser fatal.</div></div>
-
-<div class="divider">🔓 INTRUSIÓN / ROBO EN CURSO</div>
+<div class="divider">⚡ DEA — Desfibrilador Externo Automático</div>
 <div class="card">
-<div class="estep"><div class="enum">1</div><div class="etxt"><h4>No confrontar si hay riesgo</h4><p>Tu vida y la de los presentes valen infinitamente más que cualquier bien material. Si hay armas, <strong>no resistir bajo ningún concepto.</strong></p></div></div>
-<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Activar el botón de pánico</h4><p>Si podés hacerlo sin ser detectado. Activa respuesta inmediata de monitoreo y fuerzas de seguridad.</p></div></div>
-<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Memorizar y observar</h4><p>Cantidad de personas, vestimenta, características físicas, vehículos, dirección de fuga. Esta información es crucial para la investigación.</p></div></div>
-<div class="estep"><div class="enum">4</div><div class="etxt"><h4>Preservar la escena</h4><p><strong>No tocar absolutamente nada.</strong> Cada objeto es potencial evidencia. Impedí que otros lo hagan hasta que llegue la policía.</p></div></div>
+<p style="font-size:13px;color:#555;margin-bottom:10px">El DEA analiza el ritmo cardíaco y aplica descarga solo si es necesario. <strong>No puede dañar a una persona que no lo necesita.</strong> Usarlo es seguro.</p>
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Encender el DEA</h4><p>Siguiendo las instrucciones de voz del equipo. Todos los DEA guían paso a paso con voz.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Colocar los parches</h4><p>Uno bajo la clavícula derecha, otro en el costado izquierdo bajo el pecho. Piel seca y sin ropa.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Análisis y descarga</h4><p>"Aléjense" — asegurarse de que nadie toca a la víctima. El DEA decide si aplicar descarga. Si lo indica: presioná el botón.</p></div></div>
+<div class="estep"><div class="enum">4</div><div class="etxt"><h4>Retomar RCP inmediatamente</h4><p>Tras la descarga, continuar RCP de inmediato. El DEA indicará cuándo volver a analizar.</p></div></div>
 </div>
 
-<div class="divider">🏥 PERSONA HERIDA</div>
+<div class="divider">🩹 PRIMEROS AUXILIOS BÁSICOS</div>
 <div class="card">
-<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Llamar al 107 (SAME) o 911 primero</h4><p>Dirección exacta, cantidad de heridos, estado de consciencia, tipo de lesión visible. El médico necesita esta información para prepararse antes de llegar.</p></div></div>
-<div class="estep"><div class="enum">2</div><div class="etxt"><h4>NO mover al herido — salvo peligro inminente</h4><p>Solo si hay fuego, derrumbe u otro peligro directo. Mover incorrectamente a alguien con lesiones en columna puede dejarlo paralítico.</p></div></div>
-<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Despejar el área y controlar el acceso</h4><p>Alejá a los curiosos. Los servicios de emergencia necesitan espacio libre para trabajar. Cada segundo cuenta.</p></div></div>
-<div class="estep"><div class="enum">4</div><div class="etxt"><h4>Mantener a la persona tranquila</h4><p>Hablale. Decile que ya viene la ambulancia. El estado emocional del herido afecta directamente su estado físico.</p></div></div>
+<div class="do-c"><div class="rtitle">🩸 Hemorragia severa</div><div class="rdesc">Presión directa y sostenida sobre la herida con tela limpia. No aflojar. Si la tela se empapa, agregar más encima sin sacar la primera. Elevar el miembro si es posible.</div></div>
+<div class="do-c"><div class="rtitle">🦴 Fractura o lesión de columna</div><div class="rdesc">NO mover a la persona. Inmovilizar como está. Solo mover si hay peligro inminente (fuego, derrumbe). Llamar al 107/911 y esperar.</div></div>
+<div class="do-c"><div class="rtitle">🤢 Persona desmayada consciente</div><div class="rdesc">Acostada boca arriba, piernas elevadas si es posible. No dar líquidos. Aflojar ropa ajustada. Monitorear hasta que llegue la ambulancia.</div></div>
+<div class="do-c"><div class="rtitle">🔥 Quemaduras</div><div class="rdesc">Agua fría (no helada) durante 10-20 minutos. No reventar ampollas, no aplicar pasta dental ni mantequilla. Cubrir con tela limpia y seca.</div></div>
 </div>
 
-<div class="alert-box" style="background:#fff8e1;border-left-color:#f9a825"><span class="alert-ico">🎬</span>
-<div class="alert-txt"><strong>Caso real:</strong> Hay 3 personas heridas: una sangra mucho, otra está inconsciente, la tercera tiene el tobillo torcido. Un compañero dice "atendé primero al que está despierto y nos pide ayuda".<br><br>
-<strong>Error:</strong> La prioridad es quien tiene mayor riesgo de vida: el inconsciente y el que sangra abundantemente. El tobillo torcido espera. Esto se llama <strong>triage</strong> y es parte de tu formación.</div></div>
-
-<div class="card" style="background:#fce4ec;border-left:4px solid var(--red)">
-<h3>📞 Números de emergencia — grabálos en tu celular HOY</h3>
-<ul class="rlist">
-<li class="ritem"><span class="rico">🚒</span><div><strong>100</strong> – Bomberos</div></li>
-<li class="ritem"><span class="rico">🚑</span><div><strong>107</strong> – SAME / Ambulancias (Ciudad de Buenos Aires)</div></li>
-<li class="ritem"><span class="rico">🚓</span><div><strong>911</strong> – Policía / Emergencias integradas</div></li>
-<li class="ritem"><span class="rico">📡</span><div><strong>Central de monitoreo SAB-5</strong> – Anotá el número en el libro de órdenes del puesto</div></li>
-</ul>
-<p style="font-size:12px;color:#888;margin-top:8px">⚠️ En la provincia de Buenos Aires el 911 unifica policía y emergencias médicas. En CABA el 107 es el SAME.</p>
-</div>
+<div class="alert-box" style="background:#fce4ec;border-left-color:var(--red)"><span class="alert-ico">❤️</span>
+<div class="alert-txt"><strong>Regla de oro:</strong> Ante cualquier emergencia médica, lo primero es llamar al 107/911. El operador te guiará en tiempo real. Nunca estás solo si llamás a tiempo.</div></div>
 `}
 
 function mod4(){ return `
-<div class="card"><h3>🔴 El botón de pánico: tu línea de vida directa</h3>
-<p>Es el recurso más inmediato para pedir ayuda <strong>sin necesidad de hablar, sin que te vean actuar</strong>. Un solo gesto activa toda la cadena de respuesta. Debés conocerlo como la palma de tu mano.</p></div>
+<div class="card"><h3>🖥️ El monitorista: los ojos del sistema</h3>
+<p>El monitorista es el operador que <strong>controla la central de videovigilancia</strong>. Analiza imágenes en tiempo real, detecta anomalías y coordina la respuesta ante incidentes. Su trabajo silencioso sostiene toda la operación.</p></div>
 
-<div class="card" style="text-align:center">
-  <div class="panic-btn"><span class="pico">🔴</span><span class="ptxt">PÁNICO</span></div>
-  <p style="font-size:12px;color:#777;margin-top:6px">Aspecto típico. Tu dispositivo puede variar — preguntá a tu coordinador si tenés dudas sobre su ubicación y funcionamiento.</p>
-</div>
-
-<div class="divider">🟢 CUÁNDO ACTIVARLO — sin dudar</div>
-<div class="do-c"><div class="rtitle">✅ Robo o asalto en curso</div><div class="rdesc">En cuanto tenés certeza del delito y podés hacerlo sin ser visto. Cada segundo cuenta para la respuesta.</div></div>
-<div class="do-c"><div class="rtitle">✅ Amenaza a tu integridad o la de otros</div><div class="rdesc">Si alguien te amenaza verbalmente con violencia o te exhibe un arma, activá. No esperés a que el hecho "se concrete".</div></div>
-<div class="do-c"><div class="rtitle">✅ Intrusión confirmada en sector restringido</div><div class="rdesc">Presencia no autorizada en un área cerrada, especialmente fuera de horario. La cámara que muestra a alguien forzando una puerta es motivo suficiente.</div></div>
-<div class="do-c"><div class="rtitle">✅ Emergencia médica grave sin respuesta</div><div class="rdesc">Combinalo siempre con el 107/911. El monitoreo puede coordinar recursos adicionales.</div></div>
-
-<div class="divider">📡 QUÉ PASA SEGUNDO A SEGUNDO DESPUÉS DE ACTIVARLO</div>
+<div class="divider">📋 FUNCIONES DEL MONITORISTA</div>
 <div class="card">
-<div class="estep"><div class="enum">1</div><div class="etxt"><h4>La central recibe la señal (en segundos)</h4><p>El sistema de monitoreo registra hora, ubicación y estado de tu dispositivo automáticamente.</p></div></div>
-<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Te intentan contactar</h4><p>Pueden llamar al puesto o a tu dispositivo. Si estás libre, confirmá. Si estás bajo coerción: <strong>guardá silencio absoluto</strong>. Ese silencio le dice a la central que necesitás ayuda urgente.</p></div></div>
-<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Despachan respuesta simultánea</h4><p>Móvil de la empresa + alerta a la policía. El tiempo de respuesta depende de la distancia, por eso el botón es tan importante.</p></div></div>
-<div class="estep"><div class="enum">4</div><div class="etxt"><h4>Tu tarea mientras tanto: sobrevivir</h4><p>No confrontar. Cooperar con calma si hay armas. Memorizar todo: cantidad de personas, ropa, rasgos, vehículos, dirección de fuga. Todo eso va al informe.</p></div></div>
+<div class="do-c"><div class="rtitle">✅ Monitoreo continuo de cámaras</div><div class="rdesc">Revisar sistemáticamente los monitores asignados. No alcanza con tenerlos encendidos: el monitoreo activo significa observar, no solo ver.</div></div>
+<div class="do-c"><div class="rtitle">✅ Registro de novedades en tiempo real</div><div class="rdesc">Asentar cada evento relevante con hora exacta: movimiento inusual, persona sospechosa, acceso no autorizado, falla de cámara. Sin registro no hay respaldo.</div></div>
+<div class="do-c"><div class="rtitle">✅ Comunicación con el personal de campo</div><div class="rdesc">Ser los ojos del vigilador en el puesto. Informar, alertar y coordinar ante cualquier situación que la cámara detecte antes que el vigilador.</div></div>
+<div class="do-c"><div class="rtitle">✅ Gestión de alarmas</div><div class="rdesc">Verificar cada alarma por cámara antes de despachar respuesta. Distinguir falsas alarmas (animales, viento) de amenazas reales.</div></div>
+<div class="do-c"><div class="rtitle">✅ Preservación de grabaciones</div><div class="rdesc">Ante un incidente, preservar el material grabado. No borrar, no exportar sin autorización. Las grabaciones son evidencia legal.</div></div>
 </div>
 
-<div class="alert-box" style="background:#fff8e1;border-left-color:#f9a825"><span class="alert-ico">🎬</span>
-<div class="alert-txt"><strong>Caso real:</strong> Dos personas armadas entran al local. El vigilador decide no activar el pánico "para no provocarlos". La central no sabe nada. La policía llega 20 minutos después por llamado de un vecino.<br><br>
-<strong>Reflexión:</strong> El botón de pánico está diseñado para ser invisible al delincuente. Activarlo apenas fue posible podría haber reducido el tiempo de respuesta a 3-5 minutos. El temor a "provocar" cuesta más de lo que protege.</div></div>
+<div class="divider">🔍 LECTURA DE IMÁGENES</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Identificar comportamientos anómalos</h4><p>Persona merodeando sin destino claro, vehículo estacionado por largo tiempo, movimiento en horario fuera de lo normal.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Cámara fuera de servicio</h4><p>Pantalla negra, imagen fija o distorsionada. <strong>Reportar de inmediato</strong>: puede ser falla técnica o sabotaje intencional.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Seguimiento de incidente</h4><p>Si ocurre un hecho, seguirlo cámara a cámara registrando desplazamientos, características físicas, vehículos usados y dirección de fuga.</p></div></div>
+<div class="estep"><div class="enum">4</div><div class="etxt"><h4>Coordinación con fuerzas externas</h4><p>Ante robo o intrusión confirmada: despachar al vigilador y llamar al 911. Dar descripción precisa y mantenerse en línea hasta la llegada.</p></div></div>
+</div>
 
-<div class="dont-c"><div class="rtitle">❌ NO asumir el puesto si el botón no funciona</div><div class="rdesc">Si al inicio del turno el botón no tiene señal o batería, reportalo al coordinador ANTES de asumir. Trabajar sin botón operativo es trabajar sin red de seguridad.</div></div>
-<div class="dont-c"><div class="rtitle">❌ NO activar por error sin reportarlo inmediatamente</div><div class="rdesc">Si fue involuntario, llamá de inmediato a la central para cancelar la alerta. Las falsas alarmas reiteradas tienen sanciones y desgastan el sistema de respuesta.</div></div>
+<div class="divider">🚨 PROTOCOLO ANTE INTRUSIÓN CONFIRMADA</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>No confrontar — observar y registrar</h4><p>Tu función como monitorista es verificar, no intervenir físicamente. Documentar todo lo que ves.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Alertar al vigilador en campo</h4><p>Comunicar por radio o teléfono indicando sector, cantidad de personas y tipo de amenaza.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Llamar al 911</h4><p>Dirección exacta, descripción de los intrusos, si hay armas visibles. Mantenerse en línea.</p></div></div>
+<div class="estep"><div class="enum">4</div><div class="etxt"><h4>Documentar la secuencia</h4><p>Anotar hora de detección, hora de llamada al 911, descripción de los hechos. Este registro es clave para la investigación posterior.</p></div></div>
+</div>
 
-<div class="alert-box"><span class="alert-ico">🔋</span>
-<div class="alert-txt"><strong>Verificación al inicio de cada turno:</strong> Confirmá batería, señal y funcionamiento del botón. Si detectás alguna falla, asentala en el libro de novedades y reportala. No la ignores esperando que "se arregle sola".</div></div>
+<div class="alert-box"><span class="alert-ico">⚠️</span>
+<div class="alert-txt"><strong>Recordá:</strong> El monitorista nunca actúa solo en el campo. Su herramienta es la comunicación y la coordinación. Una buena detección temprana desde la central vale más que diez intervenciones tardías.</div></div>
 `}
 
-// ─── MÓDULO 5 — ADAPTATIVO POR TIPO DE SERVICIO ─────────────────
+// ─── (MOD5 eliminado — sistema de 4 módulos fijos) ───────────────
 const MOD5_DATA = {
   CONSTRUCCION: {
     title:'Seguridad en Obras (Obradores)',
@@ -1468,8 +1432,86 @@ function initMod5(tipo){
 // ─── QUIZZES ────────────────────────────────────────────────────
 const QUIZZES = {
   1:[
-    {q:"Un vigilador de supermercado sospecha que un cliente metió algo en la mochila. Lo detiene en la puerta y le exige abrirla. El cliente se niega. ¿Qué debería haber hecho el vigilador?",
-     o:["Tenía razón: puede exigir la apertura si hay sospecha fundada","Solo podía invitarlo voluntariamente; si se niega, llamar a la policía","Podía retenerlo físicamente hasta que llegue la policía","Pedirle al coordinador que autorice la revisión","Filmarlo con el celular como evidencia","Pedirle el ticket de compra y retenerlo hasta que llegue la policía"],c:[1]},
+    // Preguntas 0-3: quiz del módulo
+    {q:"Un vigilador detiene a una persona en la puerta del establecimiento y le exige abrir su mochila. La persona se niega. ¿Qué debería haber hecho el vigilador?",
+     o:["Tenía razón: puede exigir la apertura si hay sospecha fundada","Solo podía invitarla voluntariamente; si se niega, no puede obligarla","Podía retenerla físicamente hasta que llegue la policía","Pedirle al coordinador que autorice la revisión","Llamar directamente a la policía y esperar","Pedirle el ticket de compra y retenerla hasta confirmar"],c:[1]},
+    {q:"¿Cuál de estas acciones está PROHIBIDA para un vigilador de seguridad privada?",
+     o:["Registrar el ingreso de personas al establecimiento","Identificarse como 'agente de civil' para que alguien coopere","Verificar credenciales de ingreso al predio","Reportar novedades al coordinador","Hacer rondas de vigilancia perimetral","Solicitar voluntariamente la exhibición de pertenencias"],c:[1]},
+    {q:"Tu credencial de habilitación venció ayer. Tu coordinador te dice 'arrancá igual, hoy la renovamos'. ¿Qué hacés?",
+     o:["Asumís el turno porque la renovación está en trámite","No podés asumir: sin credencial vigente no podés ejercer legalmente","Podés asumir solo si el puesto no tiene inspecciones","Asumís y avisás a la empresa por escrito","Asumís y le pedís al coordinador que firme una autorización","Asumís solo el primer turno mientras gestionan la renovación"],c:[1]},
+    {q:"¿Cuándo puede un vigilador retener a una persona?",
+     o:["Cuando hay sospecha fundada de delito","Solo en caso de flagrante delito, llamando a la policía de inmediato","Cuando el cliente del servicio lo autoriza","Cuando la persona se niega a identificarse","En cualquier momento si el coordinador lo ordena","Nunca bajo ninguna circunstancia"],c:[1]},
+    // Preguntas 4-7: examen final
+    {q:"¿Qué ley regula la seguridad privada en la Provincia de Buenos Aires?",
+     o:["Ley 24.192","Ley 1.913","Ley 12.297","Decreto 1139/02","Ley 23.950","Ley 25.520"],c:[2]},
+    {q:"Un vigilador firma el libro de novedades de un colega que 'se olvidó'. El libro dice 'sin novedades'. ¿Qué error comete?",
+     o:["Ninguno: es un trámite administrativo menor","Asume responsabilidad personal sobre lo que firmó sin verificar","Comete una falta leve sin consecuencias legales","Solo es un error si luego hay un incidente","Es correcto si el coordinador lo autoriza","Es un error solo si la anotación es falsa"],c:[1]},
+    {q:"¿Qué debe hacer un vigilador que recibe un paquete no esperado en el puesto?",
+     o:["Aceptarlo y guardarlo hasta que el cliente lo reclame","No recibirlo y avisar al coordinador","Abrirlo para verificar el contenido","Aceptarlo solo si el remitente se identifica","Devolverlo al repartidor en el momento","Aceptarlo y anotarlo en el libro de novedades"],c:[1]},
+    {q:"El vigilador no puede portar armas a menos que:",
+     o:["Lleve más de 2 años en la empresa","Tenga habilitación individual específica para portación de armas","El cliente del servicio lo autorice por escrito","El coordinador lo ordene expresamente","Sea turno nocturno en un puesto de alto riesgo","Haya completado la capacitación anual obligatoria"],c:[1]},
+  ],
+  2:[
+    // Preguntas 0-3: quiz del módulo
+    {q:"Hay humo visible saliendo por la ranura de una puerta. Tenés un extintor a mano. ¿Primera acción?",
+     o:["Abrís la puerta y usás el extintor de inmediato","Activás la alarma de incendio y llamás al 100 PRIMERO","Avisás solo al coordinador por radio antes de hacer nada","Mojás toallas y las ponés bajo la puerta para ganar tiempo","Evacuás el área sin llamar a bomberos todavía","Apagás la luz eléctrica del sector para reducir el riesgo"],c:[1]},
+    {q:"¿Qué tipo de extintor NUNCA debés usar en un incendio eléctrico (tableros, computadoras)?",
+     o:["CO₂","Polvo BC","Agua","Polvo ABC","Halon","Espuma química seca"],c:[2]},
+    {q:"Evacuando un edificio por incendio en el piso 3. El ascensor funciona perfectamente. ¿Lo usás?",
+     o:["Sí, para personas con movilidad reducida es la excepción válida","No: el ascensor NUNCA se usa en incendios — podés quedar atrapado","Sí, si el incendio todavía no afecta la zona del ascensor","Solo si bomberos lo autoriza expresamente","Sí, para bajar más rápido a las personas y volver a buscar más","No, salvo que el edificio tenga ascensor de emergencia certificado"],c:[1]},
+    {q:"En el método PASS para usar un extintor, la A significa:",
+     o:["Activar la alarma","Apuntar la manguera a la base del fuego","Abrir la válvula de presión","Alejarse del humo tóxico","Alertar a los ocupantes del edificio","Agregar agente extintor al foco"],c:[1]},
+    // Preguntas 4-7: examen final
+    {q:"¿Cuáles son los tres elementos del triángulo del fuego?",
+     o:["Calor, agua y oxígeno","Combustible, calor y comburente (oxígeno)","Combustible, presión y temperatura","Fuego, aire y material inflamable","Chispa, gas y material seco","Energía, oxidante y catalizador"],c:[1]},
+    {q:"Para apagar un fuego Clase B (líquidos inflamables como nafta), ¿cuál es el extintor indicado?",
+     o:["Agua a presión","Polvo ABC o CO₂","Solo CO₂","Espuma para incendios de madera","Cualquier extintor: la clase B acepta todos","Agua nebulizada únicamente"],c:[1]},
+    {q:"¿A qué número se llama para reportar un incendio en Argentina?",
+     o:["107","911","100","103","112","0800-BOMBEROS"],c:[2]},
+    {q:"Un extintor estándar descarga de forma continua durante aproximadamente:",
+     o:["2 a 5 minutos","5 a 10 minutos","15 a 30 segundos","1 a 2 minutos","Solo hasta que el fuego se apague","Tiempo indefinido si se suelta la palanca entre descargas"],c:[2]},
+  ],
+  3:[
+    // Preguntas 0-3: quiz del módulo
+    {q:"Una persona está inconsciente y no respira con normalidad. ¿Cuál es el orden correcto de acciones?",
+     o:["Buscar un DEA, luego llamar al 107, luego iniciar RCP","Llamar al 107/911, iniciar RCP de inmediato, buscar DEA en paralelo","Esperar a que llegue alguien entrenado antes de hacer cualquier cosa","Iniciar RCP, luego llamar al 107, sin prioridad de orden","Verificar pulso durante 1 minuto completo antes de iniciar RCP","Iniciar ventilaciones primero y compresiones después"],c:[1]},
+    {q:"¿Con qué ritmo de compresiones se realiza la RCP correctamente?",
+     o:["50 a 60 por minuto","60 a 80 por minuto","100 a 120 por minuto","Cuantas más por minuto, mejor","El ritmo no importa, solo la profundidad","130 a 150 por minuto para casos graves"],c:[2]},
+    {q:"Al usar un DEA, ¿qué debés hacer mientras el equipo analiza el ritmo cardíaco?",
+     o:["Continuar las compresiones para no interrumpir el flujo","Alejarte y asegurarte de que nadie toca a la víctima","Preparar las ventilaciones para el siguiente ciclo","Llamar al 107 si no lo hiciste aún","Humedecer los parches para mejor conductividad","Verificar la consciencia sacudiendo los hombros de la víctima"],c:[1]},
+    {q:"Una persona cae con posible lesión de columna. No hay peligro inmediato en el lugar. ¿Qué hacés?",
+     o:["La levantás entre varios para llevarla a un lugar más cómodo","La sentás apoyada en la pared para que respire mejor","No la movés: la inmovilizás como está y esperás al SAME","La ponés en posición lateral de seguridad de inmediato","La llevás a la entrada del edificio para que la ambulancia llegue antes","Le ponés algo bajo la cabeza para alinear la columna"],c:[2]},
+    // Preguntas 4-7: examen final
+    {q:"Hay 3 heridos: uno sangra abundantemente, otro está inconsciente, el tercero tiene el tobillo torcido. ¿A quién priorizás?",
+     o:["Al que grita: claramente necesita más atención","Al que sangra y al inconsciente: mayor riesgo de vida inmediato","Al del tobillo: es el único que puede comunicarse","A los tres por igual","Solo al inconsciente: es el que no puede pedir ayuda","Al que puede moverse: es el más estable"],c:[1]},
+    {q:"En caso de quemadura, ¿qué se aplica inmediatamente sobre la zona afectada?",
+     o:["Pasta dental o mantequilla para calmar el dolor","Agua fría (no helada) durante 10 a 20 minutos","Hielo directo sobre la quemadura","Alcohol para desinfectar","Vaselina o crema hidratante","Nada: se espera a que llegue la ambulancia"],c:[1]},
+    {q:"La relación correcta de compresiones y ventilaciones en RCP para adultos es:",
+     o:["15 compresiones + 2 ventilaciones","10 compresiones + 1 ventilación","30 compresiones + 2 ventilaciones","20 compresiones + 3 ventilaciones","Solo compresiones: las ventilaciones están desaconsejadas","50 compresiones + 5 ventilaciones"],c:[2]},
+    {q:"¿Qué información es CRÍTICA dar primero al llamar al 107 (SAME)?",
+     o:["Tu nombre y número de habilitación como vigilador","La dirección exacta del lugar: sin ella el SAME no puede llegar","El tipo de herida en detalle antes que nada","La cantidad de personas involucradas","El nombre del coordinador del establecimiento","Si el herido tiene obra social o no"],c:[1]},
+  ],
+  4:[
+    // Preguntas 0-3: quiz del módulo
+    {q:"El monitorista detecta en cámara que alguien fuerza una puerta trasera a las 2 AM. ¿Primera acción?",
+     o:["Ir al lugar a verificar personalmente","Verificar por cámara, alertar al vigilador en campo, llamar al 911","Esperar 5 minutos para confirmar que no es una falla del sensor","Apagar y reiniciar las cámaras para resetear la alarma","Avisar al cliente del servicio directamente sin pasar por protocolo","Registrar la novedad y notificar al coordinador al final del turno"],c:[1]},
+    {q:"La cámara del acceso principal lleva 90 minutos con pantalla negra. ¿Qué hacés?",
+     o:["Esperás a que vuelva sola: puede ser falla eléctrica","Lo reportás al coordinador al final del turno","Lo asentás en el libro con hora exacta y reportás al coordinador de inmediato: puede ser sabotaje intencional","Lo ignorás si el resto de las cámaras funciona bien","Desenchufás y enchufás la cámara para resetearla","Le avisás al cliente directamente por teléfono"],c:[2]},
+    {q:"Tras un incidente captado en cámara, la policía pide las grabaciones. ¿Qué hacés?",
+     o:["Las ponés a disposición de inmediato sin avisar a nadie","Las ponés a disposición pero primero avisás al coordinador para que quede registrado","Te negás hasta tener una orden escrita firmada","Las exportás vos mismo a un USB y se las entregás","Le decís que no tenés acceso y que llamen a la empresa","Solo las mostrás en el monitor; no permitís copias bajo ningún concepto"],c:[1]},
+    {q:"¿Cuál es la función principal del monitorista ante una alarma de movimiento?",
+     o:["Despachar al vigilador de campo de inmediato sin verificar","Verificar la imagen de la cámara antes de actuar y determinar si es amenaza real o falsa alarma","Llamar al 911 automáticamente ante toda alarma","Resetear el sistema de alarma y continuar el monitoreo normal","Notificar al cliente del servicio para que tome la decisión","Esperar 10 minutos para confirmar si la alarma persiste"],c:[1]},
+    // Preguntas 4-7: examen final
+    {q:"¿Qué debe hacer el monitorista si detecta un comportamiento anómalo en cámara pero no puede confirmarlo como amenaza?",
+     o:["Ignorarlo hasta tener certeza absoluta","Registrar la novedad, comunicar al vigilador de campo y mantener vigilancia reforzada en el sector","Llamar al 911 de todas formas por precaución","Esperar a que el comportamiento escale antes de actuar","Reiniciar la cámara para obtener una imagen más clara","Avisarle directamente al cliente del servicio"],c:[1]},
+    {q:"Una grabación de cámara puede servir como evidencia legal. ¿Qué está PROHIBIDO hacer con ella?",
+     o:["Preservarla íntegramente sin modificaciones","Entregarla a la policía con autorización del coordinador","Borrarla o exportarla sin autorización para no comprometer la investigación","Mostrarla al coordinador para evaluación interna","Guardarla en el sistema hasta que sea requerida","Hacer una copia de seguridad con autorización"],c:[2]},
+    {q:"¿Con qué frecuencia debe revisar el monitorista los monitores a su cargo?",
+     o:["Solo cuando suena una alarma de movimiento","Periódicamente, de forma activa y sistemática, según el protocolo del puesto","Una vez por hora es suficiente","Solo en horario nocturno cuando hay mayor riesgo","Cuando el vigilador de campo le avisa de algo","Al inicio y al final de cada turno"],c:[1]},
+    {q:"El monitorista detecta una intrusión confirmada. Ya alertó al vigilador. ¿Qué más debe hacer?",
+     o:["Esperar a que el vigilador maneje la situación solo","Llamar al 911, dar descripción precisa y mantenerse en línea; documentar toda la secuencia con hora exacta","Apagar las cámaras del sector para no registrar el incidente","Avisar al cliente del servicio antes que al 911","Irse al lugar para ayudar al vigilador","Reiniciar el sistema de alarma para cancelar la alerta"],c:[1]},
+  ],
+};
     {q:"¿Cuál es la ley que regula la seguridad privada específicamente en la Ciudad Autónoma de Buenos Aires (CABA)?",
      o:["Ley 12.297 (PBA)","Ley 24.192 (espectáculos deportivos)","Ley 1.913 (CABA)","Decreto 1139/02 nacional","Ley 23.950 de detención policial","Ley 25.520 de inteligencia nacional"],c:[2]},
     {q:"Tu credencial de habilitación venció ayer. Tu coordinador te dice 'arrancá igual, hoy la renovamos'. ¿Cuál es la respuesta correcta?",
@@ -1541,8 +1583,7 @@ const QUIZZES = {
   ],
 };
 
-// El examen final selecciona preguntas al azar de cada módulo (20 en total)
-// 4 de cada módulo si hay 5 módulos, 5 de cada uno si hay 4
+// El examen final usa las últimas 4 preguntas de cada módulo (5 por módulo × 4 módulos = 16 preguntas mínimo)
 function buildExam(){
   function pickN(arr, n){
     if(!arr || !arr.length) return [];
@@ -1550,22 +1591,11 @@ function buildExam(){
     for(let i=copy.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]]; }
     return copy.slice(0, Math.min(n, copy.length));
   }
-  // Usa solo las últimas 4 preguntas de cada módulo (las primeras 4 son para el quiz del módulo)
+  // Usa solo las preguntas del índice 4 en adelante (las primeras 4 son para el quiz del módulo)
   const pool1 = QUIZZES[1] ? QUIZZES[1].slice(4) : [];
   const pool2 = QUIZZES[2] ? QUIZZES[2].slice(4) : [];
   const pool3 = QUIZZES[3] ? QUIZZES[3].slice(4) : [];
   const pool4 = QUIZZES[4] ? QUIZZES[4].slice(4) : [];
-  const hasMod5 = QUIZZES[5] && QUIZZES[5].length > 0;
-  if(hasMod5){
-    const pool5 = QUIZZES[5].slice(4);
-    return [
-      ...pickN(pool1, 4),
-      ...pickN(pool2, 4),
-      ...pickN(pool3, 4),
-      ...pickN(pool4, 4),
-      ...pickN(pool5, 4),
-    ];
-  }
   return [
     ...pickN(pool1, 4),
     ...pickN(pool2, 4),
@@ -1607,10 +1637,9 @@ function go(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.rem
 
 // ─── LOGIN ───────────────────────────────────────────────────────
 async function doLogin(){
-  const n=v('i-nombre'), l=v('i-legajo'), d=v('i-dni');
-  const tipo = gi('i-tipo').value;
-  const turno = v('i-turno');
-  if(!n||!l||!d||!tipo){ alert('Completá todos los campos para continuar.'); return; }
+  const n=v('i-nombre'), d=v('i-dni');
+  const coord = gi('i-coord').value;
+  if(!n||!d||!coord){ alert('Completá todos los campos para continuar.'); return; }
 
   // ── Verificar si el DNI ya tiene capacitación aprobada ──
   const btnLogin = gi('btn-login');
@@ -1636,18 +1665,16 @@ async function doLogin(){
     return;
   }
 
-  const sede = tipo + (turno ? ' – ' + turno : '');
-  user={nombre:n,legajo:l,dni:d,sede,tipoServicio:tipo,inicio:new Date().toISOString()};
+  user={nombre:n,legajo:'',dni:d,sede:coord,coordinador:coord,inicio:new Date().toISOString()};
   t0=Date.now();
-  initMod5(tipo);
   renderHome(); go('s-home');
 }
 
 // ─── HOME ────────────────────────────────────────────────────────
 function renderHome(){
   gi('h-nombre').textContent = user.nombre;
-  gi('h-legajo').textContent = 'Legajo: '+user.legajo;
-  gi('h-sede').textContent   = user.sede;
+  gi('h-legajo').textContent = '';
+  gi('h-sede').textContent   = user.coordinador ? 'Coord.: '+user.coordinador : '';
   const done = MODS.filter(m=>prog[m.id]?.done).length;
   gi('prog-txt').textContent = done+' / '+MODS.length+' módulos';
   gi('prog-fill').style.width = (done/MODS.length*100)+'%';
@@ -1847,17 +1874,17 @@ async function showFResult(){
     <div class="rscore" style="color:${pass?'var(--green)':'var(--red)'}">Nota: ${sc.toFixed(1)}</div>
     <div class="rmsg">Promedio de módulos · ${min} min · Mínimo: ${MIN_FINAL}</div>
     <div class="stat-grid">
-      <div class="stat-box"><div class="stat-n">${m1.toFixed(1)}</div><div class="stat-l">⚖️ Marco Legal</div></div>
-      <div class="stat-box"><div class="stat-n">${m2.toFixed(1)}</div><div class="stat-l">👮 Conducta</div></div>
-      <div class="stat-box"><div class="stat-n">${m3.toFixed(1)}</div><div class="stat-l">🚨 Emergencias</div></div>
-      <div class="stat-box"><div class="stat-n">${m4.toFixed(1)}</div><div class="stat-l">🔴 Pánico</div></div>
+      <div class="stat-box"><div class="stat-n">${m1.toFixed(1)}</div><div class="stat-l">🛡️ Funciones</div></div>
+      <div class="stat-box"><div class="stat-n">${m2.toFixed(1)}</div><div class="stat-l">🔥 Incendios</div></div>
+      <div class="stat-box"><div class="stat-n">${m3.toFixed(1)}</div><div class="stat-l">❤️ RCP/DEA</div></div>
+      <div class="stat-box"><div class="stat-n">${m4.toFixed(1)}</div><div class="stat-l">🖥️ Monitorista</div></div>
     </div>
     ${pass?`
     <div class="cert">
       <div class="cert-hdr">Constancia de Capacitación</div>
       <div class="cert-name">${user.nombre}</div>
-      <div class="cert-det">Legajo: ${user.legajo} · DNI: ${user.dni}</div>
-      <div class="cert-det">${user.sede}</div>
+      <div class="cert-det">DNI: ${user.dni}</div>
+      <div class="cert-det">Coordinador: ${user.coordinador||user.sede}</div>
       <div class="cert-stamp">✅ Aprobado el ${fecha} · Nota: ${sc.toFixed(1)}</div>
     </div>`:`
     <div class="alert-box" style="max-width:320px;margin-bottom:16px">
@@ -2002,8 +2029,8 @@ function generarCertificado(cb){
   ctx.beginPath(); ctx.moveTo(W/2-260,275); ctx.lineTo(W/2+260,275); ctx.stroke();
 
   ctx.fillStyle='#555'; ctx.font='14px Arial';
-  ctx.fillText('Legajo: '+d.data.legajo+'   ·   DNI: '+d.data.dni,W/2,300);
-  ctx.fillText('Tipo de servicio: '+d.data.sede,W/2,320);
+  ctx.fillText('DNI: '+d.data.dni,W/2,300);
+  ctx.fillText('Coordinador a cargo: '+(d.data.coordinador||d.data.sede||''),W/2,320);
 
   ctx.fillStyle='#333'; ctx.font='15px Georgia,serif';
   ctx.fillText('ha aprobado satisfactoriamente la capacitación',W/2,356);
@@ -2016,12 +2043,12 @@ function generarCertificado(cb){
   ctx.fillStyle='#e0e0e0'; ctx.beginPath(); ctx.roundRect(bx,by,bw,bh,5); ctx.fill();
   const pg=ctx.createLinearGradient(bx,0,bx+bw,0);
   pg.addColorStop(0,'#43a047'); pg.addColorStop(1,'#1b5e20');
-  ctx.fillStyle=pg; ctx.beginPath(); ctx.roundRect(bx,by,bw*(d.sc/100),bh,5); ctx.fill();
+  ctx.fillStyle=pg; ctx.beginPath(); ctx.roundRect(bx,by,bw*(d.sc/10),bh,5); ctx.fill();
 
   // Módulos
   ctx.fillStyle='#888'; ctx.font='12px Arial';
   const m1=d.data.mod1||0,m2=d.data.mod2||0,m3=d.data.mod3||0,m4=d.data.mod4||0;
-  ctx.fillText('⚖️ Legal '+(+m1).toFixed(1)+'   ·   👮 Conducta '+(+m2).toFixed(1)+'   ·   🚨 Emergencias '+(+m3).toFixed(1)+'   ·   🔴 Pánico '+(+m4).toFixed(1),W/2,462);
+  ctx.fillText('🛡️ Funciones '+(+m1).toFixed(1)+'   ·   🔥 Incendios '+(+m2).toFixed(1)+'   ·   ❤️ RCP/DEA '+(+m3).toFixed(1)+'   ·   🖥️ Monitorista '+(+m4).toFixed(1),W/2,462);
 
   // Fecha
   ctx.fillStyle='#888'; ctx.font='13px Arial';
@@ -2156,47 +2183,66 @@ function downloadDiplomaAdmin(d){
   });
 }
 
-// ─── TIPOS DE SERVICIO ───────────────────────────────────────
-const _DEFAULT_SVC={
-  CONSTRUCCION:'🏗️ CONSTRUCCION (obradores)',
-  INDUSTRIA:'🏭 INDUSTRIA',
-  LOGISTICA:'📦 OPERADOR LOGISTICO (logísticas gral)',
-  RETAIL:'🛒 RETAIL (supermercado / shopping)',
-  SALUD:'🏥 SALUD (sanatorios)',
-  SERVICIOS:'🏢 SERVICIOS (prestadora de servicio)',
-  URBANIZACION:'🏘️ URBANIZACION (barrios privados)'
-};
-function getServiceLabels(){ return JSON.parse(localStorage.getItem('sab5_service_labels')||'null')||{..._DEFAULT_SVC}; }
-function saveServiceLabels(l){ localStorage.setItem('sab5_service_labels',JSON.stringify(l)); }
+// ─── COORDINADORES ────────────────────────────────────────────
+function getCoordinators(){ return JSON.parse(localStorage.getItem('sab5_coordinators')||'[]'); }
+function saveCoordinators(list){ localStorage.setItem('sab5_coordinators', JSON.stringify(list)); }
 
-function renderServiceSelect(){
-  const sel=gi('i-tipo'), labels=getServiceLabels(), cur=sel.value;
-  sel.innerHTML='<option value="">-- Seleccioná tu tipo de servicio --</option>';
-  Object.entries(labels).forEach(([k,v])=>{
-    const o=document.createElement('option'); o.value=k; o.textContent=v;
-    if(k===cur) o.selected=true;
+function renderCoordinatorSelect(){
+  const sel = gi('i-coord');
+  if(!sel) return;
+  const cur = sel.value;
+  const list = getCoordinators();
+  sel.innerHTML = '<option value="">-- Seleccioná el coordinador --</option>';
+  list.forEach(name=>{
+    const o = document.createElement('option');
+    o.value = name; o.textContent = name;
+    if(name === cur) o.selected = true;
     sel.appendChild(o);
   });
 }
 
-function loadServiceLabelsAdmin(){
-  const labels=getServiceLabels();
-  Object.keys(_DEFAULT_SVC).forEach(k=>{
-    const el=gi('svc-lbl-'+k); if(el) el.value=labels[k]||_DEFAULT_SVC[k];
-  });
+function renderCoordList(){
+  const list = getCoordinators();
+  const container = gi('coord-list');
+  if(!container) return;
+  if(!list.length){
+    container.innerHTML = '<p style="font-size:13px;color:var(--muted);text-align:center;padding:8px">Sin coordinadores cargados.</p>';
+    return;
+  }
+  container.innerHTML = list.map((name,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;background:#f9f9f9;border-radius:8px;padding:8px 12px;border:1px solid var(--border)">
+      <span style="flex:1;font-size:14px">👤 ${name}</span>
+      <button onclick="removeCoordinator(${i})" style="background:#7f1d1d;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer">✕</button>
+    </div>`).join('');
 }
 
-function saveServiceLabelsAdmin(){
-  const labels={};
-  Object.keys(_DEFAULT_SVC).forEach(k=>{
-    const el=gi('svc-lbl-'+k);
-    labels[k]=(el&&el.value.trim())||_DEFAULT_SVC[k];
-  });
-  saveServiceLabels(labels);
-  renderServiceSelect();
-  gi('svc-lbl-saved').style.display='block';
-  setTimeout(()=>gi('svc-lbl-saved').style.display='none',2500);
+function addCoordinator(){
+  const input = gi('coord-new-input');
+  const name = (input?.value||'').trim();
+  if(!name){ alert('Ingresá el nombre del coordinador.'); return; }
+  const list = getCoordinators();
+  if(list.includes(name)){ alert('Ese coordinador ya existe.'); return; }
+  list.push(name);
+  saveCoordinators(list);
+  input.value = '';
+  renderCoordList();
+  renderCoordinatorSelect();
+  gi('coord-saved').style.display='block';
+  setTimeout(()=>gi('coord-saved').style.display='none',2000);
 }
+
+function removeCoordinator(idx){
+  if(!confirm('¿Eliminar este coordinador?')) return;
+  const list = getCoordinators();
+  list.splice(idx,1);
+  saveCoordinators(list);
+  renderCoordList();
+  renderCoordinatorSelect();
+}
+
+// Mantener compatibilidad con llamadas antiguas
+function loadServiceLabelsAdmin(){ renderCoordList(); }
+function saveServiceLabelsAdmin(){}
 
 // ─── GUARDAR RESULTADO ───────────────────────────────────────────
 function saveSheets(data){
@@ -2330,8 +2376,8 @@ function renderTable(){
   if(adminFilter !== 'todos') data = data.filter(d=>d.resultado===adminFilter);
   if(search) data = data.filter(d=>
     (d.nombre||'').toLowerCase().includes(search) ||
-    (d.legajo||'').toLowerCase().includes(search) ||
-    (d.sede||'').toLowerCase().includes(search)
+    (d.dni||'').toLowerCase().includes(search) ||
+    (d.coordinador||d.sede||'').toLowerCase().includes(search)
   );
 
   const tbody = gi('admin-tbody');
@@ -2354,8 +2400,7 @@ function renderTable(){
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><strong>${d.nombre||'-'}</strong><br><span style="font-size:11px;color:#999">DNI: ${d.dni||'-'}</span></td>
-      <td>${d.legajo||'-'}</td>
-      <td style="font-size:12px">${d.sede||'-'}</td>
+      <td style="font-size:12px">${d.coordinador||d.sede||'-'}</td>
       <td>
         <div class="score-bar-wrap">
           <strong style="color:${color};min-width:32px">${(+score).toFixed(1)}</strong>
@@ -2400,8 +2445,8 @@ async function deleteAllRecords(){
 function exportCSV(){
   const data = _adminData;
   if(!data.length){ alert('No hay datos para exportar.'); return; }
-  const cols = ['nombre','legajo','dni','sede','mod1','mod2','mod3','mod4','final','resultado','correctas','total','minutos','inicio','fin'];
-  const heads = ['Nombre','Legajo','DNI','Sede/Turno','Mod1(%)','Mod2(%)','Mod3(%)','Mod4(%)','Final(%)','Resultado','Correctas','Total','Minutos','Inicio','Fin'];
+  const cols = ['nombre','dni','sede','mod1','mod2','mod3','mod4','final','resultado','correctas','total','minutos','inicio','fin'];
+  const heads = ['Nombre','DNI','Coordinador','Mod1','Mod2','Mod3','Mod4','Final','Resultado','Correctas','Total','Minutos','Inicio','Fin'];
   const rows = [heads.join(','), ...data.map(d=>cols.map(c=>`"${(d[c]||'').toString().replace(/"/g,'""')}"`).join(','))];
   const blob = new Blob([rows.join('\n')], {type:'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
@@ -2413,8 +2458,8 @@ function exportCSV(){
 function exportExcel(){
   const data = _adminData;
   if(!data.length){ alert('No hay datos para exportar.'); return; }
-  const heads = ['Nombre','Legajo','DNI','Sede/Turno','Mod1(%)','Mod2(%)','Mod3(%)','Mod4(%)','Final(%)','Resultado','Correctas','Total Preguntas','Minutos','Fecha'];
-  const cols  = ['nombre','legajo','dni','sede','mod1','mod2','mod3','mod4','final','resultado','correctas','total','minutos','fin'];
+  const heads = ['Nombre','DNI','Coordinador','Mod1','Mod2','Mod3','Mod4','Final','Resultado','Correctas','Total Preguntas','Minutos','Fecha'];
+  const cols  = ['nombre','dni','sede','mod1','mod2','mod3','mod4','final','resultado','correctas','total','minutos','fin'];
   const toTd = v => `<td>${v||''}</td>`;
   const rows = data.map(d=>'<tr>'+cols.map(c=>{
     if(c==='fin') return toTd(d.fin ? new Date(d.fin).toLocaleString('es-AR') : '-');
@@ -2446,10 +2491,9 @@ function exportWord(){
     const color = d.resultado==='APROBADO' ? '#1b5e20' : '#b71c1c';
     return `<tr>
       <td style="padding:5px 8px">${d.nombre||'-'}</td>
-      <td style="padding:5px 8px;text-align:center">${d.legajo||'-'}</td>
       <td style="padding:5px 8px;text-align:center">${d.dni||'-'}</td>
-      <td style="padding:5px 8px">${d.sede||'-'}</td>
-      <td style="padding:5px 8px;text-align:center">${d.final||0}%</td>
+      <td style="padding:5px 8px">${d.coordinador||d.sede||'-'}</td>
+      <td style="padding:5px 8px;text-align:center">${(+d.final||0).toFixed(1)}</td>
       <td style="padding:5px 8px;text-align:center;color:${color};font-weight:bold">${d.resultado||'-'}</td>
       <td style="padding:5px 8px;font-size:11px">${f}</td>
     </tr>`;
@@ -2479,7 +2523,7 @@ function exportWord(){
       </div>
       <table border="1">
         <thead><tr>
-          <th>Nombre</th><th>Legajo</th><th>DNI</th><th>Sede/Turno</th>
+          <th>Nombre</th><th>DNI</th><th>Coordinador</th>
           <th>Final(%)</th><th>Resultado</th><th>Fecha</th>
         </tr></thead>
         <tbody>${filas}</tbody>
@@ -2610,17 +2654,12 @@ function switchQTab(mod, btn){
   renderQEditor();
 }
 
-const RUBROS = ['CONSTRUCCION','INDUSTRIA','LOGISTICA','RETAIL','SALUD','SERVICIOS','URBANIZACION'];
+const RUBROS = [];
 
-function isRubroTab(){ return RUBROS.includes(qedTab); }
+function isRubroTab(){ return false; }
 
 function getEditQuestions(){
   if(qedTab==='exam') return buildExam();
-  if(isRubroTab()){
-    const saved = localStorage.getItem('sab5_rubro_questions');
-    if(saved){ const all=JSON.parse(saved); if(all[qedTab]) return all[qedTab]; }
-    return [...(MOD5_DATA[qedTab]?.qs || [])];
-  }
   const saved = localStorage.getItem('sab5_questions');
   if(saved){ const all=JSON.parse(saved); return all[qedTab] || [...(QUIZZES[qedTab]||[])]; }
   return [...(QUIZZES[qedTab]||[])];
@@ -2751,19 +2790,13 @@ function applyQuestions(all){
   [1,2,3,4].forEach(i=>{ if(all[i]) QUIZZES[i]=all[i]; });
 }
 
-function applyRubroQuestions(all){
-  RUBROS.forEach(r=>{ if(all[r] && MOD5_DATA[r]) MOD5_DATA[r].qs = all[r]; });
-  // Si el usuario ya eligió rubro, actualizar QUIZZES[5] también
-  if(user && user.tipoServicio && all[user.tipoServicio]) QUIZZES[5] = all[user.tipoServicio];
-}
+function applyRubroQuestions(all){ /* no-op: sistema de rubros eliminado */ }
 
 // Cargar preguntas guardadas al iniciar
 (function initQuestions(){
   const saved = localStorage.getItem('sab5_questions');
   if(saved) applyQuestions(JSON.parse(saved));
-  const savedR = localStorage.getItem('sab5_rubro_questions');
-  if(savedR) applyRubroQuestions(JSON.parse(savedR));
-  renderServiceSelect();
+  renderCoordinatorSelect();
 })();
 
 // ─── EDITOR DE PORTADA ───────────────────────────────────────────
@@ -2869,9 +2902,9 @@ function previewAdminCert(){
   // muestra preview en el admin usando datos ficticios
   const prev = _certData;
   _certData = {
-    sc:95, ok:19, tot:20, min:28,
+    sc:9.5, ok:19, tot:20, min:28,
     fecha: new Date().toLocaleDateString('es-AR'),
-    data:{nombre:'NOMBRE DEL VIGILADOR',legajo:'12345',dni:'30.000.000',sede:'RETAIL – Turno Mañana'}
+    data:{nombre:'NOMBRE DEL VIGILADOR',legajo:'',dni:'30.000.000',sede:'Coordinador Ejemplo',coordinador:'Coordinador Ejemplo'}
   };
   const savedFirma=_firmaDataUrl; _firmaDataUrl=null;
   // redirigir output al canvas admin
