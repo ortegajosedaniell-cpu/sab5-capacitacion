@@ -375,6 +375,16 @@
     #firma-canvas{display:block;width:100%;height:auto}
     .firma-hint{font-size:12px;color:#aaa;margin-top:-6px}
     .firma-btns{display:flex;gap:12px;width:100%;max-width:360px}
+    /* SELFIE */
+    .selfie-section{background:#f5f0f0;border:2px solid #e0cece;border-radius:14px;padding:18px 16px;width:100%;max-width:360px;margin-bottom:4px}
+    .selfie-section h3{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#b71c1c;margin-bottom:12px;text-align:center}
+    .selfie-step{display:flex;flex-direction:column;align-items:center;gap:10px}
+    .selfie-circle{width:130px;height:130px;border-radius:50%;border:3px solid #b71c1c;overflow:hidden;background:#ddd;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .selfie-circle video,.selfie-circle img{width:100%;height:100%;object-fit:cover;display:block}
+    .selfie-hint{font-size:12px;color:#666;text-align:center;max-width:260px}
+    .selfie-btns{display:flex;gap:8px;width:100%;max-width:280px}
+    .selfie-ok{font-size:12px;color:#2e7d32;font-weight:700;text-align:center}
+    .selfie-retake{background:transparent;border:2px solid #b71c1c;color:#b71c1c;border-radius:10px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;margin-top:2px}
     /* ── EMAIL CERT ── */
     .ecert-wrap{padding:20px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
     .cert-preview-box{width:100%;max-width:320px;border-radius:8px;overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.18)}
@@ -411,7 +421,33 @@
     <p>Firmá para generar tu certificado oficial</p>
   </div>
   <div class="firma-wrap">
-    <p class="firma-instruc">Usá tu dedo o el cursor para firmar en el recuadro</p>
+
+    <!-- SELFIE OBLIGATORIA -->
+    <div class="selfie-section">
+      <h3>📸 Foto obligatoria</h3>
+      <div class="selfie-step" id="selfie-capture-step">
+        <div class="selfie-circle" id="selfie-circle">
+          <video id="selfie-video" autoplay playsinline muted></video>
+        </div>
+        <p class="selfie-hint">Tu foto circular aparecerá en el certificado. Encuadrá tu rostro y presioná el botón.</p>
+        <div class="selfie-btns">
+          <button class="btn btn-primary" style="flex:1;padding:12px" onclick="capturarSelfie()">📸 Sacar foto</button>
+          <label class="btn btn-outline" style="flex:1;padding:12px;cursor:pointer;text-align:center">
+            🖼 Galería<input type="file" accept="image/*" capture="user" style="display:none" onchange="cargarSelfieGaleria(this)">
+          </label>
+        </div>
+      </div>
+      <div class="selfie-step" id="selfie-preview-step" style="display:none">
+        <div class="selfie-circle" id="selfie-preview-circle">
+          <img id="selfie-preview-img" src="" alt="Selfie">
+        </div>
+        <p class="selfie-ok">✅ Foto tomada correctamente</p>
+        <button class="selfie-retake" onclick="retakeSelfie()">🔄 Volver a tomar</button>
+      </div>
+      <canvas id="selfie-canvas" width="260" height="260" style="display:none"></canvas>
+    </div>
+
+    <p class="firma-instruc">Firmá en el recuadro para confirmar</p>
     <div class="firma-canvas-wrap">
       <canvas id="firma-canvas" width="340" height="160"></canvas>
     </div>
@@ -1604,9 +1640,17 @@ let _certData       = null;
 let _firmaDataUrl   = null;
 let _firmaDibujando = false;
 let _firmaCanvas, _firmaCtx;
+let _selfieDataUrl  = null;
+let _selfieStream   = null;
 
 // ─── NAVEGACIÓN ─────────────────────────────────────────────────
-function go(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+function go(id){
+  const prev = document.querySelector('.screen.active');
+  if(prev && prev.id==='s-firma' && id!=='s-firma') stopSelfieCamera();
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
 
 // ─── LOGIN ───────────────────────────────────────────────────────
 async function doLogin(){
@@ -1928,10 +1972,87 @@ function skipCierre(){
 }
 
 // ─── FIRMA DIGITAL ──────────────────────────────────────────────
+function stopSelfieCamera(){
+  if(_selfieStream){ _selfieStream.getTracks().forEach(t=>t.stop()); _selfieStream=null; }
+}
+
+async function initSelfie(){
+  _selfieDataUrl = null;
+  gi('selfie-capture-step').style.display='flex';
+  gi('selfie-preview-step').style.display='none';
+  const vid = gi('selfie-video');
+  try {
+    _selfieStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
+    vid.srcObject = _selfieStream;
+  } catch(e){
+    // No camera available — hide video, show only gallery option
+    gi('selfie-circle').innerHTML='<span style="font-size:40px">📷</span>';
+    vid.style.display='none';
+  }
+}
+
+function capturarSelfie(){
+  const vid = gi('selfie-video');
+  if(!vid.videoWidth){ alert('La cámara aún no está lista. Usá la opción de galería.'); return; }
+  const cv = gi('selfie-canvas');
+  const sz = 260;
+  cv.width = sz; cv.height = sz;
+  const vctx = cv.getContext('2d');
+  // crop cuadrado centrado
+  const vw = vid.videoWidth, vh = vid.videoHeight;
+  const side = Math.min(vw, vh);
+  const sx = (vw - side)/2, sy = (vh - side)/2;
+  vctx.drawImage(vid, sx, sy, side, side, 0, 0, sz, sz);
+  _selfieDataUrl = cv.toDataURL('image/jpeg', 0.85);
+  mostrarSelfiePreview();
+}
+
+function cargarSelfieGaleria(input){
+  const file = input.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const cv = gi('selfie-canvas');
+      const sz = 260; cv.width=sz; cv.height=sz;
+      const vctx = cv.getContext('2d');
+      const side = Math.min(img.width, img.height);
+      const sx = (img.width-side)/2, sy = (img.height-side)/2;
+      vctx.drawImage(img, sx, sy, side, side, 0, 0, sz, sz);
+      _selfieDataUrl = cv.toDataURL('image/jpeg', 0.85);
+      mostrarSelfiePreview();
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function mostrarSelfiePreview(){
+  stopSelfieCamera();
+  gi('selfie-preview-img').src = _selfieDataUrl;
+  gi('selfie-capture-step').style.display='none';
+  gi('selfie-preview-step').style.display='flex';
+}
+
+function retakeSelfie(){
+  _selfieDataUrl = null;
+  gi('selfie-capture-step').style.display='flex';
+  gi('selfie-preview-step').style.display='none';
+  // restore video element
+  const circle = gi('selfie-circle');
+  if(!circle.querySelector('video')){
+    const vid2 = document.createElement('video');
+    vid2.id='selfie-video'; vid2.autoplay=true; vid2.setAttribute('playsinline',''); vid2.muted=true;
+    circle.innerHTML=''; circle.appendChild(vid2);
+  }
+  initSelfie();
+}
+
 function initFirmaScreen(){
   _firmaCanvas = gi('firma-canvas');
   _firmaCtx    = _firmaCanvas.getContext('2d');
   clearFirma();
+  initSelfie();
   const pos = e => {
     const r = _firmaCanvas.getBoundingClientRect();
     const sx = _firmaCanvas.width / r.width, sy = _firmaCanvas.height / r.height;
@@ -1952,9 +2073,11 @@ function clearFirma(){
   _firmaDataUrl=null;
 }
 function confirmarFirma(){
+  if(!_selfieDataUrl){ alert('Sacate una foto antes de continuar. Es obligatoria para el certificado.'); return; }
   const blank=document.createElement('canvas'); blank.width=_firmaCanvas.width; blank.height=_firmaCanvas.height;
   if(_firmaCanvas.toDataURL()===blank.toDataURL()){ alert('Firmá en el recuadro antes de continuar.'); return; }
   _firmaDataUrl=_firmaCanvas.toDataURL('image/png');
+  stopSelfieCamera();
   generarCertificado(()=>go('s-email-cert'));
 }
 
@@ -2207,7 +2330,34 @@ function generarCertificado(cb){
     } else { if(after)after(); }
   };
 
-  drawLogoHeader(()=>loadFirmaVig(()=>loadFirmaGer(cb)));
+  const loadSelfie = after => {
+    if(_selfieDataUrl){
+      const img = new Image();
+      img.onload = () => {
+        const r = 46; // radio del círculo
+        const cx = 88, cy = HDR_H/2 + 2; // posición centro
+        ctx.save();
+        // sombra
+        ctx.shadowColor='rgba(0,0,0,0.5)'; ctx.shadowBlur=10;
+        // borde dorado
+        ctx.beginPath(); ctx.arc(cx, cy, r+4, 0, Math.PI*2);
+        ctx.fillStyle='#c9a227'; ctx.fill();
+        ctx.shadowBlur=0;
+        // clip circular para la foto
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.clip();
+        ctx.drawImage(img, cx-r, cy-r, r*2, r*2);
+        ctx.restore();
+        // borde blanco fino encima
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2);
+        ctx.strokeStyle='rgba(255,255,255,0.6)'; ctx.lineWidth=1.5; ctx.stroke();
+        if(after) after();
+      };
+      img.onerror = ()=>{ if(after) after(); };
+      img.src = _selfieDataUrl;
+    } else { if(after) after(); }
+  };
+
+  drawLogoHeader(()=>loadSelfie(()=>loadFirmaVig(()=>loadFirmaGer(cb))));
 }
 
 function descargarCertificado(){
