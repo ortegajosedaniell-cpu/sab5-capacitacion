@@ -789,12 +789,7 @@
   <div class="mlist">
     <p class="mlist-label">Módulos de Capacitación</p>
     <div id="mod-container"></div>
-    <div id="final-card" style="display:none" class="final-card">
-      <div style="font-size:40px;margin-bottom:8px">📝</div>
-      <h3 style="color:var(--navy);margin-bottom:6px">Evaluación Final</h3>
-      <p style="font-size:13px;color:#666;margin-bottom:16px">20 preguntas · Mínimo para aprobar: 80%</p>
-      <button class="btn btn-primary" onclick="startFinal()">RENDIR AHORA →</button>
-    </div>
+    <div id="final-card" style="display:none"></div>
   </div>
 </div>
 
@@ -1438,23 +1433,6 @@ const QUIZZES = {
      o:["Lo dejás pasar: la prensa tiene derecho de acceso libre en lugares públicos","No lo autorizás sin aprobación expresa de la autoridad del establecimiento; avisás al coordinador y esperás instrucción","Lo dejás pasar y anotás su nombre y medio en el libro de visitas","Le pedís credencial de prensa y lo dejás pasar con identificación registrada","Le decís que está prohibido el ingreso sin avisar a nadie más","Lo derivás directamente al gerente sin avisar al coordinador"],c:[1]},
     {q:"Al inicio de tu turno encontrás la garita desordenada con objetos fuera de lugar y sin relevo formal del vigilador anterior. ¿Cuál es la primera acción?",
      o:["Ordenar la garita y asumir el turno sin registrar nada sobre el estado anterior","Documentar el estado de la garita al asumir, anotar la ausencia de relevo formal en el libro y avisar al coordinador de inmediato","Llamar al vigilador anterior para exigirle una explicación antes de asumir","Asumir el turno normalmente: no es tu responsabilidad el estado anterior","Esperar al coordinador antes de asumir el turno bajo esas condiciones","Registrar solo los objetos que faltan y asumir el turno normalmente"],c:[1]},
-    // ── preguntas 16-23: examen final ──
-    {q:"Encontrás en el predio, cerca del depósito, a una persona dormida que no debería estar ahí fuera de horario laboral. No hay señales de violencia. ¿Cuál es el procedimiento?",
-     o:["Despertarla directamente y pedirle que se identifique","Verificar de lejos si respira, avisar al coordinador y a la policía sin acercarte solo ni confrontar a la persona","Dejarla dormir y anotarla como novedad al final del turno","Despertarla y pedirle que se retire sin documentar el incidente","Llamar al 107 por si necesita asistencia médica antes que nada","Fotografiarla con tu celular para documentar y esperar al coordinador"],c:[1]},
-    {q:"La Ley 12.297 de Seguridad Privada de la Provincia de Buenos Aires establece que el personal de seguridad privada puede ejercer sobre las personas que ingresan a un establecimiento:",
-     o:["Requisas obligatorias sin necesidad de consentimiento ante sospecha","Solo un control voluntario de acceso; no puede imponer inspecciones físicas obligatorias","Requisas físicas si hay sospecha fundada, con o sin consentimiento","Retención preventiva de hasta 30 minutos mientras llega la policía","Registro de pertenencias si el cliente del servicio lo autoriza por escrito","Cualquier medida que disponga el coordinador operativo en el turno"],c:[1]},
-    {q:"Un vigilador es testigo de un robo dentro del establecimiento. El ladrón huye hacia la calle. ¿Qué debe hacer?",
-     o:["Perseguirlo hasta recuperar lo robado sin importar la distancia","No perseguirlo fuera del área asignada; llamar al 911, describir al fugitivo y proteger la escena","Pedirle a testigos que lo persigan mientras llama a la policía","Perseguirlo solo hasta la vereda del establecimiento y no más","Disparar al aire si tiene arma habilitada para detener la huida","Retener a los testigos para que declaren antes de llamar a la policía"],c:[1]},
-    {q:"¿Qué ley regula la seguridad privada en la Provincia de Buenos Aires?",
-     o:["Ley 24.192","Ley 1.913","Ley 12.297","Decreto 1139/02","Ley 23.950","Ley 25.520"],c:[2]},
-    {q:"Un vigilador firma el libro de novedades de un colega que 'se olvidó'. El libro dice 'sin novedades'. ¿Qué error comete?",
-     o:["Ninguno: es un trámite administrativo menor","Asume responsabilidad personal sobre lo que firmó sin verificar","Comete una falta leve sin consecuencias legales","Solo es un error si luego hay un incidente posterior","Es correcto si el coordinador lo autoriza expresamente","Es un error solo si la anotación resulta ser falsa"],c:[1]},
-    {q:"¿Qué debe hacer un vigilador que recibe un paquete no esperado en el puesto?",
-     o:["Aceptarlo y guardarlo hasta que el cliente lo reclame","No recibirlo y avisar al coordinador de inmediato","Abrirlo para verificar el contenido antes de decidir","Aceptarlo solo si el remitente se identifica correctamente","Devolverlo al repartidor en el mismo momento","Aceptarlo y anotarlo en el libro de novedades"],c:[1]},
-    {q:"El vigilador no puede portar armas a menos que:",
-     o:["Lleve más de 2 años en la empresa prestadora","Tenga habilitación individual específica para portación de armas","El cliente del servicio lo autorice por escrito","El coordinador lo ordene expresamente en el puesto","Sea turno nocturno en un puesto de alto riesgo declarado","Haya completado la capacitación anual obligatoria vigente"],c:[1]},
-    {q:"Al finalizar el turno, ¿qué información es OBLIGATORIO dejar registrada en el libro de novedades?",
-     o:["Solo los incidentes graves: robos, peleas, intrusiones","Toda novedad del turno: hora de inicio y fin, rondas realizadas, incidentes, ingresos especiales, estado del puesto y firma del vigilador","Únicamente nombre, hora de entrada y hora de salida del vigilador","Solo las novedades que el coordinador solicite expresamente","Los incidentes ocurridos y el nombre del vigilador que releva","No es obligatorio registrar nada si el turno transcurrió sin incidentes"],c:[1]},
   ],
   2:[
     // ── preguntas 0-9: quiz del módulo ──
@@ -1490,23 +1468,6 @@ const QUIZZES = {
      o:["Limpiar el piso antes de la evacuación para que la gente no resbale","Recorrer sistemáticamente el piso asignado para asegurarte de que no quede nadie antes de salir vos también","Quedarte en el piso para coordinar la evacuación hasta el final","Ir delante de todos para abrir las puertas del recorrido de evacuación","Ubicarte al final de la columna de evacuación para contar personas","Estar en el punto de encuentro para recibir a los evacuados"],c:[1]},
     {q:"¿Cuál es la diferencia entre los fuegos de Clase A y Clase C?",
      o:["No hay diferencia: ambos se apagan con los mismos extintores","Clase A son materiales sólidos comunes (madera, papel, telas); Clase C son equipos eléctricos bajo tensión — el extintor adecuado varía según la clase","Clase A son líquidos inflamables; Clase C son gases","Clase A requiere agua siempre; Clase C requiere CO₂ siempre sin excepción","La distinción no es práctica: en campo se apagan de la misma forma","Clase A se apaga y Clase C se deja apagar solo desconectando la corriente"],c:[1]},
-    // ── preguntas 16-23: examen final ──
-    {q:"En la cocina del comedor se prende fuego el aceite en una sartén (fuego Clase K/F). ¿Qué está PROHIBIDO hacer?",
-     o:["Usar un extintor específico de Clase K (espuma saponificante)","Tapar la sartén con una tapa metálica para ahogar el fuego","Echarle agua para apagar el aceite encendido","Apagar el fuego de la hornalla antes de actuar sobre el aceite","Usar un trapo húmedo grande para cubrir completamente la sartén","Evacuar el área y llamar al 100 de inmediato"],c:[2]},
-    {q:"La alarma de evacuación suena pero el coordinador dice 'es una prueba, no salgan todavía'. ¿Qué debería hacer el personal de seguridad?",
-     o:["Seguir la instrucción del coordinador: él tiene la información completa","Iniciar la evacuación de todas formas: ante una alarma activa no se puede asumir que es un simulacro sin comunicación previa confirmada","Esperar 5 minutos para ver si la alarma se apaga sola antes de actuar","Recorrer el edificio primero antes de evacuar a las personas","Avisar al cliente del servicio para que tome la decisión final","Seguir la instrucción del coordinador solo si la comunicó por escrito"],c:[1]},
-    {q:"Una salida de emergencia fue bloqueada con una soga para 'que no entren personas ajenas'. ¿Qué representa esto?",
-     o:["Una medida de seguridad válida si el coordinador la autorizó","Una infracción grave: las salidas de emergencia NUNCA pueden bloquearse; hay que removerlo de inmediato y reportarlo al coordinador","Un procedimiento aceptable en horario de baja circulación del edificio","Un problema menor que el cliente del servicio puede autorizar por escrito","Válido si hay otro acceso de emergencia alternativo en ese sector","Aceptable si el bloqueo es fácilmente removible en menos de 30 segundos"],c:[1]},
-    {q:"¿Cuáles son los tres elementos del triángulo del fuego?",
-     o:["Calor, agua y oxígeno","Combustible, calor y comburente (oxígeno)","Combustible, presión y temperatura","Fuego, aire y material inflamable","Chispa, gas y material seco","Energía, oxidante y catalizador"],c:[1]},
-    {q:"Para apagar un fuego Clase B (líquidos inflamables como nafta), ¿cuál es el extintor indicado?",
-     o:["Agua a presión","Polvo ABC o CO₂","Solo CO₂ sin excepciones","Espuma para incendios de madera","Cualquier extintor: la clase B acepta todos","Agua nebulizada únicamente"],c:[1]},
-    {q:"¿A qué número se llama para reportar un incendio en Argentina?",
-     o:["107","911","100","103","112","0800-BOMBEROS"],c:[2]},
-    {q:"Un extintor estándar descarga de forma continua durante aproximadamente:",
-     o:["2 a 5 minutos","5 a 10 minutos","15 a 30 segundos","1 a 2 minutos","Solo hasta que el fuego se apague","Tiempo indefinido si se suelta la palanca entre descargas"],c:[2]},
-    {q:"¿Cuál de estas situaciones representa el mayor riesgo de propagación rápida de un incendio?",
-     o:["Un foco pequeño en un sector de hormigón sin materiales combustibles cerca","Humo visible saliendo de una puerta cerrada en un depósito de cajas con cañerías de gas cercanas","Un extintor descargado en una zona con equipos eléctricos apagados","Una salida de emergencia sin señalización luminosa en horario diurno","Un cable pelado en un pasillo con buena ventilación natural","Un detector de humo sin batería en una oficina con ventanas abiertas"],c:[1]},
   ],
   3:[
     // ── preguntas 0-9: quiz del módulo ──
@@ -1542,23 +1503,6 @@ const QUIZZES = {
      o:["Calambre muscular por estrés: le pedís que respire profundo y descanse","Posible ACV (accidente cerebrovascular): llamar al 107 de inmediato; no darle nada de comer ni beber y anotar la hora exacta de inicio de síntomas","Ataque de pánico: la tranquilizás y esperás que se calme solo","Hipoglucemia: darle azúcar o jugo para elevar el nivel de glucosa","Crisis hipertensiva: hacerla sentar y esperar que baje la presión sola","Lipotimia: recostás a la persona y le elevás las piernas"],c:[1]},
     {q:"Hacés RCP a una víctima y llega una persona diciendo ser médico que quiere tomar el relevo. ¿Qué hacés?",
      o:["Te negás: no podés verificar que sea médico y la responsabilidad es tuya","Le cedés el lugar de inmediato y te ponés a disposición para asistirlo: buscar DEA, dar información al 107, controlar el entorno","Continuás la RCP y le pedís que llame al 107 si no lo hizo aún","Le pedís que muestre carnet profesional antes de cederle el lugar","Le pedís que espere al SAME y continuás vos hasta que ellos lleguen","Cedés el lugar solo si el 107 te autoriza por teléfono a hacerlo"],c:[1]},
-    // ── preguntas 16-23: examen final ──
-    {q:"Una persona deja de hablar en medio de una conversación, sus ojos se desvían y comienza a tener movimientos involuntarios en brazos y piernas. ¿Qué ocurre y cómo actuás?",
-     o:["Infarto: iniciás RCP de inmediato sin esperar","Crisis convulsiva: no intentés contener los movimientos; retirá objetos peligrosos del área, protegé la cabeza y esperá que pase; luego llamá al 107","Desmayo: levantás la cabeza y le dás agua para que se recupere","ACV: la hacés decir palabras para confirmar el diagnóstico diferencial","Hipoglucemia: le ponés azúcar bajo la lengua de inmediato","Shock: la acostás y elevás las piernas para mejorar la perfusión"],c:[1]},
-    {q:"Estás haciendo RCP en soledad. ¿En qué circunstancia es correcto detener las compresiones temporalmente?",
-     o:["Cuando tu coordinador te ordena parar verbalmente","Cuando llegó el DEA y necesitás colocar los parches, o cuando el servicio médico llegó y tomó el relevo","Cada 5 minutos para evaluar si el paciente empieza a responder","Cuando el paciente emite algún sonido o movimiento","Cuando ya lleva más de 10 minutos sin respuesta visible","Cuando el 107 te indica que pares por teléfono"],c:[1]},
-    {q:"¿En qué posición se colocan los parches del DEA en un adulto?",
-     o:["Uno en el lado derecho del pecho (debajo de la clavícula) y el otro en el costado izquierdo bajo la axila","Uno en el pecho izquierdo y otro en la espalda a la misma altura","Ambos parches en el centro del pecho separados 10 cm entre sí","Uno en la frente y otro en el centro del pecho","En la posición que le resulte más cómoda al operador en ese momento","Uno sobre el corazón y otro debajo del ombligo"],c:[0]},
-    {q:"Hay 3 heridos: uno sangra abundantemente, otro está inconsciente, el tercero tiene el tobillo torcido. ¿A quién priorizás?",
-     o:["Al que grita: claramente necesita más atención inmediata","Al que sangra y al inconsciente: son los de mayor riesgo de vida inmediato","Al del tobillo: es el único que puede comunicarse claramente","A los tres por igual sin ninguna distinción","Solo al inconsciente: es el que no puede pedir ayuda","Al que puede moverse: demuestra que es el más estable"],c:[1]},
-    {q:"En caso de quemadura, ¿qué se aplica inmediatamente sobre la zona afectada?",
-     o:["Pasta dental o mantequilla para calmar el dolor","Agua fría (no helada) durante 10 a 20 minutos continuos","Hielo directo sobre la quemadura para bajar la temperatura","Alcohol para desinfectar la zona quemada","Vaselina o crema hidratante para proteger la piel","Nada: se espera a que llegue la ambulancia sin tocar la zona"],c:[1]},
-    {q:"La relación correcta de compresiones y ventilaciones en RCP para adultos es:",
-     o:["15 compresiones + 2 ventilaciones","10 compresiones + 1 ventilación","30 compresiones + 2 ventilaciones","20 compresiones + 3 ventilaciones","Solo compresiones sin ventilaciones en todos los casos","50 compresiones + 5 ventilaciones para adultos"],c:[2]},
-    {q:"¿Qué información es CRÍTICA dar primero al llamar al 107 (SAME)?",
-     o:["Tu nombre y número de habilitación como vigilador","La dirección exacta del lugar: sin ella el SAME no puede llegar","El tipo de herida en detalle antes que nada más","La cantidad exacta de personas involucradas en el incidente","El nombre del coordinador del establecimiento donde ocurrió","Si el herido tiene obra social o prepaga o no"],c:[1]},
-    {q:"Una persona estuvo expuesta a frío extremo durante mucho tiempo y tiene la piel pálida, fría y dura y no responde al dolor. ¿Cuál es la primera acción?",
-     o:["Frotar la zona afectada vigorosamente para reactivar la circulación","Trasladarla con cuidado a un lugar cálido, quitarle la ropa mojada, cubrirla con mantas y llamar al 107; no aplicar calor directo sobre la piel","Hacerla caminar para activar la circulación y elevar la temperatura corporal","Elevarle las piernas como en el protocolo estándar de shock","Darle azúcar o glucosa para elevar la temperatura corporal","Hacerla vomitar para eliminar la posible causa de la intoxicación"],c:[1]},
   ],
   4:[
     // ── preguntas 0-9: quiz del módulo ──
@@ -1594,59 +1538,15 @@ const QUIZZES = {
      o:["Hacés clic: si hay una actualización crítica del sistema hay que aplicarla de inmediato","No hacés clic; reportás el correo al coordinador y al área de sistemas como posible intento de phishing o ciberataque","Reenviás el correo al proveedor de cámaras para que confirme si es legítimo","Hacés clic pero solo desde una computadora que no sea la de monitoreo","Eliminás el correo y no reportás nada: es probablemente spam sin riesgos","Respondés el correo para consultar de qué se trata antes de hacer clic"],c:[1]},
     {q:"Durante el turno nocturno detectás que alguien accede a un área prohibida pero la imagen es de muy baja calidad por la oscuridad. ¿Qué hacés aunque no puedas identificar a la persona?",
      o:["Ignorarla hasta tener mejor imagen: sin identificación no hay intrusión confirmable","Tratar la situación como intrusión potencial: alertar al vigilador, registrar la novedad con hora y descripción de lo observado y solicitar verificación física inmediata del sector","Esperar a que la persona encienda una luz para poder identificarla mejor","Aumentar el brillo del monitor para mejorar la imagen antes de actuar","Reiniciar la cámara del sector para intentar mejorar la calidad de imagen","Reportarlo solo si el vigilador confirma presencia física al llegar al sector"],c:[1]},
-    // ── preguntas 16-23: examen final ──
-    {q:"Detectás un ángulo muerto (zona sin cobertura de cámara) cerca de una salida de emergencia. ¿Qué representa y qué debés hacer?",
-     o:["Es normal: todo sistema CCTV tiene ángulos muertos inevitables","Un riesgo de seguridad: documentarlo, reportarlo al coordinador y solicitar instalación de una cámara adicional o ajuste del ángulo de la existente","Aumentar la resolución de las cámaras vecinas para compensar el área sin cobertura","Solo importa si el área es de alto valor económico; si no, no es prioritario","Colocar un espejo de seguridad como solución provisoria sin reportar la situación","Esperar a que el cliente del servicio lo note y solicite la corrección al proveedor"],c:[1]},
-    {q:"El sistema biométrico de control de acceso falla y deja de reconocer huellas. Hay empleados esperando para ingresar. ¿Cuál es el protocolo correcto?",
-     o:["Dejar pasar a todos los que tengan credencial de empleado como excepción temporal","Activar el protocolo de acceso manual: verificar identidad con credencial y DNI, registrar cada ingreso manualmente y notificar al coordinador para reparación urgente","No dejar pasar a nadie hasta que el sistema biométrico sea reparado","Dejar pasar solo a los jefes de área que se identifiquen verbalmente","Llamar primero al proveedor técnico antes de hacer cualquier otra acción","Dejar la barrera abierta hasta que llegue el técnico a reparar el sistema"],c:[1]},
-    {q:"¿Por cuánto tiempo debe conservarse como mínimo la grabación del sistema CCTV de seguridad privada según las recomendaciones generales de la industria?",
-     o:["24 horas como mínimo en todos los casos","7 días en la mayoría de los contextos de seguridad","30 días como mínimo, o más según lo requiera el cliente o la normativa local aplicable","Solo 72 horas para proteger la privacidad de las personas filmadas","6 meses como mínimo en todos los casos sin ninguna excepción","Las grabaciones no deben guardarse más de 48 horas por ley de privacidad"],c:[2]},
-    {q:"¿Qué debe hacer el monitorista si detecta un comportamiento anómalo en cámara pero no puede confirmarlo como amenaza?",
-     o:["Ignorarlo hasta tener certeza absoluta para no generar falsas alarmas","Registrar la novedad, comunicar al vigilador de campo y mantener vigilancia reforzada en el sector","Llamar al 911 de todas formas por precaución ante la duda","Esperar a que el comportamiento escale antes de tomar cualquier acción","Reiniciar la cámara del sector para obtener una imagen más clara","Avisar directamente al cliente del servicio sin pasar por el coordinador"],c:[1]},
-    {q:"Una grabación de cámara puede servir como evidencia legal. ¿Qué está PROHIBIDO hacer con ella?",
-     o:["Preservarla íntegramente sin ninguna modificación","Entregarla a la policía con autorización del coordinador","Borrarla o exportarla sin autorización comprometiendo la investigación","Mostrarla al coordinador para evaluación interna del incidente","Guardarla en el sistema hasta que sea formalmente requerida","Hacer una copia de seguridad con autorización del coordinador"],c:[2]},
-    {q:"¿Con qué frecuencia debe revisar el monitorista los monitores a su cargo?",
-     o:["Solo cuando suena una alarma de movimiento en el sistema","Periódicamente, de forma activa y sistemática, según el protocolo del puesto","Una vez por hora es suficiente en la mayoría de los puestos de monitoreo","Solo en horario nocturno cuando estadísticamente hay mayor riesgo","Cuando el vigilador de campo le avisa de algo sospechoso en terreno","Al inicio y al final de cada turno solamente"],c:[1]},
-    {q:"El monitorista detecta una intrusión confirmada. Ya alertó al vigilador. ¿Qué más debe hacer?",
-     o:["Esperar a que el vigilador maneje la situación completamente solo","Llamar al 911, dar descripción precisa del intruso y mantenerse en línea; documentar toda la secuencia con hora exacta en el libro","Apagar las cámaras del sector para no registrar el incidente","Avisar al cliente del servicio antes que al 911 siempre","Ir al lugar para apoyar físicamente al vigilador de campo","Reiniciar el sistema de alarma para cancelar la alerta activa en curso"],c:[1]},
-    {q:"El monitorista termina su turno y el reemplazo no llega. Ya pasaron 30 minutos. ¿Qué está obligado a hacer?",
-     o:["Retirarse de todas formas: su responsabilidad termina al fin del turno","Comunicar la situación al coordinador de inmediato y mantenerse en el puesto hasta recibir instrucciones o que llegue el reemplazo; no puede abandonar el puesto sin autorización","Llamar directamente al reemplazo y esperarle 15 minutos más como máximo","Apagar los monitores y retirarse dejando el libro de novedades firmado","Llamar al cliente del servicio para que tome la decisión operativa","Registrarlo como novedad y retirarse: la empresa es la responsable de cubrir el turno"],c:[1]},
   ],
 };
 
 // ── FIN QUIZZES ──────────────────────────────────────────────────
-// (preguntas adicionales de examen integradas arriba, índices 4-7 de cada clave)
 
-
-// El examen final usa las últimas 4 preguntas de cada módulo (5 por módulo × 4 módulos = 16 preguntas mínimo)
-function buildExam(){
-  function pickN(arr, n){
-    if(!arr || !arr.length) return [];
-    const copy = [...arr];
-    for(let i=copy.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]]; }
-    return copy.slice(0, Math.min(n, copy.length));
-  }
-  // Si el usuario tiene un módulo seleccionado, usar solo ese
-  if(user && user.modId && QUIZZES[user.modId]){
-    const pool = QUIZZES[user.modId].slice(16);
-    return pickN(pool, Math.min(pool.length, 8));
-  }
-  // Fallback: todos los módulos
-  const pool1 = QUIZZES[1] ? QUIZZES[1].slice(16) : [];
-  const pool2 = QUIZZES[2] ? QUIZZES[2].slice(16) : [];
-  const pool3 = QUIZZES[3] ? QUIZZES[3].slice(16) : [];
-  const pool4 = QUIZZES[4] ? QUIZZES[4].slice(16) : [];
-  return [
-    ...pickN(pool1, 4),
-    ...pickN(pool2, 4),
-    ...pickN(pool3, 4),
-    ...pickN(pool4, 4),
-  ];
-}
-// EXAM es un proxy que siempre lee los módulos actuales
+// EXAM vacío — examen final eliminado
 const EXAM = new Proxy([], {
   get(t, prop){
-    const src = buildExam();
+    const src = [];
     if(prop === 'length') return src.length;
     if(!isNaN(prop))      return src[prop];
     if(prop === 'filter') return src.filter.bind(src);
@@ -1814,9 +1714,9 @@ function confirmQ(q){
 
 function nextQ(){ if(qIdx===curQ.length-1) showQResult(); else { qIdx++; renderQ(); } }
 
-function showQResult(){
+async function showQResult(){
   const ok=qAns.filter(a=>a.ok).length, tot=curQ.length;
-  const sc=Math.round(ok/tot*10*10)/10; // nota 0-10 con un decimal
+  const sc=Math.round(ok/tot*10*10)/10;
   const pass=sc>=MIN_MOD;
   prog[curMod.id]={done:pass,score:sc};
   const b=gi('qresult-body');
@@ -1824,12 +1724,34 @@ function showQResult(){
     <div class="rico2">${pass?'🎉':'📚'}</div>
     <div class="rtitle2" style="color:${pass?'var(--green)':'var(--red)'}">${pass?'¡Módulo aprobado!':'Necesitás repasar'}</div>
     <div class="rscore" style="color:${pass?'var(--green)':'var(--red)'}">Nota: ${sc.toFixed(1)}</div>
-    <div class="rmsg">${ok} de ${tot} correctas.<br>${pass?'Podés continuar al siguiente módulo.':'Nota mínima: '+MIN_MOD+' — seguí repasando.'}</div>
-    <div style="width:100%;max-width:320px">
-      ${pass?`<button class="btn btn-success mb12" onclick="renderHome();go('s-home')">CONTINUAR →</button>`:''}
+    <div class="rmsg">${ok} de ${tot} correctas.<br>${pass?'Felicitaciones, completaste el módulo.':'Nota mínima: '+MIN_MOD+' — seguí repasando.'}</div>
+    <div style="width:100%;max-width:320px" id="qresult-btns">
+      ${pass?`<button class="btn btn-success mb12" id="btn-qresult-cert">VER MI CERTIFICADO 🏆</button>`:''}
       <button class="btn btn-outline" onclick="openMod(${curMod.id});go('s-mod')">${pass?'Repasar módulo':'Volver a estudiar'}</button>
     </div>`;
   go('s-qresult');
+
+  if(pass){
+    const min=Math.round((Date.now()-t0)/60000);
+    const now=new Date();
+    const fin=now.toISOString();
+    const fecha=now.toLocaleDateString('es-AR')+' '+now.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+    const certCode = await genCertCode(user.dni, user.legajo||'', fin);
+    const data={...user, fin, minutos:min,
+      mod1:prog[1]?.score??0, mod2:prog[2]?.score??0, mod3:prog[3]?.score??0, mod4:prog[4]?.score??0,
+      final:sc, resultado:'APROBADO', correctas:ok, total:tot, certCode};
+    saveSheets(data);
+    _certData={sc, ok, tot, min, fecha, data};
+    const btnCert=gi('btn-qresult-cert');
+    if(btnCert) btnCert.onclick=()=>{
+      const cv=gi('cierre-video'), cs=gi('s-cierre'), cb=gi('cierre-bar');
+      cv.currentTime=0; cb.style.width='0%';
+      cs.style.display='flex'; cs.style.opacity='1';
+      cv.play().catch(()=>{ cs.style.display='none'; initFirmaScreen(); go('s-firma'); });
+      cv.ontimeupdate=()=>{ if(cv.duration) cb.style.width=(cv.currentTime/cv.duration*100)+'%'; };
+      cv.onended=()=>skipCierre();
+    };
+  }
 }
 
 // ─── EVALUACIÓN FINAL ────────────────────────────────────────────
@@ -2918,7 +2840,15 @@ function saveQuestions(){
 }
 
 function applyQuestions(all){
-  [1,2,3,4].forEach(i=>{ if(all[i]) QUIZZES[i]=all[i]; });
+  // Solo aplicar preguntas guardadas si tienen al menos 16 por módulo (versión nueva)
+  // Si tienen menos, ignorar para no pisar las preguntas actuales
+  const valid = [1,2,3,4].every(i => !all[i] || all[i].length >= 16);
+  if(valid){
+    [1,2,3,4].forEach(i=>{ if(all[i]) QUIZZES[i]=all[i]; });
+  } else {
+    // Borrar datos viejos incompatibles
+    localStorage.removeItem('sab5_questions');
+  }
 }
 
 function applyRubroQuestions(all){ /* no-op: sistema de rubros eliminado */ }
