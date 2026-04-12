@@ -1969,110 +1969,7 @@ function generarCertificado(cb){
   const ctx=c.getContext('2d');
   const d=_certData;
 
-  // ── FONDO con patrón sutil ──
-  ctx.fillStyle='#f9f7f4'; ctx.fillRect(0,0,W,H);
-  ctx.strokeStyle='rgba(183,28,28,0.045)'; ctx.lineWidth=1;
-  for(let i=-H;i<W+H;i+=32){ ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i+H,H); ctx.stroke(); }
-
-  // ── MARCOS ──
-  ctx.shadowColor='rgba(0,0,0,0.18)'; ctx.shadowBlur=14;
-  ctx.strokeStyle='#b71c1c'; ctx.lineWidth=10; ctx.strokeRect(14,14,W-28,H-28);
-  ctx.shadowBlur=0;
-  ctx.strokeStyle='#1a1a1a'; ctx.lineWidth=2;   ctx.strokeRect(26,26,W-52,H-52);
-  ctx.strokeStyle='#b71c1c'; ctx.lineWidth=0.8; ctx.strokeRect(32,32,W-64,H-64);
-
-  // ── ESQUINAS DECORATIVAS ──
-  const L=36; ctx.strokeStyle='#b71c1c'; ctx.lineWidth=2.5;
-  [[36,36],[W-36,36],[36,H-36],[W-36,H-36]].forEach(([x,y])=>{
-    const sx=x===36?1:-1, sy=y===36?1:-1;
-    ctx.beginPath(); ctx.moveTo(x,y+sy*L); ctx.lineTo(x,y); ctx.lineTo(x+sx*L,y); ctx.stroke();
-  });
-
-  // ── CABECERA ──
-  // Fondo degradé rojo institucional oscuro → rojo institucional → oscuro
-  const hGrad=ctx.createLinearGradient(0,0,W,0);
-  hGrad.addColorStop(0,'#5a0000');
-  hGrad.addColorStop(0.35,'#9b1010');
-  hGrad.addColorStop(0.5,'#b71c1c');
-  hGrad.addColorStop(0.65,'#9b1010');
-  hGrad.addColorStop(1,'#5a0000');
-  ctx.fillStyle=hGrad; ctx.fillRect(0,0,W,128);
-
-  // Franja dorada inferior
-  const goldGrad=ctx.createLinearGradient(0,0,W,0);
-  goldGrad.addColorStop(0,'#7a5000');
-  goldGrad.addColorStop(0.3,'#d4a017');
-  goldGrad.addColorStop(0.5,'#f0c040');
-  goldGrad.addColorStop(0.7,'#d4a017');
-  goldGrad.addColorStop(1,'#7a5000');
-  ctx.fillStyle=goldGrad; ctx.fillRect(0,122,W,6);
-
-  // Línea dorada superior decorativa
-  ctx.strokeStyle='rgba(240,192,64,0.3)'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(70,100); ctx.lineTo(W-70,100); ctx.stroke();
-
-  // Título (debajo del header — siempre visible)
-  ctx.fillStyle='#1a1a1a'; ctx.font='bold 19px Georgia,serif'; ctx.letterSpacing='2px';
-  ctx.textAlign='center';
-  ctx.fillText('CERTIFICADO DE CAPACITACIÓN PROFESIONAL',W/2,168);
-  ctx.strokeStyle='#b71c1c'; ctx.lineWidth=2;
-  ctx.beginPath(); ctx.moveTo(W/2-220,178); ctx.lineTo(W/2+220,178); ctx.stroke();
-  ctx.strokeStyle='rgba(0,0,0,0.12)'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(W/2-240,183); ctx.lineTo(W/2+240,183); ctx.stroke();
-
-  // ── CUERPO ──
-  ctx.fillStyle='#666'; ctx.font='15px Georgia,serif';
-  ctx.fillText('Por medio del presente se certifica que:',W/2,218);
-
-  // Nombre destacado
-  ctx.fillStyle='#b71c1c'; ctx.font='bold 34px Georgia,serif';
-  ctx.fillText((d.data.nombre||'').toUpperCase(),W/2,264);
-  ctx.strokeStyle='#e0e0e0'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(W/2-260,275); ctx.lineTo(W/2+260,275); ctx.stroke();
-
-  ctx.fillStyle='#555'; ctx.font='14px Arial';
-  ctx.fillText('DNI: '+d.data.dni,W/2,300);
-  ctx.fillText('Coordinador a cargo: '+(d.data.coordinador||d.data.sede||''),W/2,320);
-
-  ctx.fillStyle='#333'; ctx.font='15px Georgia,serif';
-  ctx.fillText('ha aprobado satisfactoriamente la capacitación',W/2,356);
-  ctx.font='bold 17px Georgia,serif'; ctx.fillText('SAB-5 SEGURIDAD PRIVADA',W/2,380);
-
-  // Nota con barra
-  ctx.fillStyle='#1b5e20'; ctx.font='bold 28px Arial';
-  ctx.fillText('NOTA FINAL: '+(+d.sc).toFixed(1)+' / 10',W/2,418);
-  const bx=W/2-200,bw=400,by=430,bh=10;
-  ctx.fillStyle='#e0e0e0'; ctx.beginPath(); ctx.roundRect(bx,by,bw,bh,5); ctx.fill();
-  const pg=ctx.createLinearGradient(bx,0,bx+bw,0);
-  pg.addColorStop(0,'#43a047'); pg.addColorStop(1,'#1b5e20');
-  ctx.fillStyle=pg; ctx.beginPath(); ctx.roundRect(bx,by,bw*(d.sc/10),bh,5); ctx.fill();
-
-  // Módulos
-  ctx.fillStyle='#888'; ctx.font='12px Arial';
-  const m1=d.data.mod1||0,m2=d.data.mod2||0,m3=d.data.mod3||0,m4=d.data.mod4||0;
-  ctx.fillText('🛡️ Funciones '+(+m1).toFixed(1)+'   ·   🔥 Incendios '+(+m2).toFixed(1)+'   ·   ❤️ RCP/DEA '+(+m3).toFixed(1)+'   ·   🖥️ Monitorista '+(+m4).toFixed(1),W/2,462);
-
-  // Fecha
-  ctx.fillStyle='#888'; ctx.font='13px Arial';
-  ctx.fillText('Fecha de aprobación: '+d.fecha,W/2,486);
-
-  // ── CÓDIGO DE VERIFICACIÓN ──
-  const code = d.data.certCode || '';
-  if(code){
-    // Fondo sutil
-    ctx.fillStyle='#f0f0f0'; ctx.beginPath(); ctx.roundRect(W/2-180,494,360,20,4); ctx.fill();
-    ctx.strokeStyle='#ddd'; ctx.lineWidth=0.8; ctx.beginPath(); ctx.roundRect(W/2-180,494,360,20,4); ctx.stroke();
-    ctx.fillStyle='#aaa'; ctx.font='9px Arial';
-    ctx.fillText('VERIFICACIÓN:',W/2-120,507);
-    ctx.fillStyle='#555'; ctx.font='bold 10px "Courier New",monospace';
-    ctx.fillText(code,W/2+30,507);
-  }
-
-  // ── ÁREA FIRMAS ──
-  ctx.strokeStyle='#ddd'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(60,518); ctx.lineTo(W-60,518); ctx.stroke();
-
-  // Helper: texto ajustado al ancho máximo
+  // ── Helper: texto ajustado al ancho máximo ──
   function fitTxt(text, maxW){
     if(!text) return '';
     if(ctx.measureText(text).width<=maxW) return text;
@@ -2081,57 +1978,216 @@ function generarCertificado(cb){
     return t+'…';
   }
 
-  const lx1=80, lx2=370, lx=225;
-  const rx1=530, rx2=820, rx=675;
-  const lineY=585, imgH=54, imgY=lineY-62;
+  // ── FONDO MARFIL CON PATRÓN DIAGONAL SUTIL ──
+  ctx.fillStyle='#faf8f5'; ctx.fillRect(0,0,W,H);
+  ctx.save();
+  ctx.strokeStyle='rgba(183,28,28,0.04)'; ctx.lineWidth=1;
+  for(let i=-H;i<W+H;i+=28){ ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i+H,H); ctx.stroke(); }
+  ctx.restore();
 
-  // ── Bloque IZQUIERDO: Vigilador ──
-  ctx.strokeStyle='#bbb'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(lx1,lineY); ctx.lineTo(lx2,lineY); ctx.stroke();
+  // ── MARCO EXTERNO DOBLE ──
+  ctx.shadowColor='rgba(0,0,0,0.15)'; ctx.shadowBlur=18;
+  ctx.strokeStyle='#b71c1c'; ctx.lineWidth=11; ctx.strokeRect(12,12,W-24,H-24);
+  ctx.shadowBlur=0;
+  ctx.strokeStyle='#c9a227'; ctx.lineWidth=2.5; ctx.strokeRect(24,24,W-48,H-48);
+  ctx.strokeStyle='rgba(183,28,28,0.25)'; ctx.lineWidth=0.8; ctx.strokeRect(30,30,W-60,H-60);
+
+  // ── ESQUINAS ORNAMENTALES ──
+  const CL=42; ctx.strokeStyle='#c9a227'; ctx.lineWidth=2;
+  [[32,32],[W-32,32],[32,H-32],[W-32,H-32]].forEach(([x,y])=>{
+    const sx=x<W/2?1:-1, sy=y<H/2?1:-1;
+    ctx.beginPath(); ctx.moveTo(x,y+sy*CL); ctx.lineTo(x,y); ctx.lineTo(x+sx*CL,y); ctx.stroke();
+    // pequeño rombo en la esquina
+    ctx.save(); ctx.translate(x,y); ctx.rotate(Math.PI/4);
+    ctx.strokeRect(-4,-4,8,8); ctx.restore();
+  });
+
+  // ── CABECERA ROJA ──
+  const HDR_H = 148;
+  const hGrad=ctx.createLinearGradient(0,0,W,0);
+  hGrad.addColorStop(0,'#4a0000');
+  hGrad.addColorStop(0.3,'#8c0f0f');
+  hGrad.addColorStop(0.5,'#b71c1c');
+  hGrad.addColorStop(0.7,'#8c0f0f');
+  hGrad.addColorStop(1,'#4a0000');
+  ctx.fillStyle=hGrad; ctx.fillRect(0,0,W,HDR_H);
+
+  // Líneas decorativas internas en el header
+  ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(60,18); ctx.lineTo(W-60,18); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(60,HDR_H-10); ctx.lineTo(W-60,HDR_H-10); ctx.stroke();
+
+  // Franja dorada inferior del header
+  const goldGrad=ctx.createLinearGradient(0,0,W,0);
+  goldGrad.addColorStop(0,'#6b4400');
+  goldGrad.addColorStop(0.25,'#c9a227');
+  goldGrad.addColorStop(0.5,'#e8c84a');
+  goldGrad.addColorStop(0.75,'#c9a227');
+  goldGrad.addColorStop(1,'#6b4400');
+  ctx.fillStyle=goldGrad; ctx.fillRect(0,HDR_H,W,5);
+
+  // Texto fallback del header (antes de cargar logo)
   ctx.textAlign='center';
-  // Nombre en dos líneas si es largo: apellido / nombre
-  const vigFull=(d.data.nombre||'').toUpperCase();
-  ctx.fillStyle='#333'; ctx.font='bold 11px Arial';
-  ctx.fillText(fitTxt(vigFull,270),lx,lineY+15);
-  ctx.fillStyle='#999'; ctx.font='10px Arial';
-  ctx.fillText('Firma del vigilador',lx,lineY+28);
+  // "SAB-5" grande
+  ctx.fillStyle='#ffffff'; ctx.font='bold 44px Georgia,serif';
+  ctx.shadowColor='rgba(0,0,0,0.4)'; ctx.shadowBlur=8;
+  ctx.fillText('SAB-5',W/2,68);
+  ctx.shadowBlur=0;
+  // separador dorado
+  const sepGrad=ctx.createLinearGradient(W/2-160,0,W/2+160,0);
+  sepGrad.addColorStop(0,'rgba(201,162,39,0)');
+  sepGrad.addColorStop(0.2,'#e8c84a');
+  sepGrad.addColorStop(0.5,'#fff7c0');
+  sepGrad.addColorStop(0.8,'#e8c84a');
+  sepGrad.addColorStop(1,'rgba(201,162,39,0)');
+  ctx.strokeStyle=sepGrad; ctx.lineWidth=1.2;
+  ctx.beginPath(); ctx.moveTo(W/2-160,78); ctx.lineTo(W/2+160,78); ctx.stroke();
+  // subtítulo
+  ctx.fillStyle='rgba(255,255,255,0.88)'; ctx.font='bold 13px Arial';
+  ctx.letterSpacing='3px';
+  ctx.fillText('SEGURIDAD PRIVADA', W/2, 102);
+  ctx.letterSpacing='0px';
+  ctx.fillStyle='rgba(255,220,100,0.7)'; ctx.font='11px Arial';
+  ctx.fillText('CAPACITACIÓN PROFESIONAL', W/2, 122);
 
-  // ── Bloque DERECHO: Gerencia (desde admin) ──
-  ctx.strokeStyle='#bbb'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(rx1,lineY); ctx.lineTo(rx2,lineY); ctx.stroke();
+  // ── TÍTULO DEL CERTIFICADO ──
+  ctx.fillStyle='#1a1a1a'; ctx.font='bold 17px Georgia,serif';
+  ctx.letterSpacing='2.5px';
+  ctx.fillText('CERTIFICADO DE APROBACIÓN', W/2, 186);
+  ctx.letterSpacing='0px';
+  // líneas decorativas del título
+  const tLineY=196;
+  const tlGrad=ctx.createLinearGradient(W/2-200,0,W/2+200,0);
+  tlGrad.addColorStop(0,'rgba(183,28,28,0)');
+  tlGrad.addColorStop(0.2,'#b71c1c');
+  tlGrad.addColorStop(0.8,'#b71c1c');
+  tlGrad.addColorStop(1,'rgba(183,28,28,0)');
+  ctx.strokeStyle=tlGrad; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(W/2-200,tLineY); ctx.lineTo(W/2+200,tLineY); ctx.stroke();
+  ctx.strokeStyle='rgba(201,162,39,0.4)'; ctx.lineWidth=0.8;
+  ctx.beginPath(); ctx.moveTo(W/2-220,tLineY+4); ctx.lineTo(W/2+220,tLineY+4); ctx.stroke();
+
+  // ── CUERPO: CERTIFICA QUE ──
+  ctx.fillStyle='#777'; ctx.font='italic 14px Georgia,serif';
+  ctx.fillText('La presente institución certifica que:', W/2, 232);
+
+  // ── NOMBRE DEL VIGILADOR ──
+  ctx.shadowColor='rgba(183,28,28,0.15)'; ctx.shadowBlur=6;
+  ctx.fillStyle='#b71c1c'; ctx.font='bold 36px Georgia,serif';
+  ctx.fillText((d.data.nombre||'').toUpperCase(), W/2, 280);
+  ctx.shadowBlur=0;
+  // subrayado decorativo del nombre
+  const nw=Math.min(ctx.measureText((d.data.nombre||'').toUpperCase()).width+40, W-100);
+  ctx.strokeStyle='#e0e0e0'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(W/2-nw/2,292); ctx.lineTo(W/2+nw/2,292); ctx.stroke();
+
+  // ── DNI + COORDINADOR ──
+  ctx.fillStyle='#555'; ctx.font='13px Arial';
+  ctx.fillText('DNI: ' + (d.data.dni||'') + '   ·   Coordinador: ' + (d.data.coordinador||d.data.sede||''), W/2, 316);
+
+  // ── TEXTO DE APROBACIÓN ──
+  ctx.fillStyle='#333'; ctx.font='15px Georgia,serif';
+  ctx.fillText('ha aprobado satisfactoriamente la capacitación en:', W/2, 350);
+
+  // ── MÓDULO APROBADO (destacado) ──
+  const modLabel = (d.data.modTitle || 'Seguridad Privada').toUpperCase();
+  // fondo pastilla
+  const mBgW = Math.min(ctx.measureText(modLabel).width + 80, W - 120);
+  const mBgX = W/2 - mBgW/2;
+  ctx.fillStyle='#b71c1c'; ctx.beginPath(); ctx.roundRect(mBgX, 360, mBgW, 38, 6); ctx.fill();
+  ctx.strokeStyle='#c9a227'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.roundRect(mBgX, 360, mBgW, 38, 6); ctx.stroke();
+  ctx.fillStyle='#ffffff'; ctx.font='bold 16px Arial';
+  ctx.letterSpacing='1px';
+  ctx.fillText(modLabel, W/2, 384);
+  ctx.letterSpacing='0px';
+
+  // ── NOTA FINAL ──
+  ctx.fillStyle='#1b5e20'; ctx.font='bold 26px Arial';
+  ctx.fillText('NOTA: ' + (+d.sc).toFixed(1) + ' / 10', W/2, 430);
+  // barra de progreso
+  const bx=W/2-160, bw=320, by=440, bh=8;
+  ctx.fillStyle='#e8e8e8'; ctx.beginPath(); ctx.roundRect(bx,by,bw,bh,4); ctx.fill();
+  const pGrad=ctx.createLinearGradient(bx,0,bx+bw,0);
+  pGrad.addColorStop(0,'#66bb6a'); pGrad.addColorStop(1,'#1b5e20');
+  ctx.fillStyle=pGrad; ctx.beginPath(); ctx.roundRect(bx,by,bw*Math.min(d.sc/10,1),bh,4); ctx.fill();
+
+  // ── FECHA ──
+  ctx.fillStyle='#888'; ctx.font='12px Arial';
+  ctx.fillText('Fecha de aprobación: ' + (d.fecha||''), W/2, 472);
+
+  // ── CÓDIGO DE VERIFICACIÓN ──
+  const code = d.data.certCode || '';
+  if(code){
+    ctx.fillStyle='#f0ece6'; ctx.beginPath(); ctx.roundRect(W/2-175,482,350,18,3); ctx.fill();
+    ctx.strokeStyle='#ddd'; ctx.lineWidth=0.6; ctx.beginPath(); ctx.roundRect(W/2-175,482,350,18,3); ctx.stroke();
+    ctx.fillStyle='#aaa'; ctx.font='8px Arial';
+    ctx.textAlign='left'; ctx.fillText('VERIFICACIÓN:', W/2-168, 494);
+    ctx.fillStyle='#666'; ctx.font='bold 9px "Courier New",monospace';
+    ctx.fillText(code, W/2-80, 494);
+    ctx.textAlign='center';
+  }
+
+  // ── SEPARADOR ANTES DE FIRMAS ──
+  ctx.strokeStyle='rgba(201,162,39,0.5)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(60,510); ctx.lineTo(W-60,510); ctx.stroke();
+
+  // ── BLOQUE DE FIRMAS ──
+  const lx1=80, lx2=360, lx=220;
+  const rx1=540, rx2=820, rx=680;
+  const lineY=582, imgH=52, imgY=lineY-58;
+
+  // Vigilador
+  ctx.strokeStyle='#ccc'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(lx1,lineY); ctx.lineTo(lx2,lineY); ctx.stroke();
+  ctx.fillStyle='#333'; ctx.font='bold 11px Arial';
+  ctx.fillText(fitTxt((d.data.nombre||'').toUpperCase(), lx2-lx1-20), lx, lineY+16);
+  ctx.fillStyle='#999'; ctx.font='10px Arial';
+  ctx.fillText('Firma del participante', lx, lineY+30);
+
+  // Gerencia
   const gerName=cfg.signerName||'Gerencia SAB-5';
+  ctx.strokeStyle='#ccc'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(rx1,lineY); ctx.lineTo(rx2,lineY); ctx.stroke();
   ctx.fillStyle='#333'; ctx.font='bold 11px Arial';
-  ctx.fillText(fitTxt(gerName,270),rx,lineY+15);
+  ctx.fillText(fitTxt(gerName, rx2-rx1-20), rx, lineY+16);
   ctx.fillStyle='#999'; ctx.font='10px Arial';
-  ctx.fillText('Gerencia',rx,lineY+28);
+  ctx.fillText('Gerencia SAB-5', rx, lineY+30);
 
-  // ── IMÁGENES: logo + firmas en cadena async ──
-  // Orden: logo header → firma vigilador → firma gerencia → cb()
-
-  const drawHeader=after=>{
+  // ── IMÁGENES ASYNC: logo → firma vigilador → firma gerencia → cb() ──
+  const drawLogoHeader=after=>{
     const logo=new Image();
     logo.onload=()=>{
-      // Redibujar gradiente del header para pisar texto fallback
+      // Repintar gradiente del header
       const hg=ctx.createLinearGradient(0,0,W,0);
-      hg.addColorStop(0,'#5a0000'); hg.addColorStop(0.35,'#9b1010');
-      hg.addColorStop(0.5,'#b71c1c'); hg.addColorStop(0.65,'#9b1010');
-      hg.addColorStop(1,'#5a0000');
-      ctx.fillStyle=hg; ctx.fillRect(0,0,W,122);
+      hg.addColorStop(0,'#4a0000'); hg.addColorStop(0.3,'#8c0f0f');
+      hg.addColorStop(0.5,'#b71c1c'); hg.addColorStop(0.7,'#8c0f0f');
+      hg.addColorStop(1,'#4a0000');
+      ctx.fillStyle=hg; ctx.fillRect(0,0,W,HDR_H);
       // Franja dorada
       const gg=ctx.createLinearGradient(0,0,W,0);
-      gg.addColorStop(0,'#7a5000'); gg.addColorStop(0.3,'#d4a017');
-      gg.addColorStop(0.5,'#f0c040'); gg.addColorStop(0.7,'#d4a017');
-      gg.addColorStop(1,'#7a5000');
-      ctx.fillStyle=gg; ctx.fillRect(0,122,W,6);
-      // Logo proporciones originales 2998×1204 — altura 86px centrada
-      const lh=86, lw=Math.round(lh*2998/1204);
-      // multiply: blanco del logo desaparece, elementos oscuros y rojos se integran al fondo
+      gg.addColorStop(0,'#6b4400'); gg.addColorStop(0.25,'#c9a227');
+      gg.addColorStop(0.5,'#e8c84a'); gg.addColorStop(0.75,'#c9a227'); gg.addColorStop(1,'#6b4400');
+      ctx.fillStyle=gg; ctx.fillRect(0,HDR_H,W,5);
+      // Líneas internas
+      ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(60,18); ctx.lineTo(W-60,18); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(60,HDR_H-10); ctx.lineTo(W-60,HDR_H-10); ctx.stroke();
+      // Logo centrado con blend multiply
+      const lh=82, lw=Math.round(lh*2998/1204);
       ctx.globalCompositeOperation='multiply';
-      ctx.drawImage(logo,(W-lw)/2,(128-lh)/2,lw,lh);
-      ctx.globalCompositeOperation='source-over'; // restaurar
+      ctx.drawImage(logo,(W-lw)/2,(HDR_H-lh)/2,lw,lh);
+      ctx.globalCompositeOperation='source-over';
+      // Reescribir subtítulo encima del logo
+      ctx.textAlign='center';
+      ctx.fillStyle='rgba(255,255,255,0.82)'; ctx.font='bold 12px Arial';
+      ctx.letterSpacing='3px';
+      ctx.fillText('SEGURIDAD PRIVADA', W/2, 108);
+      ctx.letterSpacing='0px';
+      ctx.fillStyle='rgba(255,220,100,0.65)'; ctx.font='10px Arial';
+      ctx.fillText('CAPACITACIÓN PROFESIONAL', W/2, 125);
       if(after)after();
     };
-    logo.onerror=()=>{ if(after)after(); }; // si no carga, continúa igual
+    logo.onerror=()=>{ if(after)after(); };
     logo.src='logo.png';
   };
 
@@ -2151,7 +2207,7 @@ function generarCertificado(cb){
     } else { if(after)after(); }
   };
 
-  loadFirmaVig(()=>loadFirmaGer(cb));
+  drawLogoHeader(()=>loadFirmaVig(()=>loadFirmaGer(cb)));
 }
 
 function descargarCertificado(){
