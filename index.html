@@ -1734,10 +1734,20 @@ function openMod(id){
   go('s-mod');
 }
 
+function shuffleOpts(q){
+  // Mezcla las opciones de una pregunta y actualiza los índices correctos
+  const order = q.o.map((_,i)=>i);
+  for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [order[i],order[j]]=[order[j],order[i]]; }
+  const newO = order.map(i=>q.o[i]);
+  const cs = Array.isArray(q.c) ? q.c : [q.c];
+  const newC = cs.map(c=>order.indexOf(c));
+  return {...q, o:newO, c:newC};
+}
+
 function startModQuiz(){
   // Usa las primeras 16 preguntas del módulo (las últimas 8 son para el examen final)
   const pool = QUIZZES[curMod.id] ? QUIZZES[curMod.id].slice(0,16) : [];
-  curQ  = shuf([...pool]);
+  curQ  = shuf([...pool]).map(shuffleOpts);
   qIdx  = 0; qAns = [];
   gi('qmod-title').textContent = 'Quiz: '+curMod.title;
   renderQ(); go('s-quiz');
