@@ -2104,7 +2104,41 @@ function downloadDiplomaAdmin(d){
 
 // ─── COORDINADORES ────────────────────────────────────────────
 function getCoordinators(){ return JSON.parse(localStorage.getItem('sab5_coordinators')||'[]'); }
-function saveCoordinators(list){ localStorage.setItem('sab5_coordinators', JSON.stringify(list)); }
+function saveCoordinators(list){
+  localStorage.setItem('sab5_coordinators', JSON.stringify(list));
+  pushCoordinators(list);
+}
+
+async function pushCoordinators(list){
+  try {
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(list, null, 2))));
+    const shaRes = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/coordinadores.json`,
+      {headers:{'Authorization':'token '+GH_TOKEN}});
+    const sha = shaRes.ok ? (await shaRes.json()).sha : undefined;
+    const body = {message:'Actualizar coordinadores', content};
+    if(sha) body.sha = sha;
+    await fetch(`https://api.github.com/repos/${GH_REPO}/contents/coordinadores.json`,{
+      method:'PUT',
+      headers:{'Authorization':'token '+GH_TOKEN,'Content-Type':'application/json'},
+      body: JSON.stringify(body)
+    });
+  } catch(e){ console.log('Sync coordinadores:', e.message); }
+}
+
+async function fetchCoordinatorsFromGitHub(){
+  try {
+    const res = await fetch(`https://raw.githubusercontent.com/${GH_REPO}/main/coordinadores.json?_=${Date.now()}`);
+    if(res.ok){
+      const list = await res.json();
+      if(Array.isArray(list) && list.length){
+        localStorage.setItem('sab5_coordinators', JSON.stringify(list));
+        renderCoordinatorSelect();
+        const container = gi('coord-list');
+        if(container) renderCoordList();
+      }
+    }
+  } catch(e){}
+}
 
 function renderCoordinatorSelect(){
   const sel = gi('i-coord');
@@ -2767,6 +2801,7 @@ function applyRubroQuestions(all){ /* no-op: sistema de rubros eliminado */ }
   if(saved) applyQuestions(JSON.parse(saved));
   renderCoordinatorSelect();
   renderModuleSelect();
+  fetchCoordinatorsFromGitHub(); // sincronizar desde GitHub al abrir la app
 })();
 
 // ─── EDITOR DE PORTADA ───────────────────────────────────────────
