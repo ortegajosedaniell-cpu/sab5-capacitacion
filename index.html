@@ -565,8 +565,33 @@
       </div>
       <button class="btn btn-primary" onclick="doAdminLogin()">INGRESAR AL PANEL →</button>
       <p id="a-err" style="color:var(--red);font-size:13px;text-align:center;margin-top:10px;display:none">Usuario o contraseña incorrectos.</p>
+      <p style="text-align:center;margin-top:14px">
+        <button onclick="go('s-admin-recovery')" style="background:none;border:none;color:#aaa;font-size:12px;cursor:pointer;text-decoration:underline">¿Olvidaste tu contraseña?</button>
+      </p>
     </div>
     <p style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">Solo personal autorizado de SAB-5.</p>
+  </div>
+</div>
+
+<!-- ===== RECUPERAR CONTRASEÑA ADMIN ===== -->
+<div class="screen" id="s-admin-recovery">
+  <div class="hdr" style="background:#1a1a1a">
+    <button class="back-btn" onclick="go('s-admin-login')">←</button>
+    <div class="hdr-title">Recuperar Acceso</div>
+  </div>
+  <div class="admin-login-wrap">
+    <div class="admin-login-logo">
+      <div style="font-size:40px;margin-bottom:8px">🔑</div>
+      <div class="admin-badge">RECUPERACIÓN DE CUENTA</div>
+    </div>
+    <div class="admin-card">
+      <p style="font-size:13px;color:#555;margin-bottom:16px;text-align:center;line-height:1.5">Ingresá tu usuario y te mostraremos la información de recuperación configurada.</p>
+      <div class="form-group">
+        <label>Tu usuario</label>
+        <input type="text" id="rec-user" placeholder="Ej: coordinador1" autocomplete="username" oninput="showRecoveryInfo()">
+      </div>
+      <div id="rec-result" style="display:none;margin-top:12px"></div>
+    </div>
   </div>
 </div>
 
@@ -781,6 +806,14 @@
     <div class="form-group">
       <label>Contraseña</label>
       <input class="qed-input" type="password" id="mu-pass" placeholder="Mínimo 6 caracteres">
+    </div>
+    <div class="form-group">
+      <label>Pista de recuperación <span style="font-weight:400;color:#aaa;font-size:10px">(visible al olvidar contraseña)</span></label>
+      <input class="qed-input" type="text" id="mu-hint" placeholder="Ej: La que usás en el trabajo">
+    </div>
+    <div class="form-group">
+      <label>Email de recuperación <span style="font-weight:400;color:#aaa;font-size:10px">(opcional)</span></label>
+      <input class="qed-input" type="email" id="mu-email" placeholder="Ej: coordinador@empresa.com">
     </div>
     <div class="form-group" style="margin-bottom:6px">
       <label>Permisos</label>
@@ -2604,6 +2637,70 @@ const ADMIN_PASS2 = 'SAB5jose2026'; // ← contraseña secundaria
 let adminFilter = 'todos';
 let _adminData  = []; // datos consolidados (GitHub + local)
 
+// ─── RECUPERACIÓN DE CONTRASEÑA ──────────────────────────────────
+const RECOVERY_EMAIL = 'ortegajosedaniell@gmail.com';
+
+function showRecoveryInfo(){
+  const u = gi('rec-user').value.trim().toLowerCase();
+  const box = gi('rec-result');
+  if(!u){ box.style.display='none'; return; }
+  box.style.display='block';
+
+  // ¿Es un superadmin?
+  if(u === ADMIN_USER || u === ADMIN_USER2){
+    const subject = encodeURIComponent('Recuperacion de acceso SAB-5 Admin: '+u);
+    const body    = encodeURIComponent('Hola, necesito recuperar el acceso al panel de administrador.\n\nUsuario: '+u+'\n\nPor favor enviarme la contraseña de recuperación.');
+    box.innerHTML = `
+      <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:14px;font-size:13px;color:#664d03">
+        <div style="font-weight:800;font-size:14px;margin-bottom:8px">👤 Cuenta de Superadministrador</div>
+        <p style="margin-bottom:12px">Para recuperar el acceso a esta cuenta, contactá directamente al responsable del sistema.</p>
+        <a href="mailto:${RECOVERY_EMAIL}?subject=${subject}&body=${body}"
+           style="display:block;background:#b71c1c;color:#fff;border-radius:8px;padding:11px;text-align:center;font-weight:700;text-decoration:none;font-size:13px">
+          📧 Enviar solicitud por email
+        </a>
+        <p style="margin-top:8px;font-size:11px;color:#888;text-align:center">Se abrirá tu cliente de correo</p>
+      </div>`;
+    return;
+  }
+
+  // Admin secundario
+  const users = getAdminUsers();
+  const found = users.find(x=>x.username===u);
+  if(!found){
+    box.innerHTML = `<div style="background:#fdecea;border:1px solid #ef9a9a;border-radius:10px;padding:14px;font-size:13px;color:#7f1d1d;text-align:center">❌ Usuario no encontrado.</div>`;
+    return;
+  }
+
+  let html = `<div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:14px;font-size:13px;color:#1b5e20">
+    <div style="font-weight:800;font-size:14px;margin-bottom:8px">👤 ${found.username}</div>`;
+
+  if(found.hint){
+    html += `<div style="margin-bottom:10px"><span style="font-weight:700">Pista:</span> ${found.hint}</div>`;
+  } else {
+    html += `<div style="margin-bottom:10px;color:#888">Sin pista configurada.</div>`;
+  }
+
+  if(found.email){
+    const subject = encodeURIComponent('Recuperacion de acceso SAB-5: '+found.username);
+    const body    = encodeURIComponent('Hola, necesito recuperar el acceso al panel de administrador.\n\nUsuario: '+found.username);
+    html += `<a href="mailto:${found.email}?subject=${subject}&body=${body}"
+       style="display:block;background:#2e7d32;color:#fff;border-radius:8px;padding:10px;text-align:center;font-weight:700;text-decoration:none;font-size:13px;margin-top:6px">
+       📧 Contactar por email
+     </a>`;
+  }
+
+  // Siempre ofrecer contactar al superadmin
+  const subjectSA = encodeURIComponent('Recuperacion de acceso SAB-5: '+found.username);
+  const bodySA    = encodeURIComponent('Hola, necesito recuperar el acceso al panel.\n\nUsuario: '+found.username);
+  html += `<a href="mailto:${RECOVERY_EMAIL}?subject=${subjectSA}&body=${bodySA}"
+     style="display:block;background:#1a1a1a;color:#fff;border-radius:8px;padding:10px;text-align:center;font-weight:700;text-decoration:none;font-size:12px;margin-top:8px">
+     📧 Contactar al Superadmin
+   </a>`;
+
+  html += `</div>`;
+  box.innerHTML = html;
+}
+
 function doAdminLogin(){
   const u = gi('a-user').value.trim();
   const p = gi('a-pass').value;
@@ -2960,6 +3057,8 @@ function openUserModal(username){
   gi('mu-user').disabled = !!u; // no cambiar username al editar
   gi('mu-pass').value = '';
   gi('mu-pass').placeholder = u ? 'Dejar vacío para no cambiar' : 'Mínimo 6 caracteres';
+  gi('mu-hint').value  = u ? (u.hint||'')  : '';
+  gi('mu-email').value = u ? (u.email||'') : '';
   gi('p-resultados').checked = u ? u.perms.resultados : true;
   gi('p-preguntas').checked  = u ? u.perms.preguntas  : false;
   gi('p-portada').checked    = u ? u.perms.portada    : false;
@@ -2983,15 +3082,19 @@ function saveUser(){
     preguntas:  gi('p-preguntas').checked,
     portada:    gi('p-portada').checked
   };
+  const hint  = gi('mu-hint').value.trim();
+  const email = gi('mu-email').value.trim();
   if(_editingUser){
     const idx = users.findIndex(u=>u.username===_editingUser);
     if(idx>=0){
       if(pass.length >= 6) users[idx].pass = pass;
       users[idx].perms = perms;
+      users[idx].hint  = hint;
+      users[idx].email = email;
     }
   } else {
     if(users.find(u=>u.username===username)){ alert('Ese usuario ya existe.'); return; }
-    users.push({username, pass, perms});
+    users.push({username, pass, perms, hint, email});
   }
   saveAdminUsers(users);
   closeUserModal();
