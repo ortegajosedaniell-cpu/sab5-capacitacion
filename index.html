@@ -1659,27 +1659,30 @@ async function doLogin(){
   const modId = parseInt(gi('i-modulo').value)||0;
   if(!n||!d||!coord||!modId){ alert('Completá todos los campos para continuar.'); return; }
 
-  // ── Verificar si el DNI ya tiene capacitación aprobada ──
+  // ── Verificar si el DNI ya aprobó este módulo específico ──
   const btnLogin = gi('btn-login');
   if(btnLogin){ btnLogin.disabled=true; btnLogin.textContent='Verificando...'; }
+  const selMod0 = MODS.find(m=>m.id===modId);
+  const modTitleCheck = selMod0 ? selMod0.title : '';
   let yaAprobado = false;
   try {
+    const matchesMod = r => r.dni===d && r.resultado==='APROBADO' && (r.modulo===modTitleCheck || r.modTitle===modTitleCheck || r.modId===modId);
     // Chequear local primero
     const local = JSON.parse(localStorage.getItem('sab5_evaluaciones')||'[]');
-    if(local.some(r=>r.dni===d && r.resultado==='APROBADO')) yaAprobado=true;
+    if(local.some(matchesMod)) yaAprobado=true;
     // Chequear GitHub si no encontró local
     if(!yaAprobado){
       const res = await fetch(`https://raw.githubusercontent.com/${GH_REPO}/main/evaluaciones.json?_=${Date.now()}`);
       if(res.ok){
         const remote = await res.json();
-        if(remote.some(r=>r.dni===d && r.resultado==='APROBADO')) yaAprobado=true;
+        if(remote.some(matchesMod)) yaAprobado=true;
       }
     }
   } catch(e){ /* si falla la red, permite continuar */ }
   if(btnLogin){ btnLogin.disabled=false; btnLogin.textContent='COMENZAR CAPACITACIÓN →'; }
 
   if(yaAprobado){
-    alert('⚠️ El DNI '+d+' ya tiene una capacitación aprobada registrada.\n\nSi creés que es un error, consultá con el administrador.');
+    alert('⚠️ El DNI '+d+' ya aprobó el módulo "'+modTitleCheck+'".\n\nPodés elegir otro módulo para continuar tu capacitación.');
     return;
   }
 
