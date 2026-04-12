@@ -3079,19 +3079,25 @@ function skipIntro(){
 (function initIntro(){
   const vid = document.getElementById('intro-video');
   const bar = document.getElementById('intro-bar');
+  let done = false;
+  function safeSkip(){ if(!done){ done=true; skipIntro(); } }
   // Barra de progreso
   vid.addEventListener('timeupdate', ()=>{
     if(vid.duration) bar.style.width = (vid.currentTime/vid.duration*100)+'%';
   });
   // Al terminar, pasar al login
-  vid.addEventListener('ended', skipIntro);
-  // Si no puede reproducir (sin audio en mobile), saltar igual
-  vid.addEventListener('error', skipIntro);
+  vid.addEventListener('ended', safeSkip);
+  // Si no puede reproducir (error / archivo no encontrado), saltar igual
+  vid.addEventListener('error', safeSkip);
   // Intentar play; si el browser bloquea (sin interacción), mostrar login directo
-  const p = vid.play();
-  if(p !== undefined){
-    p.catch(()=>skipIntro());
-  }
+  try {
+    const p = vid.play();
+    if(p !== undefined){ p.catch(safeSkip); }
+  } catch(e){ safeSkip(); }
+  // Fallback: si en 8 segundos no pasó nada, saltar automáticamente
+  setTimeout(safeSkip, 8000);
+  // Toque en cualquier lugar de la pantalla de intro también salta
+  document.getElementById('s-intro').addEventListener('click', safeSkip);
 })();
 
 function gi(id){ return document.getElementById(id); }
