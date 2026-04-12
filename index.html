@@ -577,7 +577,7 @@
       <input class="search-input" id="admin-search" placeholder="Buscar nombre, DNI o coordinador..." oninput="renderTable()">
       <div style="overflow-x:auto">
         <table class="result-table" id="admin-table">
-          <thead><tr><th>Nombre</th><th>Coordinador</th><th>Nota</th><th>Resultado</th><th>Fecha</th><th>Diploma</th></tr></thead>
+          <thead><tr><th>Nombre / DNI</th><th>Coordinador</th><th>Módulo</th><th>Nota</th><th>Resultado</th><th>Fecha</th><th>Acciones</th></tr></thead>
           <tbody id="admin-tbody"></tbody>
         </table>
       </div>
@@ -585,11 +585,11 @@
         <div class="no-ico">📋</div><p>Sin evaluaciones registradas aún.</p>
       </div>
       <div class="export-grid">
-        <button class="exp-btn csv" onclick="exportCSV()"><div class="exp-ico">📄</div><div class="exp-lbl">CSV</div></button>
         <button class="exp-btn xls" onclick="exportExcel()"><div class="exp-ico">📊</div><div class="exp-lbl">Excel</div></button>
         <button class="exp-btn word" onclick="exportWord()"><div class="exp-ico">📝</div><div class="exp-lbl">Word</div></button>
+        <button class="exp-btn pdf" onclick="exportPDF()"><div class="exp-ico">📑</div><div class="exp-lbl">PDF</div></button>
       </div>
-      <p style="font-size:11px;color:#bbb;text-align:center;margin-bottom:16px">Exportá todas las evaluaciones al formato que necesités.</p>
+      <p style="font-size:11px;color:#bbb;text-align:center;margin-bottom:16px">Exportá la base de datos completa al formato que necesités.</p>
     </div>
 
     <!-- ── TAB USUARIOS/ADMINS ── -->
@@ -2535,17 +2535,19 @@ function renderTable(){
 
   data.forEach(d=>{
     const ok = d.resultado === 'APROBADO';
-    const score = d.final || 0;
+    const score = +(d.final) || 0;
     const color = score >= 7.5 ? '#2e7d32' : score >= 5 ? '#e65100' : '#c62828';
-    const fecha = d.fin ? new Date(d.fin).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}) : '-';
+    const fecha = d.fin ? new Date(d.fin).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}) : '-';
+    const modulo = d.modTitle || d.modulo || '-';
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><strong>${d.nombre||'-'}</strong><br><span style="font-size:11px;color:#999">DNI: ${d.dni||'-'}</span></td>
       <td style="font-size:12px">${d.coordinador||d.sede||'-'}</td>
+      <td style="font-size:12px">${modulo}</td>
       <td>
         <div class="score-bar-wrap">
-          <strong style="color:${color};min-width:32px">${(+score).toFixed(1)}</strong>
+          <strong style="color:${color};min-width:32px">${score.toFixed(1)}</strong>
           <div class="score-bar"><div class="score-bar-fill" style="width:${score*10}%;background:${color}"></div></div>
         </div>
       </td>
@@ -2553,7 +2555,7 @@ function renderTable(){
       <td style="font-size:11px;color:#777">${fecha}</td>
       <td style="white-space:nowrap">
         ${ok?`<button onclick='downloadDiplomaAdmin(${JSON.stringify(d).replace(/'/g,"&#39;")})' style='background:var(--red);color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;margin-bottom:4px'>⬇ Diploma</button>`:''}
-        ${(_currentAdmin&&_currentAdmin.isSuperAdmin)?`<br><button onclick="deleteRecord('${(d.dni||'')+'|'+(d.fin||'')}')" style='background:#444;color:#fff;border:none;border-radius:6px;padding:4px 9px;font-size:10px;cursor:pointer;margin-top:2px'>🗑 Borrar</button>`:''}
+        ${(_currentAdmin&&_currentAdmin.isSuperAdmin)?`<button onclick="deleteRecord('${(d.dni||'')+'|'+(d.fin||'')}')" style='background:#444;color:#fff;border:none;border-radius:6px;padding:4px 9px;font-size:10px;cursor:pointer;margin-top:2px;display:block'>🗑 Borrar</button>`:''}
       </td>`;
     tbody.appendChild(tr);
   });
@@ -2584,36 +2586,30 @@ async function deleteAllRecords(){
   gi('kpi-no').textContent='0'; gi('kpi-avg').textContent='-';
 }
 
-function exportCSV(){
-  const data = _adminData;
-  if(!data.length){ alert('No hay datos para exportar.'); return; }
-  const cols = ['nombre','dni','sede','mod1','mod2','mod3','mod4','final','resultado','correctas','total','minutos','inicio','fin'];
-  const heads = ['Nombre','DNI','Coordinador','Mod1','Mod2','Mod3','Mod4','Final','Resultado','Correctas','Total','Minutos','Inicio','Fin'];
-  const rows = [heads.join(','), ...data.map(d=>cols.map(c=>`"${(d[c]||'').toString().replace(/"/g,'""')}"`).join(','))];
-  const blob = new Blob([rows.join('\n')], {type:'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'SAB5_Evaluaciones_'+new Date().toISOString().slice(0,10)+'.csv';
-  a.click(); URL.revokeObjectURL(url);
-}
-
 function exportExcel(){
   const data = _adminData;
   if(!data.length){ alert('No hay datos para exportar.'); return; }
-  const heads = ['Nombre','DNI','Coordinador','Mod1','Mod2','Mod3','Mod4','Final','Resultado','Correctas','Total Preguntas','Minutos','Fecha'];
-  const cols  = ['nombre','dni','sede','mod1','mod2','mod3','mod4','final','resultado','correctas','total','minutos','fin'];
+  const heads = ['Nombre','DNI','Coordinador','Módulo','Nota','Resultado','Correctas','Total Preguntas','Minutos','Fecha'];
   const toTd = v => `<td>${v||''}</td>`;
-  const rows = data.map(d=>'<tr>'+cols.map(c=>{
-    if(c==='fin') return toTd(d.fin ? new Date(d.fin).toLocaleString('es-AR') : '-');
-    return toTd(d[c]||'');
-  }).join('')+'</tr>').join('');
+  const rows = data.map(d=>'<tr>'+[
+    d.nombre||'',
+    d.dni||'',
+    d.coordinador||d.sede||'',
+    d.modTitle||d.modulo||'',
+    (+d.final||0).toFixed(1),
+    d.resultado||'',
+    d.correctas||'',
+    d.total||'',
+    d.minutos||'',
+    d.fin ? new Date(d.fin).toLocaleString('es-AR') : '-'
+  ].map(toTd).join('')+'</tr>').join('');
   const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office"
     xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
     <head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets>
     <x:ExcelWorksheet><x:Name>Evaluaciones</x:Name><x:WorksheetOptions><x:DisplayGridlines/>
     </x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
     </head><body><table border="1">
-    <thead style="background:#cc0000;color:#fff"><tr>${heads.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+    <thead style="background:#b71c1c;color:#fff"><tr>${heads.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
     <tbody>${rows}</tbody></table></body></html>`;
   const blob = new Blob([html], {type:'application/vnd.ms-excel;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
@@ -2627,7 +2623,7 @@ function exportWord(){
   if(!data.length){ alert('No hay datos para exportar.'); return; }
   const fecha = new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'});
   const aprobados = data.filter(d=>d.resultado==='APROBADO').length;
-  const promedio  = data.length ? Math.round(data.reduce((s,d)=>s+(d.final||0),0)/data.length) : 0;
+  const promedio  = data.length ? Math.round(data.reduce((s,d)=>s+(+d.final||0),0)/data.length*10)/10 : 0;
   const filas = data.map(d=>{
     const f = d.fin ? new Date(d.fin).toLocaleString('es-AR') : '-';
     const color = d.resultado==='APROBADO' ? '#1b5e20' : '#b71c1c';
@@ -2635,7 +2631,8 @@ function exportWord(){
       <td style="padding:5px 8px">${d.nombre||'-'}</td>
       <td style="padding:5px 8px;text-align:center">${d.dni||'-'}</td>
       <td style="padding:5px 8px">${d.coordinador||d.sede||'-'}</td>
-      <td style="padding:5px 8px;text-align:center">${(+d.final||0).toFixed(1)}</td>
+      <td style="padding:5px 8px">${d.modTitle||d.modulo||'-'}</td>
+      <td style="padding:5px 8px;text-align:center;font-weight:bold">${(+d.final||0).toFixed(1)}</td>
       <td style="padding:5px 8px;text-align:center;color:${color};font-weight:bold">${d.resultado||'-'}</td>
       <td style="padding:5px 8px;font-size:11px">${f}</td>
     </tr>`;
@@ -2645,28 +2642,28 @@ function exportWord(){
     <head><meta charset="UTF-8"><title>SAB-5 Evaluaciones</title>
     <style>
       body{font-family:Arial,sans-serif;font-size:12pt}
-      h1{color:#cc0000;text-align:center;font-size:18pt}
+      h1{color:#b71c1c;text-align:center;font-size:18pt}
       .sub{text-align:center;color:#555;margin-bottom:20px}
       .kpi{display:inline-block;margin:0 16px;text-align:center}
-      .kpi b{display:block;font-size:22pt;color:#cc0000}
+      .kpi b{display:block;font-size:22pt;color:#b71c1c}
       table{border-collapse:collapse;width:100%;margin-top:20px}
-      th{background:#cc0000;color:#fff;padding:6px 8px;font-size:11pt}
+      th{background:#b71c1c;color:#fff;padding:6px 8px;font-size:11pt}
       tr:nth-child(even){background:#fafafa}
       td{border:1px solid #ddd;font-size:10pt}
     </style></head>
     <body>
-      <h1>SAB-5 | Registro de Evaluaciones</h1>
+      <h1>SAB-5 | Registro de Evaluaciones de Capacitación</h1>
       <p class="sub">Generado el ${fecha} &nbsp;|&nbsp; Total: ${data.length} registros</p>
       <div style="text-align:center;margin-bottom:16px">
         <span class="kpi"><b>${data.length}</b>Total</span>
         <span class="kpi"><b style="color:#2e7d32">${aprobados}</b>Aprobados</span>
         <span class="kpi"><b style="color:#b71c1c">${data.length-aprobados}</b>Desaprobados</span>
-        <span class="kpi"><b>${promedio}%</b>Promedio</span>
+        <span class="kpi"><b>${promedio}</b>Nota prom.</span>
       </div>
       <table border="1">
         <thead><tr>
-          <th>Nombre</th><th>DNI</th><th>Coordinador</th>
-          <th>Final(%)</th><th>Resultado</th><th>Fecha</th>
+          <th>Nombre</th><th>DNI</th><th>Coordinador</th><th>Módulo</th>
+          <th>Nota</th><th>Resultado</th><th>Fecha</th>
         </tr></thead>
         <tbody>${filas}</tbody>
       </table>
@@ -2676,6 +2673,68 @@ function exportWord(){
   const a = document.createElement('a');
   a.href = url; a.download = 'SAB5_Evaluaciones_'+new Date().toISOString().slice(0,10)+'.doc';
   a.click(); URL.revokeObjectURL(url);
+}
+
+function exportPDF(){
+  const data = _adminData;
+  if(!data.length){ alert('No hay datos para exportar.'); return; }
+  const fecha = new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const aprobados = data.filter(d=>d.resultado==='APROBADO').length;
+  const filas = data.map((d,i)=>{
+    const f = d.fin ? new Date(d.fin).toLocaleString('es-AR') : '-';
+    const ok = d.resultado==='APROBADO';
+    const bg = i%2===0 ? '#ffffff' : '#fafafa';
+    return `<tr style="background:${bg}">
+      <td>${d.nombre||'-'}</td>
+      <td>${d.dni||'-'}</td>
+      <td>${d.coordinador||d.sede||'-'}</td>
+      <td>${d.modTitle||d.modulo||'-'}</td>
+      <td style="text-align:center;font-weight:bold;color:${ok?'#1b5e20':'#b71c1c'}">${(+d.final||0).toFixed(1)}</td>
+      <td style="text-align:center;color:${ok?'#1b5e20':'#b71c1c'};font-weight:bold">${d.resultado||'-'}</td>
+      <td style="font-size:9pt">${f}</td>
+    </tr>`;
+  }).join('');
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <title>SAB-5 Evaluaciones</title>
+  <style>
+    @page{size:A4 landscape;margin:15mm}
+    body{font-family:Arial,sans-serif;font-size:10pt;color:#222}
+    .hdr{background:#b71c1c;color:#fff;padding:12px 16px;border-radius:4px;margin-bottom:10px}
+    .hdr h1{margin:0;font-size:16pt}
+    .hdr p{margin:4px 0 0;font-size:9pt;opacity:.85}
+    .kpis{display:flex;gap:16px;margin-bottom:12px}
+    .kpi{flex:1;background:#f5f5f5;border-radius:4px;padding:8px;text-align:center;border:1px solid #ddd}
+    .kpi b{display:block;font-size:16pt;color:#b71c1c}
+    .kpi span{font-size:8pt;color:#777}
+    table{width:100%;border-collapse:collapse;font-size:9pt}
+    th{background:#b71c1c;color:#fff;padding:6px 8px;text-align:left;font-size:9pt}
+    td{padding:5px 8px;border-bottom:1px solid #eee}
+    .footer{margin-top:12px;font-size:8pt;color:#999;text-align:center}
+    @media print{.no-print{display:none}}
+  </style></head><body>
+  <div class="hdr">
+    <h1>SAB-5 | Registro de Evaluaciones de Capacitación</h1>
+    <p>Generado el ${fecha} &nbsp;·&nbsp; Total: ${data.length} registros</p>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><b>${data.length}</b><span>Total</span></div>
+    <div class="kpi"><b style="color:#2e7d32">${aprobados}</b><span>Aprobados</span></div>
+    <div class="kpi"><b style="color:#b71c1c">${data.length-aprobados}</b><span>Desaprobados</span></div>
+    <div class="kpi"><b>${data.length?Math.round(data.reduce((s,d)=>s+(+d.final||0),0)/data.length*10)/10:0}</b><span>Nota promedio</span></div>
+  </div>
+  <table>
+    <thead><tr>
+      <th>Nombre</th><th>DNI</th><th>Coordinador</th><th>Módulo</th>
+      <th>Nota</th><th>Resultado</th><th>Fecha</th>
+    </tr></thead>
+    <tbody>${filas}</tbody>
+  </table>
+  <p class="footer">SAB-5 Seguridad Privada · Documento generado automáticamente · ${fecha}</p>
+  </body></html>`;
+  const win = window.open('','_blank','width=900,height=650');
+  win.document.write(html);
+  win.document.close();
+  setTimeout(()=>win.print(), 600);
 }
 
 // ─── SUPER ADMIN Y GESTIÓN DE USUARIOS ───────────────────────────
