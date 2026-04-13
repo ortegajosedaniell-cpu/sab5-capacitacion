@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>SAB-5 Cargando...</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#1a1a1a;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif}
+  .logo{color:#fff;font-size:52px;font-weight:900;letter-spacing:3px}
+  .logo span{color:#ef5350}
+  .sub{color:rgba(255,255,255,.6);font-size:13px;letter-spacing:4px;margin-top:6px}
+  .bar{width:160px;height:3px;background:#333;border-radius:3px;margin-top:32px;overflow:hidden}
+  .fill{height:100%;background:#ef5350;border-radius:3px;animation:load 1.2s ease-in-out infinite}
+  @keyframes load{0%{width:0}100%{width:100%}}
+</style>
+</head>
+<body>
+  <div class="logo">SAB<span>-5</span></div>
+  <div class="sub">CARGANDO...</div>
+  <div class="bar"><div class="fill"></div></div>
+<script>
+(function(){
+  // Desregistrar SW viejo
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(s){s.unregister();});});
+  }
+  // Limpiar caches
+  if(window.caches){caches.keys().then(function(k){k.forEach(function(c){caches.delete(c);});});}
+
+  var base = window.location.href.replace('go.html','');
+  fetch(base + 'version.json?nc=' + Date.now(), {cache:'no-store'})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var v = (d && d.v) ? d.v : Date.now();
+      window.location.replace(base + 'index.html?v=' + v);
+    })
+    .catch(function(){
+      window.location.replace(base + 'index.html?v=' + Date.now());
+    });
+})();
+</script>
+</body>
+</html>
