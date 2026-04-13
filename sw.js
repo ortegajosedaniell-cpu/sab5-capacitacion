@@ -1,38 +1,21 @@
-// ── SAB-5 Service Worker — Network First + Auto Update ──────────
-const CACHE_NAME = 'sab5-v20260413-202212';
-const URLS = ['./', './index.html'];
-
-// Al instalar: cachear recursos base
-self.addEventListener('install', e => {
+// SW v3 - DESHABILITADO: se auto-destruye, limpia todo y fuerza recarga
+self.addEventListener('install', function(e) {
+  self.skipWaiting();
+});
+self.addEventListener('activate', function(e) {
   e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(URLS))
-  );
-  self.skipWaiting(); // activar de inmediato sin esperar
-});
-
-// Al activar: borrar caches viejos
-self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    )
-  );
-  self.clients.claim(); // tomar control de todas las pestañas abiertas
-});
-
-// Fetch: Network First — siempre intenta la red, usa caché solo si falla
-self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
-  e.respondWith(
-    fetch(e.request)
-      .then(res => {
-        // Guardar copia fresca en caché
-        if (res.ok) {
-          const clone = res.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
-        }
-        return res;
-      })
-      .catch(() => caches.match(e.request))
+    caches.keys().then(function(keys) {
+      return Promise.all(keys.map(function(k) { return caches.delete(k); }));
+    }).then(function() {
+      return self.clients.claim();
+    }).then(function() {
+      return self.clients.matchAll({ type: 'window' }).then(function(clients) {
+        clients.forEach(function(c) {
+          c.postMessage({ type: 'SW_UPDATED' });
+        });
+      });
+    })
   );
 });
+// Sin cache: todas las requests van directo a la red
+self.addEventListener('fetch', function(e) {});
