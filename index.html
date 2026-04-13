@@ -1742,35 +1742,51 @@ function ejDEAStart(){_deaPlaced=[];_deaDone=false;ejDEARender();}
 function ejDEARender(){
   const el=document.getElementById('ej3-body');if(!el)return;
   el.innerHTML=`
-    <div class="dea-legend">Tocá las 2 zonas donde se colocan los parches del DEA.<br>Las zonas están marcadas con ◎</div>
+    <div class="dea-legend">Tocá las 2 zonas del cuerpo donde van los parches del DEA.<br><span style="color:#ffd54f">Las zonas pulsantes ◎ están sobre el cuerpo</span></div>
     <div class="dea-body-wrap">
-      <svg width="200" height="290" viewBox="0 0 200 290" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg id="dea-svg" width="220" height="360" viewBox="0 0 220 360" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">
         <!-- Cabeza -->
-        <ellipse cx="100" cy="32" rx="28" ry="30" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
+        <ellipse cx="110" cy="36" rx="30" ry="33" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
         <!-- Cuello -->
-        <rect x="88" y="60" width="24" height="18" rx="4" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
+        <rect x="97" y="66" width="26" height="20" rx="4" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
         <!-- Torso -->
-        <rect x="50" y="76" width="100" height="130" rx="16" fill="#4a6a7a" stroke="#90a4ae" stroke-width="2"/>
+        <rect x="55" y="84" width="110" height="140" rx="16" fill="#4a6a7a" stroke="#90a4ae" stroke-width="2"/>
         <!-- Brazos -->
-        <rect x="14" y="80" width="34" height="100" rx="14" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
-        <rect x="152" y="80" width="34" height="100" rx="14" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
+        <rect x="16" y="88" width="37" height="110" rx="14" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
+        <rect x="167" y="88" width="37" height="110" rx="14" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
         <!-- Piernas -->
-        <rect x="52" y="204" width="42" height="80" rx="14" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
-        <rect x="106" y="204" width="42" height="80" rx="14" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
-        <!-- Esternon -->
-        <line x1="100" y1="80" x2="100" y2="200" stroke="#78909c" stroke-width="1.5" stroke-dasharray="4,4"/>
-        <!-- Etiqueta zonas -->
-        <text x="62" y="100" fill="#90caf9" font-size="9" font-weight="bold">DERECHO</text>
-        <text x="120" y="100" fill="#90caf9" font-size="9" font-weight="bold">IZQUIERDO</text>
+        <rect x="57" y="222" width="45" height="120" rx="14" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
+        <rect x="118" y="222" width="45" height="120" rx="14" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
+        <!-- Línea esternón -->
+        <line x1="110" y1="88" x2="110" y2="220" stroke="#78909c" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <!-- Etiquetas lados -->
+        <text x="82" y="100" fill="#90caf9" font-size="9" font-weight="bold" text-anchor="middle">DERECHO</text>
+        <text x="138" y="100" fill="#90caf9" font-size="9" font-weight="bold" text-anchor="middle">IZQUIERDO</text>
+
+        <!-- ZONA 0: Bajo clavícula derecha (CORRECTO) — torso lado derecho arriba -->
+        <g id="dz0" class="dea-zone" onclick="ejDEAZone(0)">
+          <circle cx="82" cy="118" r="24"/>
+          <text x="82" y="118">◎</text>
+        </g>
+
+        <!-- ZONA 1: Costado izquierdo bajo axila (CORRECTO) — torso lado izquierdo medio -->
+        <g id="dz1" class="dea-zone" onclick="ejDEAZone(1)">
+          <circle cx="152" cy="165" r="24"/>
+          <text x="152" y="165">◎</text>
+        </g>
+
+        <!-- ZONA 2: Centro esternón (INCORRECTO) — centro torso -->
+        <g id="dz2" class="dea-zone" onclick="ejDEAZone(2)">
+          <circle cx="110" cy="160" r="24"/>
+          <text x="110" y="160">◎</text>
+        </g>
+
+        <!-- ZONA 3: Abdomen (INCORRECTO) — torso abajo centro -->
+        <g id="dz3" class="dea-zone" onclick="ejDEAZone(3)">
+          <circle cx="110" cy="210" r="22"/>
+          <text x="110" y="210">◎</text>
+        </g>
       </svg>
-      <!-- Zona 0: Bajo clavícula derecha (correcto) -->
-      <button class="dea-zone-btn" id="dz0" style="width:48px;height:48px;top:88px;left:38px" onclick="ejDEAZone(0)" title="Bajo clavícula derecha">◎</button>
-      <!-- Zona 1: Costado izquierdo bajo axila (correcto) -->
-      <button class="dea-zone-btn" id="dz1" style="width:48px;height:48px;top:140px;right:10px" onclick="ejDEAZone(1)" title="Costado izquierdo bajo axila">◎</button>
-      <!-- Zona 2: Centro del esternón (incorrecto) -->
-      <button class="dea-zone-btn" id="dz2" style="width:48px;height:48px;top:140px;left:76px" onclick="ejDEAZone(2)" title="Centro del pecho">◎</button>
-      <!-- Zona 3: Abdomen izquierdo (incorrecto) -->
-      <button class="dea-zone-btn" id="dz3" style="width:48px;height:48px;top:192px;right:36px" onclick="ejDEAZone(3)" title="Abdomen izquierdo">◎</button>
     </div>
     <div id="ej3-fb" class="ej-feedback" style="display:none"></div>`;
 }
