@@ -2068,9 +2068,8 @@ function go(id){
 // ─── LOGIN ───────────────────────────────────────────────────────
 async function doLogin(){
   const n=v('i-nombre'), d=v('i-dni');
-  const coord = gi('i-coord').value;
   const modId = parseInt(gi('i-modulo').value)||0;
-  if(!n||!d||!coord||!modId){ alert('Completá todos los campos para continuar.'); return; }
+  if(!n||!d||!modId){ alert('Completá todos los campos para continuar.'); return; }
 
   // ── Verificar si el DNI ya aprobó este módulo específico ──
   const btnLogin = gi('btn-login');
