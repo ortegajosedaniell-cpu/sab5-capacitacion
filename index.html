@@ -4012,30 +4012,38 @@ function buildDots(containerId, count, activeIdx, answers, offset=0){
 }
 </script>
 <script>
-// ── AUTO-UPDATE: Service Worker + versión ────────────────────────
-const APP_VERSION = '20260413-135539';
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').then(reg => {
-    // Cuando hay una nueva versión instalada, recargar automáticamente
-    reg.addEventListener('updatefound', () => {
-      const newSW = reg.installing;
-      newSW.addEventListener('statechange', () => {
-        if (newSW.state === 'activated') {
-          // Nueva versión activa → recargar silenciosamente
-          window.location.reload();
-        }
-      });
+// ── AUTO-UPDATE: chequeo de versión al abrir ─────────────────────
+(function(){
+  // Desregistrar cualquier Service Worker viejo que pueda bloquear updates
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(regs => {
+      regs.forEach(r => r.unregister());
     });
-    // Revisar si hay update cada vez que el usuario abre la app
-    reg.update();
-  });
+  }
 
-  // Si el SW toma control (primera vez o update), recargar para aplicar cambios
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    window.location.reload();
-  });
-}
+  // URL del archivo de versión en GitHub (siempre fresco, sin caché)
+  var VER_URL = 'https://raw.githubusercontent.com/ortegajosedaniell-cpu/sab5-capacitacion/main/version.json?nc=' + Date.now();
+  var LOCAL_KEY = 'sab5_app_version';
+
+  fetch(VER_URL, { cache: 'no-store' })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      var remota = data && data.v;
+      var local  = localStorage.getItem(LOCAL_KEY);
+      if (!remota) return;
+      if (!local) {
+        // Primera vez: guardar versión y seguir
+        localStorage.setItem(LOCAL_KEY, remota);
+      } else if (local !== remota) {
+        // Versión nueva: guardar y recargar limpio
+        localStorage.setItem(LOCAL_KEY, remota);
+        window.location.reload(true);
+      }
+    })
+    .catch(function(){
+      // Sin internet: no hacer nada, la app sigue funcionando offline
+    });
+})();
 </script>
 </body>
 </html>
