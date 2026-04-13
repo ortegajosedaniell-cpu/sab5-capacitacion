@@ -1792,28 +1792,29 @@ function ejDEARender(){
 }
 function ejDEAZone(z){
   if(_deaDone) return;
-  const btn=document.getElementById('dz'+z);
-  if(!btn || _deaPlaced.includes(z)) return;
+  const zone=document.getElementById('dz'+z);
+  if(!zone || _deaPlaced.includes(z)) return;
   const correct=[0,1];
   const isOk=correct.includes(z);
   _deaPlaced.push(z);
-  btn.classList.add(isOk?'placed-ok':'placed-err');
-  btn.classList.add('disabled');
-  btn.disabled=true;
-  btn.textContent=isOk?'✓':'✗';
+  zone.classList.add(isOk?'ok':'err');
+  zone.classList.add('disabled');
+  // Cambiar el texto del símbolo en el SVG
+  const txt=zone.querySelector('text');
+  if(txt) txt.textContent=isOk?'✓':'✗';
   if(_deaPlaced.length===2){
     _deaDone=true;
-    document.querySelectorAll('.dea-zone-btn').forEach(b=>{b.disabled=true;b.classList.add('disabled');});
-    const allOk=_deaPlaced.every(z=>correct.includes(z));
+    document.querySelectorAll('.dea-zone').forEach(g=>{g.classList.add('disabled'); g.style.pointerEvents='none';});
+    const allOk=_deaPlaced.every(x=>correct.includes(x));
     const fb=document.getElementById('ej3-fb');
     if(!fb)return;
     fb.style.display='block';
     if(allOk){
       fb.className='ej-feedback ok';
-      fb.innerHTML='✅ ¡Perfecto! Posición correcta: <strong>bajo clavícula derecha</strong> y <strong>costado izquierdo bajo axila</strong>. La descarga pasa por el corazón entre los dos parches.';
+      fb.innerHTML='✅ ¡Perfecto! Posición correcta: <strong>bajo clavícula derecha</strong> y <strong>costado izquierdo bajo axila</strong>. La descarga eléctrica atraviesa el corazón entre los dos parches.';
     } else {
       fb.className='ej-feedback err';
-      fb.innerHTML='❌ Posición incorrecta. Los parches van: uno <strong>bajo la clavícula derecha</strong> (arriba derecho) y otro en el <strong>costado izquierdo bajo la axila</strong>. El centro del pecho y el abdomen no son posiciones correctas.';
+      fb.innerHTML='❌ Posición incorrecta. Los parches van: uno <strong>bajo la clavícula derecha</strong> (arriba a la derecha del pecho) y otro en el <strong>costado izquierdo bajo la axila</strong>. El centro del pecho y el abdomen no son posiciones correctas.';
     }
     const next=document.createElement('button');
     next.className='ej-reiniciar';next.textContent='🔄 Volver a intentar';
