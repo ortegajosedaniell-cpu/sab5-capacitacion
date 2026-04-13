@@ -432,6 +432,14 @@
     .ext-opt:disabled{cursor:default}
     /* DEA torso */
     .dea-body-wrap{display:flex;justify-content:center;margin-bottom:12px;position:relative}
+    .dea-zone{cursor:pointer;transition:all .2s;}
+    .dea-zone circle{fill:rgba(255,255,255,.08);stroke:rgba(255,255,255,.5);stroke-width:2.5;stroke-dasharray:5,3;transition:all .2s;}
+    .dea-zone:hover circle{fill:rgba(255,213,79,.2);stroke:#ffd54f;stroke-dasharray:none;}
+    .dea-zone.ok circle{fill:rgba(76,175,80,.45);stroke:#4caf50;stroke-dasharray:none;stroke-width:3;}
+    .dea-zone.err circle{fill:rgba(244,67,54,.35);stroke:#f44336;stroke-dasharray:none;stroke-width:3;}
+    .dea-zone.disabled{cursor:default;}
+    .dea-zone text{font-size:14px;text-anchor:middle;dominant-baseline:central;fill:rgba(255,255,255,.7);pointer-events:none;}
+    .dea-zone.ok text,.dea-zone.err text{fill:#fff;font-size:16px;}
     .dea-zone-btn{position:absolute;border-radius:50%;border:3px dashed rgba(255,255,255,.5);background:rgba(255,255,255,.08);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .2s;color:rgba(255,255,255,.6);font-weight:900}
     .dea-zone-btn:hover{border-color:#ffd54f;color:#ffd54f;background:rgba(255,213,79,.1)}
     .dea-zone-btn.placed-ok{border-style:solid;border-color:#4caf50;background:rgba(76,175,80,.35);color:#fff}
