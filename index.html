@@ -4015,37 +4015,53 @@ function buildDots(containerId, count, activeIdx, answers, offset=0){
 }
 </script>
 <script>
-// ── AUTO-UPDATE: chequeo de versión al abrir ─────────────────────
+// ── AUTO-UPDATE: actualización automática garantizada ─────────────
 (function(){
-  // Desregistrar cualquier Service Worker viejo que pueda bloquear updates
+  // 1. Desregistrar TODO service worker viejo (era la causa del problema en Chrome)
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(regs => {
-      regs.forEach(r => r.unregister());
+    navigator.serviceWorker.getRegistrations().then(function(regs){
+      regs.forEach(function(r){ r.unregister(); });
     });
+    // Limpiar también los caches del SW
+    if (window.caches) {
+      caches.keys().then(function(keys){
+        keys.forEach(function(k){ caches.delete(k); });
+      });
+    }
   }
 
-  // URL del archivo de versión en GitHub (siempre fresco, sin caché)
-  var VER_URL = 'https://raw.githubusercontent.com/ortegajosedaniell-cpu/sab5-capacitacion/main/version.json?nc=' + Date.now();
+  var VER_URL  = 'https://raw.githubusercontent.com/ortegajosedaniell-cpu/sab5-capacitacion/main/version.json';
   var LOCAL_KEY = 'sab5_app_version';
 
-  fetch(VER_URL, { cache: 'no-store' })
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      var remota = data && data.v;
-      var local  = localStorage.getItem(LOCAL_KEY);
-      if (!remota) return;
-      if (!local) {
-        // Primera vez: guardar versión y seguir
-        localStorage.setItem(LOCAL_KEY, remota);
-      } else if (local !== remota) {
-        // Versión nueva: guardar y recargar limpio
-        localStorage.setItem(LOCAL_KEY, remota);
-        window.location.reload(true);
-      }
-    })
-    .catch(function(){
-      // Sin internet: no hacer nada, la app sigue funcionando offline
-    });
+  function checkVersion() {
+    fetch(VER_URL + '?nc=' + Date.now(), { cache: 'no-store' })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        var remota = data && data.v;
+        if (!remota) return;
+        var local = localStorage.getItem(LOCAL_KEY);
+        if (!local) {
+          localStorage.setItem(LOCAL_KEY, remota);
+        } else if (local !== remota) {
+          // Versión nueva detectada: redirigir con ?v= para romper caché de Chrome
+          localStorage.setItem(LOCAL_KEY, remota);
+          window.location.replace(window.location.pathname + '?v=' + remota);
+        }
+      })
+      .catch(function(){});
+  }
+
+  // Chequear al cargar
+  checkVersion();
+
+  // Chequear cada 30 segundos (para que se actualice mientras el usuario usa la app)
+  setInterval(checkVersion, 30000);
+
+  // Chequear cuando el usuario vuelve a poner el foco en la ventana
+  document.addEventListener('visibilitychange', function(){
+    if (document.visibilityState === 'visible') checkVersion();
+  });
+  window.addEventListener('focus', checkVersion);
 })();
 </script>
 </body>
