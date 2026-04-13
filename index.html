@@ -396,6 +396,57 @@
       #s-admin{max-width:100%!important}
       .kpi-grid{grid-template-columns:repeat(4,1fr)}
     }
+    /* ══ EJERCICIOS DIDÁCTICOS ══ */
+    .ej-card{background:linear-gradient(135deg,#0d1b4b 0%,#1a3066 100%);border-radius:16px;padding:20px 16px;margin:16px 0;box-shadow:0 4px 18px rgba(0,0,0,0.35)}
+    .ej-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:800;color:#90caf9;letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px}
+    .ej-title{font-size:16px;font-weight:900;color:#fff;margin-bottom:6px}
+    .ej-desc{font-size:13px;color:#b0c4de;margin-bottom:14px;line-height:1.5}
+    .ej-progress{font-size:12px;color:#90caf9;text-align:center;margin-bottom:8px;font-weight:700;letter-spacing:.3px}
+    .ej-scenario{background:rgba(255,255,255,.09);border-radius:10px;padding:14px;margin-bottom:14px;font-size:14px;color:#fff;font-weight:600;line-height:1.5;text-align:center;min-height:56px;display:flex;align-items:center;justify-content:center}
+    .ej-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .ej-btn{border:none;border-radius:10px;padding:11px 22px;font-size:13px;font-weight:800;cursor:pointer;transition:transform .1s,opacity .1s;letter-spacing:.2px}
+    .ej-btn:active{transform:scale(.95)}
+    .ej-btn.verde{background:#2e7d32;color:#fff}
+    .ej-btn.rojo{background:#b71c1c;color:#fff}
+    .ej-btn.azul{background:#1565c0;color:#fff}
+    .ej-btn:disabled{opacity:.45;cursor:default;transform:none}
+    .ej-feedback{border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;text-align:center;line-height:1.4}
+    .ej-feedback.ok{background:rgba(46,125,50,.35);color:#a5d6a7}
+    .ej-feedback.err{background:rgba(183,28,28,.35);color:#ef9a9a}
+    .ej-next{background:rgba(255,255,255,.14);color:#fff;border:2px solid rgba(255,255,255,.2);border-radius:10px;padding:10px 0;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;width:100%;letter-spacing:.2px;transition:background .15s}
+    .ej-next:hover{background:rgba(255,255,255,.22)}
+    .ej-score{font-size:18px;font-weight:900;color:#fff;text-align:center;padding:10px 0}
+    .ej-score span{color:#ffd54f;font-size:26px}
+    .ej-reiniciar{background:#1565c0;color:#fff;border:none;border-radius:10px;padding:10px 0;font-size:13px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
+    /* extintor match */
+    .ext-fire-ico{font-size:44px;text-align:center;margin-bottom:4px}
+    .ext-fire-lbl{font-size:13px;font-weight:800;color:#ffd54f;text-align:center;margin-bottom:14px}
+    .ext-opts{display:flex;flex-direction:column;gap:9px}
+    .ext-opt{background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.18);border-radius:10px;padding:12px 16px;font-size:13px;color:#fff;font-weight:600;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;line-height:1.3}
+    .ext-opt:hover:not(:disabled){border-color:#90caf9;background:rgba(144,202,249,.12)}
+    .ext-opt.correct{border-color:#4caf50!important;background:rgba(76,175,80,.25)!important;color:#a5d6a7}
+    .ext-opt.wrong{border-color:#f44336!important;background:rgba(244,67,54,.2)!important;color:#ef9a9a}
+    .ext-opt:disabled{cursor:default}
+    /* DEA torso */
+    .dea-body-wrap{display:flex;justify-content:center;margin-bottom:12px;position:relative}
+    .dea-zone-btn{position:absolute;border-radius:50%;border:3px dashed rgba(255,255,255,.5);background:rgba(255,255,255,.08);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .2s;color:rgba(255,255,255,.6);font-weight:900}
+    .dea-zone-btn:hover{border-color:#ffd54f;color:#ffd54f;background:rgba(255,213,79,.1)}
+    .dea-zone-btn.placed-ok{border-style:solid;border-color:#4caf50;background:rgba(76,175,80,.35);color:#fff}
+    .dea-zone-btn.placed-err{border-style:solid;border-color:#f44336;background:rgba(244,67,54,.3);color:#fff}
+    .dea-zone-btn.disabled{cursor:default;border-style:solid;border-color:rgba(255,255,255,.2)}
+    .dea-legend{font-size:11px;color:#b0c4de;text-align:center;margin-bottom:10px;line-height:1.5}
+    /* alarm priority */
+    .alarm-pool{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+    .alarm-item{background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.18);border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .15s,background .15s;-webkit-user-select:none;user-select:none}
+    .alarm-item:hover{border-color:#90caf9;background:rgba(144,202,249,.12)}
+    .alarm-item.prio-1{border-color:#f44336;background:rgba(244,67,54,.18)}
+    .alarm-item.prio-2{border-color:#ff9800;background:rgba(255,152,0,.15)}
+    .alarm-item.prio-3{border-color:#4caf50;background:rgba(76,175,80,.15)}
+    .alarm-item.disabled{cursor:default}
+    .alarm-prio-badge{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0}
+    .alarm-ico{font-size:22px;flex-shrink:0}
+    .alarm-txt{font-size:13px;color:#fff;font-weight:600;line-height:1.3;flex:1}
+    .alarm-inst{font-size:12px;color:#90caf9;text-align:center;margin-bottom:10px;font-weight:600}
   </style>
 </head>
 <body>
@@ -1046,6 +1097,13 @@ function mod1(){ return `
 
 <div class="alert-box"><span class="alert-ico">⚠️</span>
 <div class="alert-txt"><strong>Regla de oro:</strong> Ante cualquier duda, la respuesta siempre pasa por el coordinador. Documentar todo en el libro. Una orden irregular de un superior no te protege — te responsabiliza si la cumplís.</div></div>
+
+<div class="ej-card">
+  <div class="ej-badge">🎮 Ejercicio práctico</div>
+  <div class="ej-title">¿Legal o Ilegal?</div>
+  <div class="ej-desc">Leé cada situación y decidí si el vigilador actuó dentro de sus facultades legales. 6 situaciones — ponés a prueba lo que acabás de aprender.</div>
+  <div id="ej1-body"><button class="ej-btn azul" onclick="ejLegal1Start()" style="width:100%;padding:14px">▶ Iniciar ejercicio</button></div>
+</div>
 `}
 
 function mod2(){ return `
@@ -1096,6 +1154,13 @@ function mod2(){ return `
 <div class="estep"><div class="enum">1</div><div class="etxt"><h4>Rol "Barredor de piso"</h4><p>Si tu rol en el plan de evacuación es barredor, tu función es <strong>recorrer sistemáticamente el piso asignado</strong> para asegurarte de que no quede nadie. Salís último.</p></div></div>
 <div class="estep"><div class="enum">2</div><div class="etxt"><h4>En el punto de encuentro</h4><p>Controlá que nadie regrese al edificio, ayudá a contabilizar evacuados y reportá a bomberos si falta alguien.</p></div></div>
 <div class="estep"><div class="enum">3</div><div class="etxt"><h4>Si falta una persona en el conteo</h4><p>Reportá de inmediato a bomberos con descripción de la persona y su última ubicación conocida. <strong>Nadie puede reingresar sin equipo de protección</strong> — ni vos.</p></div></div>
+</div>
+
+<div class="ej-card">
+  <div class="ej-badge">🎮 Ejercicio práctico</div>
+  <div class="ej-title">¿Qué extintor usás?</div>
+  <div class="ej-desc">Se te presenta un tipo de incendio o situación. Elegí la acción correcta. 4 rondas para poner a prueba tu conocimiento de extintores y clases de fuego.</div>
+  <div id="ej2-body"><button class="ej-btn azul" onclick="ejExt2Start()" style="width:100%;padding:14px">▶ Iniciar ejercicio</button></div>
 </div>
 `}
 
@@ -1154,6 +1219,13 @@ function mod3(){ return `
 
 <div class="alert-box" style="background:#fce4ec;border-left-color:var(--red)"><span class="alert-ico">❤️</span>
 <div class="alert-txt"><strong>Regla de oro:</strong> Ante cualquier emergencia médica, llamá al 107/911 primero. El operador te guía en tiempo real. Nunca estás solo si llamás a tiempo.</div></div>
+
+<div class="ej-card">
+  <div class="ej-badge">🎮 Ejercicio práctico</div>
+  <div class="ej-title">Colocá los parches del DEA</div>
+  <div class="ej-desc">Se te muestra un cuerpo humano. Tocá las 2 zonas correctas donde van los parches del desfibrilador. Posición incorrecta puede reducir la efectividad de la descarga.</div>
+  <div id="ej3-body"><button class="ej-btn azul" onclick="ejDEAStart()" style="width:100%;padding:14px">▶ Iniciar ejercicio</button></div>
+</div>
 `}
 
 function mod4(){ return `
@@ -1208,6 +1280,13 @@ function mod4(){ return `
 
 <div class="alert-box"><span class="alert-ico">⚠️</span>
 <div class="alert-txt"><strong>Recordá:</strong> El monitorista nunca actúa solo en el campo. Su herramienta es la comunicación y la coordinación. Una detección temprana desde la central vale más que diez intervenciones tardías.</div></div>
+
+<div class="ej-card">
+  <div class="ej-badge">🎮 Ejercicio práctico</div>
+  <div class="ej-title">Ordená las alarmas por prioridad</div>
+  <div class="ej-desc">Suenan 3 alarmas simultáneamente. Tocá cada una para asignarle prioridad 1 (más urgente), 2 y 3. Decidís en qué orden responder.</div>
+  <div id="ej4-body"><button class="ej-btn azul" onclick="ejAlarma4Start()" style="width:100%;padding:14px">▶ Iniciar ejercicio</button></div>
+</div>
 `}
 
 // ─── (MOD5 eliminado — sistema de 4 módulos fijos) ───────────────
@@ -1548,6 +1627,226 @@ function initMod5(tipo){
   MODS.push({ id:5, icon:data.icon, title:data.title, desc:data.desc, html:data.html });
   // Registrar las preguntas en QUIZZES
   QUIZZES[5] = data.qs;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// EJERCICIOS DIDÁCTICOS INTERACTIVOS — uno por módulo
+// ══════════════════════════════════════════════════════════════════
+
+// ── MOD1: "¿Legal o Ilegal?" ────────────────────────────────────
+const _EJ1 = [
+  {s:'Retenés físicamente a un sospechoso sin haberlo visto cometer ningún delito.',r:'ilegal',exp:'Solo podés retener a alguien en caso de flagrante delito. Sin verlo cometer el acto, la retención es ilegal.'},
+  {s:'Invitás a alguien a mostrar su bolso voluntariamente. Se niega y lo dejás pasar sin obstruirlo.',r:'legal',exp:'Correcto. La exhibición de bolsos es siempre voluntaria. Si se niega, no podés obligarlo.'},
+  {s:'Te identificás como "agente de civil" ante un visitante para que coopere.',r:'ilegal',exp:'Identificarse como agente es un delito para el personal de seguridad privada. Solo podés identificarte como vigilador.'},
+  {s:'Encontrás una puerta entreabierta, la verificás, la cerrás y anotás hora exacta y novedad en el libro.',r:'legal',exp:'Procedimiento correcto. Documentar y avisar al coordinador es la acción adecuada.'},
+  {s:'El coordinador te pide que dejes pasar un camión sin registrarlo. Lo dejás pasar.',r:'ilegal',exp:'Una instrucción irregular no te exime de responsabilidad. Debés desobedecer, registrar el camión normalmente y documentar la orden recibida.'},
+  {s:'Pedís al visitante que espere y llamás al gerente internamente para verificar si lo estaba esperando.',r:'legal',exp:'Correcto. Verificar la visita antes de autorizar el ingreso es el procedimiento correcto.'},
+];
+let _ej1Idx=0, _ej1Score=0;
+
+function ejLegal1Start(){
+  _ej1Idx=0; _ej1Score=0;
+  ejLegal1Render();
+}
+function ejLegal1Render(){
+  const el=document.getElementById('ej1-body');
+  if(!el)return;
+  if(_ej1Idx>=_EJ1.length){
+    const pct=Math.round(_ej1Score/_EJ1.length*100);
+    el.innerHTML=`<div class="ej-score">Resultado: <span>${_ej1Score}/${_EJ1.length}</span> correctas (${pct}%)</div>
+      <div class="ej-feedback ${pct>=70?'ok':'err'}" style="display:block;margin-top:6px">${pct>=70?'✅ Buen manejo de las facultades del vigilador.':'⚠️ Repasá las facultades y límites legales del vigilador.'}</div>
+      <button class="ej-reiniciar" onclick="ejLegal1Start()">🔄 Volver a intentar</button>`;
+    return;
+  }
+  const q=_EJ1[_ej1Idx];
+  el.innerHTML=`<div class="ej-progress">Situación ${_ej1Idx+1} de ${_EJ1.length} — Puntaje: ${_ej1Score}</div>
+    <div class="ej-scenario">"${q.s}"</div>
+    <div class="ej-btns">
+      <button class="ej-btn verde" onclick="ejLegal1Ans('legal')">✅ Legal</button>
+      <button class="ej-btn rojo" onclick="ejLegal1Ans('ilegal')">❌ Ilegal</button>
+    </div>
+    <div id="ej1-fb" class="ej-feedback" style="display:none"></div>`;
+}
+function ejLegal1Ans(resp){
+  const q=_EJ1[_ej1Idx];
+  const ok=resp===q.r;
+  if(ok) _ej1Score++;
+  const fb=document.getElementById('ej1-fb');
+  if(!fb)return;
+  document.querySelectorAll('#ej1-body .ej-btn').forEach(b=>b.disabled=true);
+  fb.className='ej-feedback '+(ok?'ok':'err');
+  fb.style.display='block';
+  fb.innerHTML=(ok?'✅ Correcto — ':'❌ Incorrecto — ')+q.exp;
+  const next=document.createElement('button');
+  next.className='ej-next';
+  next.textContent=_ej1Idx+1<_EJ1.length?'Siguiente situación →':'Ver resultado';
+  next.onclick=()=>{_ej1Idx++;ejLegal1Render();};
+  fb.after(next);
+}
+
+// ── MOD2: "¿Qué extintor usás?" ────────────────────────────────
+const _EJ2=[
+  {ico:'⚡',lbl:'Incendio en un TABLERO ELÉCTRICO activo',opts:[{t:'💧 Agua',ok:false,exp:'El agua conduce electricidad — podría electrocutarte.'},{t:'❄️ CO₂',ok:true,exp:'Correcto. CO₂ o Polvo BC son los únicos seguros en incendios eléctricos activos.'},{t:'🌿 Polvo de madera',ok:false,exp:'No existe tal extintor. La opción correcta es CO₂ o Polvo BC.'}]},
+  {ico:'📦',lbl:'Fuego Clase A — papel y cartón en un depósito',opts:[{t:'❄️ CO₂',ok:false,exp:'El CO₂ no es eficaz sobre materiales sólidos: no apaga la brasa. Usá Polvo ABC.'},{t:'🧯 Polvo ABC',ok:true,exp:'Correcto. Polvo ABC es el indicado para fuegos Clase A (sólidos).'},{t:'🧂 Sal industrial',ok:false,exp:'La sal industrial se usa para Clase D (metales). Para papel usá Polvo ABC.'}]},
+  {ico:'⛽',lbl:'Derrame de NAFTA encendida (Clase B)',opts:[{t:'💧 Agua',ok:false,exp:'Nunca agua en líquidos inflamables: esparce el líquido encendido y agrava el incendio.'},{t:'🧯 Polvo ABC',ok:true,exp:'Correcto. Polvo ABC apaga fuegos Clase B (líquidos inflamables).'},{t:'🧻 Papel absorbente',ok:false,exp:'No es un agente extintor. La correcta es Polvo ABC o CO₂.'}]},
+  {ico:'🔴',lbl:'El manómetro del extintor marca zona ROJA (presión baja)',opts:[{t:'Usarlo igual si el fuego es chico',ok:false,exp:'Incorrecto. Un extintor en zona roja no tiene presión suficiente y puede fallar cuando más lo necesitás.'},{t:'Retirarlo, marcarlo "fuera de servicio" y reportarlo',ok:true,exp:'Correcto. Un extintor sin presión es inservible. Retirarlo de inmediato y reportar al coordinador.'},{t:'Agitarlo para redistribuir el agente',ok:false,exp:'Agitar no recupera la presión. Debe ser recargado por un técnico habilitado.'}]},
+];
+let _ej2Idx=0, _ej2Score=0;
+function ejExt2Start(){_ej2Idx=0;_ej2Score=0;ejExt2Render();}
+function ejExt2Render(){
+  const el=document.getElementById('ej2-body');if(!el)return;
+  if(_ej2Idx>=_EJ2.length){
+    const pct=Math.round(_ej2Score/_EJ2.length*100);
+    el.innerHTML=`<div class="ej-score">Resultado: <span>${_ej2Score}/${_EJ2.length}</span> correctas (${pct}%)</div>
+      <div class="ej-feedback ${pct>=75?'ok':'err'}" style="display:block;margin-top:6px">${pct>=75?'✅ Buen conocimiento de extintores y clases de fuego.':'⚠️ Repasá las clases de fuego y los extintores correspondientes.'}</div>
+      <button class="ej-reiniciar" onclick="ejExt2Start()">🔄 Volver a intentar</button>`;
+    return;
+  }
+  const q=_EJ2[_ej2Idx];
+  el.innerHTML=`<div class="ej-progress">Situación ${_ej2Idx+1} de ${_EJ2.length} — Puntaje: ${_ej2Score}</div>
+    <div class="ext-fire-ico">${q.ico}</div>
+    <div class="ext-fire-lbl">${q.lbl}</div>
+    <div class="ext-opts">${q.opts.map((o,i)=>`<button class="ext-opt" onclick="ejExt2Ans(${i})">${o.t}</button>`).join('')}</div>
+    <div id="ej2-fb" class="ej-feedback" style="display:none"></div>`;
+}
+function ejExt2Ans(i){
+  const q=_EJ2[_ej2Idx];
+  const opt=q.opts[i];
+  if(opt.ok) _ej2Score++;
+  document.querySelectorAll('#ej2-body .ext-opt').forEach((b,j)=>{
+    b.disabled=true;
+    if(j===i) b.classList.add(opt.ok?'correct':'wrong');
+    else if(q.opts[j].ok) b.classList.add('correct');
+  });
+  const fb=document.getElementById('ej2-fb');
+  if(!fb)return;
+  fb.className='ej-feedback '+(opt.ok?'ok':'err');
+  fb.style.display='block';
+  fb.innerHTML=(opt.ok?'✅ Correcto — ':'❌ Incorrecto — ')+opt.exp;
+  const next=document.createElement('button');
+  next.className='ej-next';
+  next.textContent=_ej2Idx+1<_EJ2.length?'Siguiente →':'Ver resultado';
+  next.onclick=()=>{_ej2Idx++;ejExt2Render();};
+  fb.after(next);
+}
+
+// ── MOD3: "Colocá los parches del DEA" ──────────────────────────
+// Zonas en el SVG torso: 0=ClaviculaDerecha(correcto), 1=CostadoIzq(correcto), 2=CentroEsternon(incorrecto), 3=Abdomen(incorrecto)
+let _deaPlaced=[], _deaDone=false;
+function ejDEAStart(){_deaPlaced=[];_deaDone=false;ejDEARender();}
+function ejDEARender(){
+  const el=document.getElementById('ej3-body');if(!el)return;
+  el.innerHTML=`
+    <div class="dea-legend">Tocá las 2 zonas donde se colocan los parches del DEA.<br>Las zonas están marcadas con ◎</div>
+    <div class="dea-body-wrap">
+      <svg width="200" height="290" viewBox="0 0 200 290" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Cabeza -->
+        <ellipse cx="100" cy="32" rx="28" ry="30" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
+        <!-- Cuello -->
+        <rect x="88" y="60" width="24" height="18" rx="4" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
+        <!-- Torso -->
+        <rect x="50" y="76" width="100" height="130" rx="16" fill="#4a6a7a" stroke="#90a4ae" stroke-width="2"/>
+        <!-- Brazos -->
+        <rect x="14" y="80" width="34" height="100" rx="14" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
+        <rect x="152" y="80" width="34" height="100" rx="14" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
+        <!-- Piernas -->
+        <rect x="52" y="204" width="42" height="80" rx="14" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
+        <rect x="106" y="204" width="42" height="80" rx="14" fill="#5d7b8a" stroke="#90a4ae" stroke-width="2"/>
+        <!-- Esternon -->
+        <line x1="100" y1="80" x2="100" y2="200" stroke="#78909c" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <!-- Etiqueta zonas -->
+        <text x="62" y="100" fill="#90caf9" font-size="9" font-weight="bold">DERECHO</text>
+        <text x="120" y="100" fill="#90caf9" font-size="9" font-weight="bold">IZQUIERDO</text>
+      </svg>
+      <!-- Zona 0: Bajo clavícula derecha (correcto) -->
+      <button class="dea-zone-btn" id="dz0" style="width:48px;height:48px;top:88px;left:38px" onclick="ejDEAZone(0)" title="Bajo clavícula derecha">◎</button>
+      <!-- Zona 1: Costado izquierdo bajo axila (correcto) -->
+      <button class="dea-zone-btn" id="dz1" style="width:48px;height:48px;top:140px;right:10px" onclick="ejDEAZone(1)" title="Costado izquierdo bajo axila">◎</button>
+      <!-- Zona 2: Centro del esternón (incorrecto) -->
+      <button class="dea-zone-btn" id="dz2" style="width:48px;height:48px;top:140px;left:76px" onclick="ejDEAZone(2)" title="Centro del pecho">◎</button>
+      <!-- Zona 3: Abdomen izquierdo (incorrecto) -->
+      <button class="dea-zone-btn" id="dz3" style="width:48px;height:48px;top:192px;right:36px" onclick="ejDEAZone(3)" title="Abdomen izquierdo">◎</button>
+    </div>
+    <div id="ej3-fb" class="ej-feedback" style="display:none"></div>`;
+}
+function ejDEAZone(z){
+  if(_deaDone) return;
+  const btn=document.getElementById('dz'+z);
+  if(!btn || _deaPlaced.includes(z)) return;
+  const correct=[0,1];
+  const isOk=correct.includes(z);
+  _deaPlaced.push(z);
+  btn.classList.add(isOk?'placed-ok':'placed-err');
+  btn.classList.add('disabled');
+  btn.disabled=true;
+  btn.textContent=isOk?'✓':'✗';
+  if(_deaPlaced.length===2){
+    _deaDone=true;
+    document.querySelectorAll('.dea-zone-btn').forEach(b=>{b.disabled=true;b.classList.add('disabled');});
+    const allOk=_deaPlaced.every(z=>correct.includes(z));
+    const fb=document.getElementById('ej3-fb');
+    if(!fb)return;
+    fb.style.display='block';
+    if(allOk){
+      fb.className='ej-feedback ok';
+      fb.innerHTML='✅ ¡Perfecto! Posición correcta: <strong>bajo clavícula derecha</strong> y <strong>costado izquierdo bajo axila</strong>. La descarga pasa por el corazón entre los dos parches.';
+    } else {
+      fb.className='ej-feedback err';
+      fb.innerHTML='❌ Posición incorrecta. Los parches van: uno <strong>bajo la clavícula derecha</strong> (arriba derecho) y otro en el <strong>costado izquierdo bajo la axila</strong>. El centro del pecho y el abdomen no son posiciones correctas.';
+    }
+    const next=document.createElement('button');
+    next.className='ej-reiniciar';next.textContent='🔄 Volver a intentar';
+    next.onclick=ejDEAStart;fb.after(next);
+  }
+}
+
+// ── MOD4: "Ordená las alarmas por prioridad" ────────────────────
+const _EJ4_ITEMS=[
+  {id:'humo',ico:'🔥',txt:'Humo visible en el pasillo — posible incendio',correctPrio:1},
+  {id:'puerta',ico:'🚪',txt:'Puerta del depósito abierta a las 3 AM — posible intrusión',correctPrio:2},
+  {id:'estac',ico:'🅿️',txt:'Movimiento sospechoso en el estacionamiento',correctPrio:3},
+];
+let _ej4Prios={};
+function ejAlarma4Start(){_ej4Prios={};ejAlarma4Render();}
+function ejAlarma4Render(){
+  const el=document.getElementById('ej4-body');if(!el)return;
+  el.innerHTML=`
+    <div class="alarm-inst">Tocá cada alarma para asignarle prioridad 1→2→3<br><small style="color:#78909c">(1=más urgente, 3=menos urgente)</small></div>
+    <div class="alarm-pool">
+      ${[..._EJ4_ITEMS].sort(()=>Math.random()-.5).map(it=>`
+      <div class="alarm-item" id="ai-${it.id}" onclick="ejAlarma4Tap('${it.id}')">
+        <div class="alarm-prio-badge" id="ap-${it.id}">—</div>
+        <div class="alarm-ico">${it.ico}</div>
+        <div class="alarm-txt">${it.txt}</div>
+      </div>`).join('')}
+    </div>
+    <div id="ej4-fb" class="ej-feedback" style="display:none"></div>`;
+}
+function ejAlarma4Tap(id){
+  if(Object.keys(_ej4Prios).length>=3) return;
+  if(_ej4Prios[id]!=null) return;
+  const nextPrio=Object.keys(_ej4Prios).length+1;
+  _ej4Prios[id]=nextPrio;
+  const badge=document.getElementById('ap-'+id);
+  const item=document.getElementById('ai-'+id);
+  if(badge) badge.textContent=nextPrio;
+  if(item){item.classList.add('disabled');item.style.cursor='default';item.classList.add(`prio-${nextPrio}`);}
+  if(Object.keys(_ej4Prios).length===3){
+    const allOk=_EJ4_ITEMS.every(it=>_ej4Prios[it.id]===it.correctPrio);
+    const fb=document.getElementById('ej4-fb');
+    if(!fb)return;
+    fb.style.display='block';
+    if(allOk){
+      fb.className='ej-feedback ok';
+      fb.innerHTML='✅ ¡Correcto! El orden es: <strong>1° Humo/Incendio → llamar al 100</strong>, <strong>2° Puerta/Intrusión → vigilador + 911</strong>, <strong>3° Estacionamiento</strong>.';
+    } else {
+      fb.className='ej-feedback err';
+      fb.innerHTML='❌ Orden incorrecto. La prioridad correcta es: <strong>1° Humo (incendio)</strong>, <strong>2° Puerta depósito (intrusión)</strong>, <strong>3° Estacionamiento</strong>. El fuego es siempre la amenaza más urgente.';
+    }
+    const next=document.createElement('button');
+    next.className='ej-reiniciar';next.textContent='🔄 Volver a intentar';
+    next.onclick=ejAlarma4Start;fb.after(next);
+  }
 }
 
 // ─── QUIZZES ────────────────────────────────────────────────────
