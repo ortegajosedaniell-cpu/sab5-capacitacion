@@ -4030,20 +4030,27 @@ function buildDots(containerId, count, activeIdx, answers, offset=0){
     }
   }
 
-  var VER_URL  = 'https://raw.githubusercontent.com/ortegajosedaniell-cpu/sab5-capacitacion/main/version.json';
+  // Usamos la API de GitHub (no el CDN raw que cachea por minutos)
+  var API_URL  = 'https://api.github.com/repos/ortegajosedaniell-cpu/sab5-capacitacion/contents/version.json';
   var LOCAL_KEY = 'sab5_app_version';
 
   function checkVersion() {
-    fetch(VER_URL + '?nc=' + Date.now(), { cache: 'no-store' })
+    fetch(API_URL + '?t=' + Date.now(), {
+      cache: 'no-store',
+      headers: { 'Accept': 'application/vnd.github.v3+json' }
+    })
       .then(function(r){ return r.json(); })
       .then(function(data){
-        var remota = data && data.v;
+        // La API devuelve el contenido en base64
+        var content = data && data.content ? data.content.replace(/\n/g,'') : null;
+        if (!content) return;
+        var json = JSON.parse(atob(content));
+        var remota = json && json.v;
         if (!remota) return;
         var local = localStorage.getItem(LOCAL_KEY);
         if (!local) {
           localStorage.setItem(LOCAL_KEY, remota);
         } else if (local !== remota) {
-          // Versión nueva detectada: redirigir con ?v= para romper caché de Chrome
           localStorage.setItem(LOCAL_KEY, remota);
           window.location.replace(window.location.pathname + '?v=' + remota);
         }
