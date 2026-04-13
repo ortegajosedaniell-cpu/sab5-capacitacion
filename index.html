@@ -4011,5 +4011,31 @@ function buildDots(containerId, count, activeIdx, answers, offset=0){
   }
 }
 </script>
+<script>
+// ── AUTO-UPDATE: Service Worker + versión ────────────────────────
+const APP_VERSION = '20260413-134759';
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').then(reg => {
+    // Cuando hay una nueva versión instalada, recargar automáticamente
+    reg.addEventListener('updatefound', () => {
+      const newSW = reg.installing;
+      newSW.addEventListener('statechange', () => {
+        if (newSW.state === 'activated') {
+          // Nueva versión activa → recargar silenciosamente
+          window.location.reload();
+        }
+      });
+    });
+    // Revisar si hay update cada vez que el usuario abre la app
+    reg.update();
+  });
+
+  // Si el SW toma control (primera vez o update), recargar para aplicar cambios
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    window.location.reload();
+  });
+}
+</script>
 </body>
 </html>
