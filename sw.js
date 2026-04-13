@@ -1,5 +1,5 @@
 // ── SAB-5 Service Worker — Network First + Auto Update ──────────
-const CACHE_NAME = 'sab5-v20260413-135539';
+const CACHE_NAME = 'sab5-v20260413-140022';
 const URLS = ['./', './index.html'];
 
 // Al instalar: cachear recursos base
