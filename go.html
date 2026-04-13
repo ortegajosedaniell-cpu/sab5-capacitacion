@@ -24,23 +24,31 @@
   <div class="bar"><div class="fill"></div></div>
 <script>
 (function(){
-  // Desregistrar SW viejo
   if('serviceWorker' in navigator){
     navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(s){s.unregister();});});
   }
-  // Limpiar caches
   if(window.caches){caches.keys().then(function(k){k.forEach(function(c){caches.delete(c);});});}
 
-  var base = window.location.href.replace('go.html','');
-  fetch(base + 'version.json?nc=' + Date.now(), {cache:'no-store'})
-    .then(function(r){return r.json();})
-    .then(function(d){
-      var v = (d && d.v) ? d.v : Date.now();
-      window.location.replace(base + 'index.html?v=' + v);
-    })
-    .catch(function(){
-      window.location.replace(base + 'index.html?v=' + Date.now());
-    });
+  var base = 'https://ortegajosedaniell-cpu.github.io/sab5-capacitacion/';
+  var API  = 'https://api.github.com/repos/ortegajosedaniell-cpu/sab5-capacitacion/contents/version.json';
+
+  // Usamos la API de GitHub - nunca cachea, siempre devuelve la version real
+  fetch(API + '?t=' + Date.now(), {
+    cache: 'no-store',
+    headers: { Accept: 'application/vnd.github.v3+json' }
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    var content = data && data.content ? data.content.replace(/\n/g,'') : null;
+    var v = Date.now();
+    if(content){
+      try { v = JSON.parse(atob(content)).v || v; } catch(e){}
+    }
+    window.location.replace(base + 'index.html?v=' + v);
+  })
+  .catch(function(){
+    window.location.replace(base + 'index.html?v=' + Date.now());
+  });
 })();
 </script>
 </body>
