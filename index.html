@@ -2099,7 +2099,7 @@ async function doLogin(){
   }
 
   const selMod = MODS.find(m=>m.id===modId);
-  user={nombre:n,legajo:'',dni:d,sede:coord,coordinador:coord,modId:modId,modTitle:selMod?selMod.title:'',inicio:new Date().toISOString()};
+  user={nombre:n,legajo:'',dni:d,sede:'',coordinador:'',modId:modId,modTitle:selMod?selMod.title:'',inicio:new Date().toISOString()};
   t0=Date.now();
   renderHome(); go('s-home');
 }
@@ -2108,7 +2108,7 @@ async function doLogin(){
 function renderHome(){
   gi('h-nombre').textContent = user.nombre;
   gi('h-legajo').textContent = '';
-  gi('h-sede').textContent   = user.coordinador ? 'Coord.: '+user.coordinador : '';
+  gi('h-sede').textContent   = '';
 
   // Mostrar solo el módulo seleccionado por el usuario
   const activeMods = user.modId ? MODS.filter(m=>m.id===user.modId) : MODS;
