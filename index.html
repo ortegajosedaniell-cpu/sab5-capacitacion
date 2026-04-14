@@ -779,6 +779,70 @@
         <p style="font-size:10px;color:rgba(255,255,255,.35);text-align:center;margin-top:10px">Solo visible para el Superadmin. Guardá estos datos en un lugar seguro.</p>
       </div>
 
+      <!-- CAMBIAR CONTRASEÑA (solo superadmin) -->
+      <div id="box-change-pass" style="display:none;background:linear-gradient(135deg,#1a1a1a,#1a0000);border-radius:14px;padding:16px;margin-bottom:16px;border:1px solid rgba(204,0,0,.35)">
+        <div style="font-size:11px;font-weight:800;letter-spacing:2px;color:#ef5350;margin-bottom:12px;text-transform:uppercase">🔒 Cambiar contraseña</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Contraseña actual</div>
+            <input type="password" id="cp-actual" placeholder="••••••••" style="width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:15px;outline:none">
+          </div>
+          <div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Nueva contraseña</div>
+            <input type="password" id="cp-nueva" placeholder="Mínimo 6 caracteres" style="width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:15px;outline:none">
+          </div>
+          <div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Confirmar nueva contraseña</div>
+            <input type="password" id="cp-confirm" placeholder="Repetir nueva contraseña" style="width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:15px;outline:none">
+          </div>
+          <button onclick="guardarNuevaPass()" style="background:#cc0000;color:#fff;border:none;border-radius:8px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;margin-top:4px">🔒 GUARDAR NUEVA CONTRASEÑA</button>
+          <div id="cp-msg" style="font-size:12px;text-align:center;display:none;padding:6px"></div>
+        </div>
+      </div>
+
+      <!-- PREGUNTAS DE SEGURIDAD (solo superadmin) -->
+      <div id="box-security-q" style="display:none;background:linear-gradient(135deg,#1a1a1a,#001525);border-radius:14px;padding:16px;margin-bottom:16px;border:1px solid rgba(33,150,243,.3)">
+        <div style="font-size:11px;font-weight:800;letter-spacing:2px;color:#29b6f6;margin-bottom:4px;text-transform:uppercase">🛡️ Preguntas de seguridad</div>
+        <p style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:14px">Se usan para verificar tu identidad al recuperar el acceso.</p>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Pregunta 1</div>
+          <select id="sq-q1-sel" onchange="onSQSel(1)" style="width:100%;background:#222;border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:13px;margin-bottom:6px;outline:none">
+            <option value="">-- Elegir pregunta --</option>
+            <option value="¿Cuál es el nombre de tu primera mascota?">¿Cuál es el nombre de tu primera mascota?</option>
+            <option value="¿En qué ciudad naciste?">¿En qué ciudad naciste?</option>
+            <option value="¿Cuál es el apellido de soltera de tu madre?">¿Cuál es el apellido de soltera de tu madre?</option>
+            <option value="¿Cuál fue el nombre de tu escuela primaria?">¿Cuál fue el nombre de tu escuela primaria?</option>
+            <option value="¿Cuál es el modelo de tu primer auto?">¿Cuál es el modelo de tu primer auto?</option>
+            <option value="¿Cuál es tu comida favorita?">¿Cuál es tu comida favorita?</option>
+            <option value="¿En qué año empezaste a trabajar en seguridad?">¿En qué año empezaste a trabajar en seguridad?</option>
+            <option value="custom">✏️ Escribir mi propia pregunta...</option>
+          </select>
+          <input type="text" id="sq-q1-custom" placeholder="Escribí tu pregunta personalizada" style="display:none;width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:13px;margin-bottom:6px;outline:none">
+          <input type="text" id="sq-a1" placeholder="Tu respuesta (no distingue mayúsculas)" style="width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:13px;outline:none">
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Pregunta 2</div>
+          <select id="sq-q2-sel" onchange="onSQSel(2)" style="width:100%;background:#222;border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:13px;margin-bottom:6px;outline:none">
+            <option value="">-- Elegir pregunta --</option>
+            <option value="¿Cuál es el nombre de tu primera mascota?">¿Cuál es el nombre de tu primera mascota?</option>
+            <option value="¿En qué ciudad naciste?">¿En qué ciudad naciste?</option>
+            <option value="¿Cuál es el apellido de soltera de tu madre?">¿Cuál es el apellido de soltera de tu madre?</option>
+            <option value="¿Cuál fue el nombre de tu escuela primaria?">¿Cuál fue el nombre de tu escuela primaria?</option>
+            <option value="¿Cuál es el modelo de tu primer auto?">¿Cuál es el modelo de tu primer auto?</option>
+            <option value="¿Cuál es tu comida favorita?">¿Cuál es tu comida favorita?</option>
+            <option value="¿En qué año empezaste a trabajar en seguridad?">¿En qué año empezaste a trabajar en seguridad?</option>
+            <option value="custom">✏️ Escribir mi propia pregunta...</option>
+          </select>
+          <input type="text" id="sq-q2-custom" placeholder="Escribí tu pregunta personalizada" style="display:none;width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:13px;margin-bottom:6px;outline:none">
+          <input type="text" id="sq-a2" placeholder="Tu respuesta (no distingue mayúsculas)" style="width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:13px;outline:none">
+        </div>
+
+        <button onclick="guardarPreguntasSeguridad()" style="background:#0288d1;color:#fff;border:none;border-radius:8px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;width:100%">🛡️ GUARDAR PREGUNTAS DE SEGURIDAD</button>
+        <div id="sq-msg" style="font-size:12px;text-align:center;margin-top:8px;display:none;padding:6px"></div>
+      </div>
+
       <div id="user-list"></div>
       <button class="add-q-btn" id="btn-add-admin" onclick="openUserModal(null)" style="display:none">+ Agregar administrador</button>
       <p style="font-size:11px;color:#bbb;text-align:center;margin-top:8px;margin-bottom:16px">Solo el Superadmin puede crear y eliminar administradores.</p>
