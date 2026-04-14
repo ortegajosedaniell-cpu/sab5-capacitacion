@@ -2529,6 +2529,11 @@ function startModQuiz(){
 
 function getCorrects(q){ return Array.isArray(q.c) ? q.c : [q.c]; }
 
+function getModEmoji(modId){
+  const map={1:'👮',2:'🧯',3:'❤️',4:'📹',5:'🏢','exam':'📝'};
+  return map[modId]||'✅';
+}
+
 function renderQ(){
   const q=curQ[qIdx], tot=curQ.length;
   gi('q-counter').textContent='Pregunta '+(qIdx+1)+' de '+tot;
