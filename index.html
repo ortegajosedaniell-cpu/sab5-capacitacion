@@ -3871,6 +3871,127 @@ function togglePassVis(){
   if(btn) btn.textContent = _passVisible ? '🙈' : '👁';
 }
 
+// ─── CONTRASEÑA SUPERADMIN (localStorage override) ────────────────
+function getSAPass(username){
+  var key = (username === ADMIN_USER) ? 'sab5_sa_pass1' : 'sab5_sa_pass2';
+  return localStorage.getItem(key) || ((username === ADMIN_USER) ? ADMIN_PASS : ADMIN_PASS2);
+}
+
+function guardarNuevaPass(){
+  var actual  = gi('cp-actual').value;
+  var nueva   = gi('cp-nueva').value;
+  var confirm = gi('cp-confirm').value;
+  var msg     = gi('cp-msg');
+  msg.style.display = 'block';
+  if(!actual || !nueva || !confirm){
+    msg.style.color='#ef5350'; msg.textContent='⚠️ Completá todos los campos.'; return;
+  }
+  if(actual !== getSAPass(_currentAdmin.username)){
+    msg.style.color='#ef5350'; msg.textContent='❌ La contraseña actual es incorrecta.'; return;
+  }
+  if(nueva.length < 6){
+    msg.style.color='#ef5350'; msg.textContent='⚠️ Mínimo 6 caracteres para la nueva contraseña.'; return;
+  }
+  if(nueva !== confirm){
+    msg.style.color='#ef5350'; msg.textContent='❌ Las contraseñas nuevas no coinciden.'; return;
+  }
+  var key = (_currentAdmin.username === ADMIN_USER) ? 'sab5_sa_pass1' : 'sab5_sa_pass2';
+  localStorage.setItem(key, nueva);
+  gi('cp-actual').value=''; gi('cp-nueva').value=''; gi('cp-confirm').value='';
+  msg.style.color='#66bb6a'; msg.textContent='✅ Contraseña actualizada correctamente.';
+  mostrarMisCredenciales();
+  setTimeout(function(){ msg.style.display='none'; }, 3500);
+}
+
+// ─── PREGUNTAS DE SEGURIDAD ───────────────────────────────────────
+function onSQSel(n){
+  var sel    = gi('sq-q'+n+'-sel');
+  var custom = gi('sq-q'+n+'-custom');
+  if(!sel || !custom) return;
+  custom.style.display = (sel.value === 'custom') ? 'block' : 'none';
+}
+
+function guardarPreguntasSeguridad(){
+  var q1sel = gi('sq-q1-sel').value;
+  var q2sel = gi('sq-q2-sel').value;
+  var q1    = (q1sel === 'custom') ? gi('sq-q1-custom').value.trim() : q1sel;
+  var q2    = (q2sel === 'custom') ? gi('sq-q2-custom').value.trim() : q2sel;
+  var a1    = (gi('sq-a1').value||'').trim();
+  var a2    = (gi('sq-a2').value||'').trim();
+  var msg   = gi('sq-msg');
+  msg.style.display = 'block';
+  if(!q1 || !a1 || !q2 || !a2){
+    msg.style.color='#ef5350'; msg.textContent='⚠️ Completá las dos preguntas con sus respuestas.'; return;
+  }
+  if(q1 === q2){
+    msg.style.color='#ef5350'; msg.textContent='⚠️ Las dos preguntas deben ser diferentes.'; return;
+  }
+  var key  = (_currentAdmin.username === ADMIN_USER) ? 'sab5_sa_sq1' : 'sab5_sa_sq2';
+  var data = { q1:q1, a1:a1.toLowerCase(), q2:q2, a2:a2.toLowerCase() };
+  localStorage.setItem(key, JSON.stringify(data));
+  msg.style.color='#29b6f6'; msg.textContent='✅ Preguntas de seguridad guardadas correctamente.';
+  setTimeout(function(){ msg.style.display='none'; }, 3500);
+}
+
+function loadSecurityQuestionsAdmin(){
+  if(!_currentAdmin || !_currentAdmin.isSuperAdmin) return;
+  gi('box-change-pass').style.display = 'block';
+  gi('box-security-q').style.display  = 'block';
+  var key   = (_currentAdmin.username === ADMIN_USER) ? 'sab5_sa_sq1' : 'sab5_sa_sq2';
+  var saved = localStorage.getItem(key);
+  if(!saved) return;
+  try {
+    var d = JSON.parse(saved);
+    // Pregunta 1
+    var sel1   = gi('sq-q1-sel');
+    var opts1  = Array.from(sel1.options).map(function(o){ return o.value; });
+    if(opts1.indexOf(d.q1) !== -1){
+      sel1.value = d.q1;
+    } else {
+      sel1.value = 'custom';
+      gi('sq-q1-custom').value = d.q1;
+      gi('sq-q1-custom').style.display = 'block';
+    }
+    gi('sq-a1').value = d.a1;
+    // Pregunta 2
+    var sel2   = gi('sq-q2-sel');
+    var opts2  = Array.from(sel2.options).map(function(o){ return o.value; });
+    if(opts2.indexOf(d.q2) !== -1){
+      sel2.value = d.q2;
+    } else {
+      sel2.value = 'custom';
+      gi('sq-q2-custom').value = d.q2;
+      gi('sq-q2-custom').style.display = 'block';
+    }
+    gi('sq-a2').value = d.a2;
+  } catch(e){}
+}
+
+function verifySQRecovery(username){
+  var sqKey  = (username === ADMIN_USER) ? 'sab5_sa_sq1' : 'sab5_sa_sq2';
+  var sqData = null;
+  try { sqData = JSON.parse(localStorage.getItem(sqKey)); } catch(e){}
+  if(!sqData) return;
+  var a1  = (gi('sq-rec-a1').value||'').trim().toLowerCase();
+  var a2  = (gi('sq-rec-a2').value||'').trim().toLowerCase();
+  var msg = gi('sq-rec-msg');
+  msg.style.display = 'block';
+  if(a1 === sqData.a1 && a2 === sqData.a2){
+    var pass = getSAPass(username);
+    msg.innerHTML =
+      '<div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:14px;color:#1b5e20;text-align:center">'
+      +'<div style="font-weight:800;font-size:14px;margin-bottom:6px">✅ ¡Verificación exitosa!</div>'
+      +'<div style="font-size:12px;color:#555;margin-bottom:8px">Tu contraseña es:</div>'
+      +'<div style="font-size:22px;font-weight:900;font-family:monospace;letter-spacing:3px;background:#fff;border-radius:8px;padding:10px 16px;color:#1a1a1a;display:inline-block">'
+      +pass+'</div>'
+      +'<div style="font-size:11px;color:#888;margin-top:10px">Guardá esta contraseña en un lugar seguro.</div>'
+      +'</div>';
+  } else {
+    msg.style.color = '#c62828';
+    msg.textContent = '❌ Las respuestas no son correctas. Revisá e intentá de nuevo.';
+  }
+}
+
 function switchTab(panelId, btn){
   document.querySelectorAll('.admin-tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
