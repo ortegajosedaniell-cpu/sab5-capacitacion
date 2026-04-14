@@ -2612,9 +2612,10 @@ function shuffleOpts(q){
 }
 
 function startModQuiz(){
-  // Usa las primeras 16 preguntas del módulo (las últimas 8 son para el examen final)
   const pool = QUIZZES[curMod.id] ? QUIZZES[curMod.id].slice(0,16) : [];
-  curQ  = shuf([...pool]).map(shuffleOpts);
+  // Preservar índice original antes del shuffle para que las imágenes sean correctas
+  const poolConIdx = pool.map((q,i)=>Object.assign({},q,{_oi:i}));
+  curQ  = shuf([...poolConIdx]).map(shuffleOpts);
   qIdx  = 0; qAns = [];
   gi('qmod-title').textContent = 'Quiz: '+curMod.title;
   renderQ(); go('s-quiz');
