@@ -4854,7 +4854,7 @@ function playIntroAudio(){
   function playVoz(){
     if(!('speechSynthesis' in window)){ setTimeout(doSkip,2000); return; }
     window.speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance('Bienvenidos. Sistema de Capacitación SAB Cinco. Seguridad Privada.');
+    const u=new SpeechSynthesisUtterance('Bienvenidos al Sistema de Capacitación de SAB Cinco, Seguridad Privada.');
     u.lang='es-MX'; u.rate=0.84; u.pitch=0.78; u.volume=1;
     u.onend=()=>setTimeout(doSkip,900);
     u.onerror=()=>setTimeout(doSkip,800);
@@ -4863,11 +4863,17 @@ function playIntroAudio(){
     function speak(){
       const voices=window.speechSynthesis.getVoices();
       // Intentar voz masculina: buscar por nombre o por lang
-      const maleKeywords=['male','hombre','jorge','pablo','diego','carlos','miguel','juan','andrés','pedro'];
+      // Nombres de voces masculinas latinas conocidas en Windows/Android/iOS
+      const maleKeywords=['raul','pablo','jorge','diego','carlos','miguel','juan','andrés','pedro','male','hombre','homem'];
       const esVoices=voices.filter(v=>v.lang.startsWith('es'));
-      let chosen = esVoices.find(v=>maleKeywords.some(k=>v.name.toLowerCase().includes(k)));
-      // Fallback: priorizar es-MX, es-US, cualquier español
-      if(!chosen) chosen=esVoices.find(v=>v.lang==='es-MX')||esVoices.find(v=>v.lang==='es-US')||esVoices[0]||voices[0];
+      // Excluir voces femeninas conocidas
+      const femaleKeywords=['sabina','helena','conchita','paulina','laura','isabela','female','mujer'];
+      let chosen = esVoices.find(v=>{
+        const n=v.name.toLowerCase();
+        return maleKeywords.some(k=>n.includes(k)) && !femaleKeywords.some(k=>n.includes(k));
+      });
+      // Fallback: priorizar es-MX (Microsoft Raul), es-US, es-AR, cualquier español
+      if(!chosen) chosen=esVoices.find(v=>v.lang==='es-MX')||esVoices.find(v=>v.lang==='es-US')||esVoices.find(v=>v.lang==='es-AR')||esVoices[0]||voices[0];
       if(chosen) u.voice=chosen;
       window.speechSynthesis.speak(u);
     }
