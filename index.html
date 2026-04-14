@@ -1912,6 +1912,171 @@ function ejAlarma4Tap(id){
   }
 }
 
+// ── MOD2b: "Identificá la clase de fuego" ────────────────────────
+var _ej2bIdx=0,_ej2bScore=0;
+const _EJ2B_PREGS=[
+  {mat:'🪵',desc:'Madera y papel ardiendo en un depósito',correct:'A',
+   clases:[{l:'A',n:'Sólidos'},{l:'B',n:'Líquidos'},{l:'C',n:'Eléctrico'},{l:'K',n:'Grasas'}],
+   expl:'Clase A: materiales sólidos comunes (madera, papel, tela, plástico). Extintor de agua o polvo ABC.'},
+  {mat:'⛽',desc:'Derrame de combustible / nafta en llamas',correct:'B',
+   clases:[{l:'A',n:'Sólidos'},{l:'B',n:'Líquidos'},{l:'C',n:'Eléctrico'},{l:'K',n:'Grasas'}],
+   expl:'Clase B: líquidos inflamables (nafta, aceite mineral, alcohol, solventes). Extintor de CO₂ o polvo ABC. Nunca agua.'},
+  {mat:'🔌',desc:'Tablero eléctrico con cortocircuito y llamas',correct:'C',
+   clases:[{l:'A',n:'Sólidos'},{l:'B',n:'Líquidos'},{l:'C',n:'Eléctrico'},{l:'K',n:'Grasas'}],
+   expl:'Clase C: equipos eléctricos bajo tensión. Solo CO₂ o polvo químico seco. El agua conduce electricidad — prohibida.'},
+  {mat:'🍳',desc:'Aceite de cocina recalentado que se incendia',correct:'K',
+   clases:[{l:'A',n:'Sólidos'},{l:'B',n:'Líquidos'},{l:'C',n:'Eléctrico'},{l:'K',n:'Grasas'}],
+   expl:'Clase K: grasas y aceites de cocina. Extintor específico clase K. El agua genera explosión de vapor — extremadamente peligrosa.'},
+  {mat:'📦',desc:'Caja de cartón y telgopor en llamas',correct:'A',
+   clases:[{l:'A',n:'Sólidos'},{l:'B',n:'Líquidos'},{l:'C',n:'Eléctrico'},{l:'K',n:'Grasas'}],
+   expl:'Clase A: materiales sólidos comunes. El telgopor (EPS) genera humos tóxicos — prioritario cortar el fuego rápido.'},
+  {mat:'🖥️',desc:'PC encendida que empieza a arder con chispas',correct:'C',
+   clases:[{l:'A',n:'Sólidos'},{l:'B',n:'Líquidos'},{l:'C',n:'Eléctrico'},{l:'K',n:'Grasas'}],
+   expl:'Clase C: equipo eléctrico. Si podés cortar la corriente primero, el fuego puede pasar a clase A. De todos modos, usá CO₂.'},
+];
+function ejClase2bStart(){_ej2bIdx=0;_ej2bScore=0;ejClase2bRender();}
+function ejClase2bRender(){
+  const el=document.getElementById('ej2b-body');if(!el)return;
+  if(_ej2bIdx>=_EJ2B_PREGS.length){
+    const pct=Math.round(_ej2bScore/_EJ2B_PREGS.length*100);
+    el.innerHTML=`<div class="ej-feedback ${pct>=70?'ok':'err'}" style="display:block">
+      ${pct>=70?'✅':'❌'} Resultado: <strong>${_ej2bScore}/${_EJ2B_PREGS.length} correctas (${pct}%)</strong><br>
+      ${pct===100?'¡Perfecto dominio de clases de fuego!':pct>=70?'Buen nivel. Repasá las clases que fallaste.':'Necesitás repasar la clasificación de incendios.'}
+    </div>
+    <button class="ej-reiniciar" onclick="ejClase2bStart()">🔄 Volver a intentar</button>`;
+    return;
+  }
+  const p=_EJ2B_PREGS[_ej2bIdx];
+  el.innerHTML=`
+    <div style="text-align:center;color:#b0c4de;font-size:11px;margin-bottom:8px;font-weight:700">RONDA ${_ej2bIdx+1} DE ${_EJ2B_PREGS.length}</div>
+    <div class="clase-material">${p.mat}</div>
+    <div class="clase-pregunta">${p.desc}<br><span style="color:#ffd54f;font-size:12px">¿Qué clase de fuego es?</span></div>
+    <div class="clase-grid">${p.clases.map(c=>`
+      <button class="clase-btn" onclick="ejClase2bAns('${c.l}')">
+        <span class="clase-letra">${c.l}</span>
+        <span class="clase-nombre">${c.n}</span>
+      </button>`).join('')}
+    </div>
+    <div id="ej2b-fb" class="ej-feedback" style="display:none"></div>`;
+}
+function ejClase2bAns(letra){
+  const p=_EJ2B_PREGS[_ej2bIdx];
+  const ok=letra===p.correct;
+  if(ok) _ej2bScore++;
+  document.querySelectorAll('.clase-btn').forEach(b=>{
+    b.disabled=true;
+    if(b.querySelector('.clase-letra').textContent===p.correct) b.classList.add('ok');
+    else if(b.querySelector('.clase-letra').textContent===letra) b.classList.add('err');
+  });
+  const fb=document.getElementById('ej2b-fb');
+  if(fb){
+    fb.style.display='block';
+    fb.className='ej-feedback '+(ok?'ok':'err');
+    fb.innerHTML=(ok?'✅ ¡Correcto! ':'❌ Incorrecto. ')+p.expl;
+    const next=document.createElement('button');
+    next.className='ej-reiniciar';
+    next.textContent=_ej2bIdx+1<_EJ2B_PREGS.length?'Siguiente →':'Ver resultado';
+    next.onclick=()=>{_ej2bIdx++;ejClase2bRender();};
+    fb.after(next);
+  }
+}
+
+// ── MOD4b: "¿Qué hacés con lo que ves en cámara?" ────────────────
+var _ej4bIdx=0,_ej4bScore=0;
+const _EJ4B_ESCENAS=[
+  {
+    desc:'📹 Cámara 3 — Estacionamiento. <b>22:47 hs.</b> Ves a una persona merodeando alrededor de 3 autos en 10 minutos. No toca ninguno pero mira para todos lados.',
+    opts:[
+      {t:'Esperás que concrete algo antes de actuar — por ahora no hizo nada',ok:false},
+      {t:'Comunicás al coordinador la situación y hacés seguimiento con otras cámaras',ok:true},
+      {t:'Salís al estacionamiento vos mismo a confrontar a la persona',ok:false},
+      {t:'No hacés nada — puede ser alguien que busca su auto',ok:false},
+    ],
+    expl:'El monitorista nunca actúa solo en campo. La conducta inusual (merodeo, mirar para todos lados) es suficiente para comunicar al coordinador y hacer seguimiento. La detección temprana es tu mayor herramienta.'
+  },
+  {
+    desc:'📹 Cámara 7 — Pasillo interno. <b>03:15 hs.</b> Detectás movimiento en una zona que debería estar vacía. La imagen muestra una silueta que cruza hacia el depósito.',
+    opts:[
+      {t:'Llamás al 911 directamente sin avisar al coordinador',ok:false},
+      {t:'Activás alarma y comunicás al coordinador de inmediato con descripción y ubicación',ok:true},
+      {t:'Seguís monitoreando en silencio para no alertar al intruso',ok:false},
+      {t:'Esperás 5 minutos para confirmar que no es el personal de limpieza',ok:false},
+    ],
+    expl:'Ante una intrusión probable: activar alarma + comunicar al coordinador con descripción exacta (cámara, horario, características). Nunca actuar solo ni esperar para "confirmar" — el tiempo es crítico.'
+  },
+  {
+    desc:'📹 Cámara 2 — Hall principal. Ves humo saliendo por debajo de una puerta lateral. El detector de humo de ese sector no activó todavía.',
+    opts:[
+      {t:'Esperás que el detector active — puede ser vapor del baño',ok:false},
+      {t:'Activás la alarma de incendio, comunicás al coordinador y al 100 de inmediato',ok:true},
+      {t:'Avisás solo al coordinador y esperás su orden antes de activar alarma',ok:false},
+      {t:'Vas a verificar personalmente antes de activar para no generar falsa alarma',ok:false},
+    ],
+    expl:'Humo visible = incendio probable. No esperás confirmación del detector. Protocolo: Alarma + 100 + Coordinador. Una falsa alarma se tolera; un incendio que no se cortó a tiempo, no.'
+  },
+  {
+    desc:'📹 Cámara 5 — Entrada principal. Una persona discute acaloradamente con otra y el tono sube. Todavía no hay agresión física.',
+    opts:[
+      {t:'Seguís observando — mientras no haya golpes no es tu problema',ok:false},
+      {t:'Comunicás al coordinador y preparás el protocolo de intervención si escala',ok:true},
+      {t:'Hablás por el altavoz directamente a las personas para que se calmen',ok:false},
+      {t:'Llamás al 911 de inmediato — cualquier conflicto requiere policía',ok:false},
+    ],
+    expl:'El monitorista comunica y prepara la respuesta antes de que escale. La intervención por altavoz puede inflamar la situación. El 911 se activa si hay agresión o riesgo real, no solo por discusión.'
+  },
+  {
+    desc:'📹 Cámara 1 — Puerta de emergencia. La puerta está abierta y debería estar cerrada. Nadie cruza. Hora: <b>14:30 hs</b> — turno activo, hay personal.',
+    opts:[
+      {t:'Lo reportás en el libro y avisás al coordinador para que la inspeccionen',ok:true},
+      {t:'Asumís que alguien la dejó abierta por error y no hacés nada',ok:false},
+      {t:'Cerrás la puerta vos mismo yendo al lugar',ok:false},
+      {t:'Activás alerta de intrusión inmediatamente — puede ser una fuga de mercadería',ok:false},
+    ],
+    expl:'Una anomalía como puerta abierta se documenta y se reporta al coordinador. No se ignora ni se actúa unilateralmente. El coordinador decide si se trata de descuido o situación a investigar.'
+  },
+];
+function ejCCTV4bStart(){_ej4bIdx=0;_ej4bScore=0;ejCCTV4bRender();}
+function ejCCTV4bRender(){
+  const el=document.getElementById('ej4b-body');if(!el)return;
+  if(_ej4bIdx>=_EJ4B_ESCENAS.length){
+    const pct=Math.round(_ej4bScore/_EJ4B_ESCENAS.length*100);
+    el.innerHTML=`<div class="ej-feedback ${pct>=70?'ok':'err'}" style="display:block">
+      ${pct>=70?'✅':'❌'} Resultado: <strong>${_ej4bScore}/${_EJ4B_ESCENAS.length} correctas (${pct}%)</strong><br>
+      ${pct===100?'¡Excelente! Decisiones perfectas en todos los escenarios.':pct>=70?'Buen nivel. Repasá los escenarios donde fallaste.':'Repasá el protocolo del monitorista.'}
+    </div>
+    <button class="ej-reiniciar" onclick="ejCCTV4bStart()">🔄 Volver a intentar</button>`;
+    return;
+  }
+  const e=_EJ4B_ESCENAS[_ej4bIdx];
+  el.innerHTML=`
+    <div style="text-align:center;color:#b0c4de;font-size:11px;margin-bottom:8px;font-weight:700">ESCENARIO ${_ej4bIdx+1} DE ${_EJ4B_ESCENAS.length}</div>
+    <div class="cctv-scene">${e.desc}</div>
+    <div style="font-size:11px;color:#ffd54f;font-weight:700;margin-bottom:8px">¿Cuál es la acción correcta del monitorista?</div>
+    <div class="cctv-opts">${e.opts.map((o,i)=>`<button class="ext-opt" onclick="ejCCTV4bAns(${i})">${o.t}</button>`).join('')}</div>
+    <div id="ej4b-fb" class="ej-feedback" style="display:none"></div>`;
+}
+function ejCCTV4bAns(i){
+  const e=_EJ4B_ESCENAS[_ej4bIdx];
+  const ok=e.opts[i].ok;
+  if(ok) _ej4bScore++;
+  document.querySelectorAll('#ej4b-body .ext-opt').forEach((b,j)=>{
+    b.disabled=true;
+    if(e.opts[j].ok) b.classList.add('correct');
+    else if(j===i) b.classList.add('wrong');
+  });
+  const fb=document.getElementById('ej4b-fb');
+  if(fb){
+    fb.style.display='block';
+    fb.className='ej-feedback '+(ok?'ok':'err');
+    fb.innerHTML=(ok?'✅ ¡Correcto! ':'❌ Incorrecto. ')+e.expl;
+    const next=document.createElement('button');
+    next.className='ej-reiniciar';
+    next.textContent=_ej4bIdx+1<_EJ4B_ESCENAS.length?'Siguiente escenario →':'Ver resultado';
+    next.onclick=()=>{_ej4bIdx++;ejCCTV4bRender();};
+    fb.after(next);
+  }
+}
+
 // ─── QUIZZES ────────────────────────────────────────────────────
 const QUIZZES = {
   1:[
