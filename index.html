@@ -4777,20 +4777,25 @@ function playIntroAudio(){
     }catch(e){}
   }
 
-  // ── Voz en off con Web Speech API ───────────────────────────────
+  // ── Voz en off masculina latina con Web Speech API ───────────────
   function playVoz(){
     if(!('speechSynthesis' in window)){ setTimeout(doSkip,2000); return; }
     window.speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance('Sistema de Capacitación SAB Cinco. Seguridad Privada.');
-    u.lang='es-AR'; u.rate=0.88; u.pitch=0.92; u.volume=1;
+    const u=new SpeechSynthesisUtterance('Bienvenidos. Sistema de Capacitación SAB Cinco. Seguridad Privada.');
+    u.lang='es-MX'; u.rate=0.84; u.pitch=0.78; u.volume=1;
     u.onend=()=>setTimeout(doSkip,900);
     u.onerror=()=>setTimeout(doSkip,800);
 
-    // Cargar voces (en móvil pueden no estar listas aún)
+    // Preferir voz masculina latina (es-MX, es-US, es-419, es)
     function speak(){
       const voices=window.speechSynthesis.getVoices();
-      const esVoice=voices.find(v=>v.lang.startsWith('es'))||voices[0];
-      if(esVoice) u.voice=esVoice;
+      // Intentar voz masculina: buscar por nombre o por lang
+      const maleKeywords=['male','hombre','jorge','pablo','diego','carlos','miguel','juan','andrés','pedro'];
+      const esVoices=voices.filter(v=>v.lang.startsWith('es'));
+      let chosen = esVoices.find(v=>maleKeywords.some(k=>v.name.toLowerCase().includes(k)));
+      // Fallback: priorizar es-MX, es-US, cualquier español
+      if(!chosen) chosen=esVoices.find(v=>v.lang==='es-MX')||esVoices.find(v=>v.lang==='es-US')||esVoices[0]||voices[0];
+      if(chosen) u.voice=chosen;
       window.speechSynthesis.speak(u);
     }
     if(window.speechSynthesis.getVoices().length){ speak(); }
