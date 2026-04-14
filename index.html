@@ -2668,8 +2668,9 @@ const QB_IMG_MAP = {
 };
 
 function getQImg(q, modId, idx){
-  // Primero busca el campo img en la pregunta, luego el mapa por módulo/índice
-  const key = q.img || (QB_IMG_MAP[modId]?.[idx]) || '';
+  // Usa el índice original (antes del shuffle) para el mapa de imágenes
+  const origIdx = (q._oi !== undefined) ? q._oi : idx;
+  const key = q.img || (QB_IMG_MAP[modId]?.[origIdx]) || '';
   const data = QB_IMGS[key];
   if(!data) return '<span style="font-size:44px">'+(modId===2?'🧯':modId===3?'❤️':modId===4?'📹':'👮')+'</span>';
   return '<span class="ico-main">'+data.ico+'</span><span class="ico-sub">'+data.sub+'</span>';
@@ -4524,6 +4525,14 @@ function loadAdminCapImg(input){
 }
 
 function saveCertAdmin(){
+  // Siempre capturar el estado actual del canvas, no esperar al evento
+  if(_adminFirmaCanvas){
+    const data = _adminFirmaCanvas.toDataURL();
+    // Solo guardar si tiene contenido real (no es un canvas en blanco)
+    const tmp = document.createElement('canvas');
+    tmp.width=_adminFirmaCanvas.width; tmp.height=_adminFirmaCanvas.height;
+    if(data !== tmp.toDataURL()) _adminFirmaImgData = data;
+  }
   const cfg={
     signerName: gi('cert-signer-name').value.trim(),
     signerImg:  _adminFirmaImgData || null
