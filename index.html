@@ -3764,6 +3764,49 @@ function deleteUser(username){
 }
 
 // ─── ADMIN TABS ──────────────────────────────────────────────────
+// ─── COPIAR LINK ─────────────────────────────────────────────────
+function copiarLink(){
+  var link = 'https://ortegajosedaniell-cpu.github.io/sab5-capacitacion/go.html';
+  if(navigator.clipboard){ navigator.clipboard.writeText(link); }
+  else { var t=document.createElement('textarea'); t.value=link; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); }
+  var msg = gi('share-copied');
+  if(msg){ msg.style.display='block'; setTimeout(()=>msg.style.display='none', 2500); }
+}
+function copiarTexto(elId, btnId){
+  var el = gi(elId);
+  var txt = el ? el.textContent.replace(/●/g,'').trim() : '';
+  if(!txt) return;
+  if(navigator.clipboard){ navigator.clipboard.writeText(txt); }
+  else { var t=document.createElement('textarea'); t.value=txt; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); }
+  var btn = gi(btnId);
+  if(btn){ var orig=btn.textContent; btn.textContent='✅ Copiado'; setTimeout(()=>btn.textContent=orig, 2000); }
+}
+
+// ─── MIS CREDENCIALES (solo superadmin) ──────────────────────────
+var _passVisible = false;
+function mostrarMisCredenciales(){
+  var box = gi('mis-credenciales');
+  if(!box || !_currentAdmin || !_currentAdmin.isSuperAdmin) return;
+  box.style.display = 'block';
+  var userEl = gi('cred-user');
+  var passEl = gi('cred-pass');
+  if(userEl) userEl.textContent = _currentAdmin.username;
+  if(passEl){
+    var realPass = (_currentAdmin.username === ADMIN_USER) ? ADMIN_PASS : ADMIN_PASS2;
+    _passVisible = false;
+    passEl.textContent = '●'.repeat(realPass.length);
+    passEl.dataset.real = realPass;
+  }
+}
+function togglePassVis(){
+  var el = gi('cred-pass');
+  var btn = gi('btn-vis-pass');
+  if(!el) return;
+  _passVisible = !_passVisible;
+  el.textContent = _passVisible ? el.dataset.real : '●'.repeat(el.dataset.real.length);
+  if(btn) btn.textContent = _passVisible ? '🙈' : '👁';
+}
+
 function switchTab(panelId, btn){
   document.querySelectorAll('.admin-tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
