@@ -2784,9 +2784,10 @@ async function showQResult(){
       const cv=gi('cierre-video'), cs=gi('s-cierre'), cb=gi('cierre-bar');
       cv.currentTime=0; cb.style.width='0%';
       cs.style.display='flex'; cs.style.opacity='1';
-      cv.play().catch(()=>{ cs.style.display='none'; initFirmaScreen(); go('s-firma'); });
+      cv.play().catch(()=>{ playCierreAudio(); });
       cv.ontimeupdate=()=>{ if(cv.duration) cb.style.width=(cv.currentTime/cv.duration*100)+'%'; };
       cv.onended=()=>skipCierre();
+      cv.onerror=()=>{ playCierreAudio(); };
     };
   }
 }
