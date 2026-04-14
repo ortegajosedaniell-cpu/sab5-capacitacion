@@ -3771,7 +3771,7 @@ function switchTab(panelId, btn){
   btn.classList.add('active');
   if(panelId==='t-preguntas') renderQEditor();
   if(panelId==='t-portada')   { loadCoverForm(); loadServiceLabelsAdmin(); renderModuleAdminList(); }
-  if(panelId==='t-usuarios')  renderUserList();
+  if(panelId==='t-usuarios')  { renderUserList(); mostrarMisCredenciales(); }
 }
 
 // ─── EDITOR DE PREGUNTAS ─────────────────────────────────────────
