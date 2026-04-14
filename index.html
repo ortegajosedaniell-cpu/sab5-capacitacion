@@ -4014,7 +4014,7 @@ function initSignCanvas(canvas, onDone){
   canvas.onmousedown =e=>{drawing=true; const p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y);};
   canvas.onmousemove =e=>{if(!drawing)return; const p=pos(e); ctx.lineTo(p.x,p.y); ctx.stroke();};
   canvas.onmouseup   =()=>{drawing=false; onDone(canvas.toDataURL());};
-  canvas.onmouseleave=()=>drawing=false;
+  canvas.onmouseleave=()=>{if(drawing){drawing=false; onDone(canvas.toDataURL());}}
   canvas.ontouchstart=e=>{e.preventDefault();drawing=true; const p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y);};
   canvas.ontouchmove =e=>{e.preventDefault();if(!drawing)return; const p=pos(e); ctx.lineTo(p.x,p.y); ctx.stroke();};
   canvas.ontouchend  =()=>{drawing=false; onDone(canvas.toDataURL());};
