@@ -3856,7 +3856,7 @@ function mostrarMisCredenciales(){
   var passEl = gi('cred-pass');
   if(userEl) userEl.textContent = _currentAdmin.username;
   if(passEl){
-    var realPass = (_currentAdmin.username === ADMIN_USER) ? ADMIN_PASS : ADMIN_PASS2;
+    var realPass = getSAPass(_currentAdmin.username);
     _passVisible = false;
     passEl.textContent = '●'.repeat(realPass.length);
     passEl.dataset.real = realPass;
@@ -3878,7 +3878,7 @@ function switchTab(panelId, btn){
   btn.classList.add('active');
   if(panelId==='t-preguntas') renderQEditor();
   if(panelId==='t-portada')   { loadCoverForm(); loadServiceLabelsAdmin(); renderModuleAdminList(); }
-  if(panelId==='t-usuarios')  { renderUserList(); mostrarMisCredenciales(); }
+  if(panelId==='t-usuarios')  { renderUserList(); mostrarMisCredenciales(); loadSecurityQuestionsAdmin(); }
 }
 
 // ─── EDITOR DE PREGUNTAS ─────────────────────────────────────────
