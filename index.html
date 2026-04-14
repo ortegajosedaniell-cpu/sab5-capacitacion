@@ -2622,9 +2622,61 @@ function startModQuiz(){
 
 function getCorrects(q){ return Array.isArray(q.c) ? q.c : [q.c]; }
 
-function getModEmoji(modId){
-  const map={1:'👮',2:'🧯',3:'❤️',4:'📹',5:'🏢','exam':'📝'};
-  return map[modId]||'✅';
+// ─── IMÁGENES POR PREGUNTA ───────────────────────────────────────
+const QB_IMGS = {
+  epp:       {bg:'#e3f2fd', ico:'⛑️',  sub:'🦺'},
+  extintor:  {bg:'#ffcdd2', ico:'🧯',  sub:'🔥'},
+  evacuacion:{bg:'#fff3e0', ico:'🚪',  sub:'🏃'},
+  ascensor:  {bg:'#fce4ec', ico:'🛗',  sub:'⚠️'},
+  incendio:  {bg:'#ffebee', ico:'🔥',  sub:'💨'},
+  incendio_elec:{bg:'#fff9c4',ico:'⚡',sub:'🔌'},
+  dea:       {bg:'#e8f5e9', ico:'💚',  sub:'⚡'},
+  rcp:       {bg:'#fce4ec', ico:'🫀',  sub:'🤲'},
+  heimlich:  {bg:'#f3e5f5', ico:'🤲',  sub:'🫁'},
+  acceso:    {bg:'#e8eaf6', ico:'🪪',  sub:'🚪'},
+  libro:     {bg:'#e0f2f1', ico:'📒',  sub:'✍️'},
+  monitoreo: {bg:'#e3f2fd', ico:'🖥️', sub:'📹'},
+  hemorragia:{bg:'#ffebee', ico:'🩹',  sub:'🩸'},
+  shock:     {bg:'#fff8e1', ico:'🫀',  sub:'🚑'},
+  acv:       {bg:'#f3e5f5', ico:'🧠',  sub:'⚡'},
+  elec:      {bg:'#fff9c4', ico:'⚡',  sub:'🔒'},
+  anafilaxia:{bg:'#f9fbe7', ico:'🐝',  sub:'😮‍💨'},
+  columna:   {bg:'#e8f5e9', ico:'🦴',  sub:'🚑'},
+  fractura:  {bg:'#fff3e0', ico:'🦴',  sub:'🧑‍🦽'},
+  paro:      {bg:'#ffebee', ico:'💔',  sub:'🫀'},
+  humo:      {bg:'#eceff1', ico:'💨',  sub:'🔥'},
+  gas:       {bg:'#fff8e1', ico:'⚠️',  sub:'💨'},
+  credencial:{bg:'#fce4ec', ico:'🪪',  sub:'❌'},
+  camara:    {bg:'#e3f2fd', ico:'📹',  sub:'🔍'},
+  phishing:  {bg:'#fff3e0', ico:'📧',  sub:'⚠️'},
+  grabacion: {bg:'#e8f5e9', ico:'💾',  sub:'🔍'},
+  alarma:    {bg:'#ffebee', ico:'🚨',  sub:'📊'},
+  mercaderia:{bg:'#fff8e1', ico:'📦',  sub:'🚫'},
+  ronda:     {bg:'#e8eaf6', ico:'🔦',  sub:'🔍'},
+  periodista:{bg:'#f3e5f5', ico:'🎙️', sub:'🚫'},
+  relevo:    {bg:'#e0f2f1', ico:'🔄',  sub:'📋'},
+  puerta:    {bg:'#e8eaf6', ico:'🚪',  sub:'🔒'},
+};
+
+// Imagen por módulo→índice de pregunta (orden del array QUIZZES)
+const QB_IMG_MAP = {
+  1:['acceso','credencial','credencial','acceso','epp','libro','puerta','libro','mercaderia','acceso','libro','shock','ronda','acceso','periodista','relevo'],
+  2:['incendio','incendio_elec','ascensor','extintor','extintor','evacuacion','incendio','extintor','extintor','evacuacion','evacuacion','gas','incendio_elec','incendio','evacuacion','extintor'],
+  3:['paro','rcp','dea','dea','heimlich','heimlich','hemorragia','shock','paro','columna','hemorragia','fractura','anafilaxia','elec','acv','rcp'],
+  4:['camara','camara','grabacion','alarma','camara','grabacion','phishing','alarma','camara','libro','acceso','camara','credencial','camara','phishing','camara'],
+};
+
+function getQImg(q, modId, idx){
+  // Primero busca el campo img en la pregunta, luego el mapa por módulo/índice
+  const key = q.img || (QB_IMG_MAP[modId]?.[idx]) || '';
+  const data = QB_IMGS[key];
+  if(!data) return '<span style="font-size:44px">'+(modId===2?'🧯':modId===3?'❤️':modId===4?'📹':'👮')+'</span>';
+  return '<span class="ico-main">'+data.ico+'</span><span class="ico-sub">'+data.sub+'</span>';
+}
+
+function getQImgBg(q, modId, idx){
+  const key = q.img || (QB_IMG_MAP[modId]?.[idx]) || '';
+  return QB_IMGS[key]?.bg || '#f1f8e9';
 }
 
 function renderQ(){
