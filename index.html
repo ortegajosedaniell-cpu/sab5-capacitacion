@@ -753,6 +753,32 @@
 
     <!-- ── TAB USUARIOS/ADMINS ── -->
     <div id="t-usuarios" class="admin-tab-panel">
+
+      <!-- CUADRO MIS CREDENCIALES (solo superadmin) -->
+      <div id="mis-credenciales" style="display:none;background:linear-gradient(135deg,#1a1a1a,#0d2600);border-radius:14px;padding:16px;margin-bottom:16px;border:1px solid rgba(76,175,80,.3)">
+        <div style="font-size:11px;font-weight:800;letter-spacing:2px;color:#66bb6a;margin-bottom:12px;text-transform:uppercase">🔐 Mis credenciales de acceso</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase">Usuario</div>
+              <div id="cred-user" style="color:#fff;font-weight:700;font-size:15px;font-family:monospace;margin-top:2px"></div>
+            </div>
+            <button onclick="copiarTexto('cred-user','btn-copy-user')" id="btn-copy-user" style="background:#333;color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer">📋 Copiar</button>
+          </div>
+          <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase">Contraseña</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
+                <div id="cred-pass" style="color:#fff;font-weight:700;font-size:15px;font-family:monospace"></div>
+                <button onclick="togglePassVis()" id="btn-vis-pass" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:16px;cursor:pointer;padding:0">👁</button>
+              </div>
+            </div>
+            <button onclick="copiarTexto('cred-pass','btn-copy-pass')" id="btn-copy-pass" style="background:#333;color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer">📋 Copiar</button>
+          </div>
+        </div>
+        <p style="font-size:10px;color:rgba(255,255,255,.35);text-align:center;margin-top:10px">Solo visible para el Superadmin. Guardá estos datos en un lugar seguro.</p>
+      </div>
+
       <div id="user-list"></div>
       <button class="add-q-btn" id="btn-add-admin" onclick="openUserModal(null)" style="display:none">+ Agregar administrador</button>
       <p style="font-size:11px;color:#bbb;text-align:center;margin-top:8px;margin-bottom:16px">Solo el Superadmin puede crear y eliminar administradores.</p>
