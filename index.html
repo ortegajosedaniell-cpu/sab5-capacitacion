@@ -694,6 +694,28 @@
 
     <!-- ── TAB RESULTADOS ── -->
     <div id="t-resultados" class="admin-tab-panel active">
+
+      <!-- CUADRO LINK PARA COMPARTIR -->
+      <div style="background:linear-gradient(135deg,#1a1a1a 0%,#2d0000 100%);border-radius:14px;padding:16px;margin-bottom:16px;border:1px solid rgba(204,0,0,.3)">
+        <div style="font-size:11px;font-weight:800;letter-spacing:2px;color:#ef5350;margin-bottom:8px;text-transform:uppercase">🔗 Link de la app — compartir con vigiladores</div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <div id="share-link-box" style="flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 12px;font-size:12px;color:#fff;font-family:monospace;word-break:break-all;min-width:0">https://ortegajosedaniell-cpu.github.io/sab5-capacitacion/go.html</div>
+          <button onclick="copiarLink()" style="background:#cc0000;color:#fff;border:none;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0">📋 Copiar</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+          <a href="https://wa.me/?text=Ingres%C3%A1%20a%20tu%20capacitaci%C3%B3n%20SAB-5%20desde%20este%20link%3A%20https%3A%2F%2Fortegajosedaniell-cpu.github.io%2Fsab5-capacitacion%2Fgo.html"
+             target="_blank"
+             style="flex:1;background:#25D366;color:#fff;border-radius:8px;padding:9px;text-align:center;font-size:12px;font-weight:700;text-decoration:none;min-width:120px">
+            💬 Enviar por WhatsApp
+          </a>
+          <a href="mailto:?subject=Capacitaci%C3%B3n%20SAB-5&body=Ingres%C3%A1%20a%20tu%20capacitaci%C3%B3n%20desde%3A%20https%3A%2F%2Fortegajosedaniell-cpu.github.io%2Fsab5-capacitacion%2Fgo.html"
+             style="flex:1;background:#1a1a1a;color:#fff;border-radius:8px;padding:9px;text-align:center;font-size:12px;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,.2);min-width:120px">
+            📧 Enviar por Email
+          </a>
+        </div>
+        <div id="share-copied" style="display:none;text-align:center;color:#4caf50;font-size:12px;font-weight:700;margin-top:6px">✅ ¡Link copiado!</div>
+      </div>
+
       <div class="kpi-grid">
         <div class="kpi total"><div class="kpi-n" id="kpi-total">0</div><div class="kpi-l">Total</div></div>
         <div class="kpi aprobados"><div class="kpi-n" id="kpi-ok">0</div><div class="kpi-l">Aprobados</div></div>
