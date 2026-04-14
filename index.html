@@ -2910,9 +2910,10 @@ async function showFResult(){
     cb.style.width = '0%';
     cs.style.display = 'flex';
     cs.style.opacity = '1';
-    cv.play().catch(()=>{ cs.style.display='none'; go('s-fresult'); });
+    cv.play().catch(()=>{ playCierreAudio(); });
     cv.ontimeupdate = ()=>{ if(cv.duration) cb.style.width=(cv.currentTime/cv.duration*100)+'%'; };
     cv.onended = ()=>{ skipCierre(); };
+    cv.onerror = ()=>{ playCierreAudio(); };
   } else {
     go('s-fresult');
   }
