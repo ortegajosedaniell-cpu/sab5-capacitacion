@@ -2723,7 +2723,9 @@ function confirmQ(q){
   const correctTxt=cs.map(i=>q.o[i]).join(' / ');
   if(ok && q.porq){
     const letters=cs.map(i=>String.fromCharCode(65+i)).join('/');
-    const emoji=getModEmoji(curMod?curMod.id:0);
+    const modId  = curMod?curMod.id:0;
+    const imgHtml= getQImg(q, modId, qIdx);
+    const imgBg  = getQImgBg(q, modId, qIdx);
     fb.innerHTML=
       '<div class="fb-why-card">'
       +'<div class="fb-why-header">'
@@ -2734,7 +2736,7 @@ function confirmQ(q){
       +'<div class="fb-why-body">'
         +'<div class="fb-why-left"><div class="fb-why-title">¿POR QUÉ?</div>'
         +'<div class="fb-why-text">'+q.porq+'</div></div>'
-        +'<div class="fb-why-img">'+emoji+'</div>'
+        +'<div class="fb-why-img" style="background:'+imgBg+'">'+imgHtml+'</div>'
       +'</div>'
       +(q.tip?'<div class="fb-why-tip">'+q.tip+'</div>':'')
       +'</div>';
