@@ -4697,14 +4697,115 @@ function cancelAdminHold(){
   clearTimeout(_adminTimer);
 }
 
-// ─── INTRO VIDEO ─────────────────────────────────────────────────
+// ─── INTRO VIDEO / AUDIO ─────────────────────────────────────────
 function skipIntro(){
   const intro = document.getElementById('s-intro');
   const vid   = document.getElementById('intro-video');
-  vid.pause();
-  intro.style.transition = 'opacity .5s';
+  try{ vid.pause(); }catch(e){}
+  intro.style.transition = 'opacity .6s';
   intro.style.opacity = '0';
-  setTimeout(()=>{ intro.style.display='none'; gi('s-login').classList.add('active'); }, 500);
+  setTimeout(()=>{ intro.style.display='none'; gi('s-login').classList.add('active'); }, 600);
+}
+
+// ── Intro musical + voz institucional (creada con código) ─────────
+function playIntroAudio(){
+  const intro = document.getElementById('s-intro');
+
+  // ── Visual: overlay con logo SAB-5 animado ──────────────────────
+  const ov = document.createElement('div');
+  ov.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;pointer-events:none';
+  ov.innerHTML=`
+    <div id="intro-logo-wrap" style="text-align:center;opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease">
+      <div style="font-size:80px;font-weight:900;color:#fff;letter-spacing:-3px;font-family:system-ui,sans-serif;line-height:1">
+        SAB<span style="color:#ef5350">-5</span>
+      </div>
+      <div style="color:rgba(255,255,255,.65);font-size:12px;letter-spacing:4px;margin-top:6px;font-family:system-ui">SEGURIDAD PRIVADA</div>
+      <div style="margin:20px auto 0;width:60px;height:2px;background:linear-gradient(90deg,transparent,#ef5350,transparent)"></div>
+      <div style="color:rgba(255,255,255,.35);font-size:10px;letter-spacing:2px;margin-top:14px;font-family:system-ui">SISTEMA DE CAPACITACIÓN PROFESIONAL</div>
+    </div>
+    <div id="intro-dots-row" style="display:flex;gap:10px;margin-top:36px;opacity:0;transition:opacity .5s .4s">
+      <div class="_idot"></div><div class="_idot"></div><div class="_idot"></div><div class="_idot"></div><div class="_idot"></div>
+    </div>
+    <div id="intro-tap-hint" style="position:absolute;bottom:32px;color:rgba(255,255,255,.28);font-size:10px;letter-spacing:2px;font-family:system-ui;opacity:0;transition:opacity 1s 3s">TOCÁ PARA CONTINUAR</div>
+  `;
+  // Animating dots CSS
+  const st = document.createElement('style');
+  st.textContent=`._idot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2);animation:_idotP 1.4s ease-in-out infinite}
+._idot:nth-child(1){animation-delay:0s}._idot:nth-child(2){animation-delay:.2s}._idot:nth-child(3){animation-delay:.4s}._idot:nth-child(4){animation-delay:.6s}._idot:nth-child(5){animation-delay:.8s}
+@keyframes _idotP{0%,100%{background:rgba(255,255,255,.15);transform:scaleY(1)}50%{background:#ef5350;transform:scaleY(1.7)}}`;
+  document.head.appendChild(st);
+  intro.appendChild(ov);
+
+  // Aparece el logo
+  setTimeout(()=>{
+    const lw=document.getElementById('intro-logo-wrap');
+    if(lw){ lw.style.opacity='1'; lw.style.transform='translateY(0)'; }
+    const dr=document.getElementById('intro-dots-row');
+    if(dr) dr.style.opacity='1';
+    const th=document.getElementById('intro-tap-hint');
+    if(th) th.style.opacity='1';
+  }, 150);
+
+  let skipDone=false;
+  function doSkip(){ if(!skipDone){ skipDone=true; try{window.speechSynthesis.cancel();}catch(e){} skipIntro(); } }
+
+  // ── Jingle institucional con Web Audio API ───────────────────────
+  function playJingle(){
+    try{
+      const AC=window.AudioContext||window.webkitAudioContext;
+      if(!AC) return;
+      const ctx=new AC();
+      const master=ctx.createGain(); master.gain.value=0.18; master.connect(ctx.destination);
+
+      function note(freq,t,dur,vol=1,type='sine'){
+        const o=ctx.createOscillator(), g=ctx.createGain();
+        o.type=type; o.frequency.setValueAtTime(freq,t);
+        g.gain.setValueAtTime(0,t);
+        g.gain.linearRampToValueAtTime(vol,t+0.04);
+        g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+        o.connect(g); g.connect(master);
+        o.start(t); o.stop(t+dur+0.05);
+      }
+      // Melodía: Do-Mi-Sol-Do (acorde ascendente + reverb largo)
+      const n=ctx.currentTime+0.2;
+      note(523.25, n,       0.55, 0.9);          // C5
+      note(659.25, n+0.42,  0.55, 0.9);          // E5
+      note(783.99, n+0.82,  0.55, 0.9);          // G5
+      note(1046.50,n+1.18,  1.40, 1.0);          // C6 largo
+      // Armónico suave por debajo
+      note(261.63, n,       2.80, 0.3,'triangle'); // C4 base
+    }catch(e){}
+  }
+
+  // ── Voz en off con Web Speech API ───────────────────────────────
+  function playVoz(){
+    if(!('speechSynthesis' in window)){ setTimeout(doSkip,2000); return; }
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance('Sistema de Capacitación SAB Cinco. Seguridad Privada.');
+    u.lang='es-AR'; u.rate=0.88; u.pitch=0.92; u.volume=1;
+    u.onend=()=>setTimeout(doSkip,900);
+    u.onerror=()=>setTimeout(doSkip,800);
+
+    // Cargar voces (en móvil pueden no estar listas aún)
+    function speak(){
+      const voices=window.speechSynthesis.getVoices();
+      const esVoice=voices.find(v=>v.lang.startsWith('es'))||voices[0];
+      if(esVoice) u.voice=esVoice;
+      window.speechSynthesis.speak(u);
+    }
+    if(window.speechSynthesis.getVoices().length){ speak(); }
+    else{ window.speechSynthesis.onvoiceschanged=speak; setTimeout(speak,300); }
+  }
+
+  // Secuencia: jingle → pausa → voz
+  playJingle();
+  setTimeout(playVoz, 2100);
+
+  // Fallback máximo 9 segundos
+  setTimeout(doSkip, 9000);
+
+  // Toque = saltar
+  intro.addEventListener('click', doSkip, {once:true});
 }
 
 (function initIntro(){
@@ -4712,22 +4813,23 @@ function skipIntro(){
   const bar = document.getElementById('intro-bar');
   let done = false;
   function safeSkip(){ if(!done){ done=true; skipIntro(); } }
-  // Barra de progreso
+  function safeAudio(){ if(!done){ done=true; playIntroAudio(); } }
+  // Barra de progreso (solo si el video carga)
   vid.addEventListener('timeupdate', ()=>{
     if(vid.duration) bar.style.width = (vid.currentTime/vid.duration*100)+'%';
   });
-  // Al terminar, pasar al login
+  // Si el video reproduce correctamente, úsalo
   vid.addEventListener('ended', safeSkip);
-  // Si no puede reproducir (error / archivo no encontrado), saltar igual
-  vid.addEventListener('error', safeSkip);
-  // Intentar play; si el browser bloquea (sin interacción), mostrar login directo
+  // Si no puede reproducir (intro.mp4 no existe) → intro musical
+  vid.addEventListener('error', safeAudio);
+  // Intentar play; si el browser bloquea → intro musical
   try {
     const p = vid.play();
-    if(p !== undefined){ p.catch(safeSkip); }
-  } catch(e){ safeSkip(); }
-  // Fallback: si en 8 segundos no pasó nada, saltar automáticamente
-  setTimeout(safeSkip, 8000);
-  // Toque en cualquier lugar de la pantalla de intro también salta
+    if(p !== undefined){ p.catch(safeAudio); }
+  } catch(e){ safeAudio(); }
+  // Fallback: si en 8 segundos el video no respondió, usar intro musical
+  setTimeout(safeAudio, 8000);
+  // Toque en pantalla de intro con video salta directo
   document.getElementById('s-intro').addEventListener('click', safeSkip);
 })();
 
