@@ -3367,18 +3367,47 @@ function showRecoveryInfo(){
 
   // ¿Es un superadmin?
   if(u === ADMIN_USER || u === ADMIN_USER2){
+    // Verificar si tiene preguntas de seguridad configuradas
+    var sqKey  = (u === ADMIN_USER) ? 'sab5_sa_sq1' : 'sab5_sa_sq2';
+    var sqData = null;
+    try { sqData = JSON.parse(localStorage.getItem(sqKey)); } catch(e){}
+
+    if(sqData && sqData.q1 && sqData.q2 && sqData.a1 && sqData.a2){
+      // ── Tiene preguntas → flujo de verificación ──
+      box.innerHTML =
+        '<div style="background:#1a1a1a;border:1px solid rgba(33,150,243,.45);border-radius:14px;padding:16px;color:#fff">'
+        +'<div style="font-size:12px;font-weight:800;letter-spacing:1px;color:#29b6f6;margin-bottom:4px;text-transform:uppercase">🛡️ Verificación de identidad</div>'
+        +'<p style="font-size:12px;color:rgba(255,255,255,.55);margin-bottom:14px">Respondé correctamente para ver tu contraseña.</p>'
+
+        +'<div style="margin-bottom:12px">'
+        +'<div style="font-size:12px;color:rgba(255,255,255,.7);margin-bottom:6px;font-weight:600">'+sqData.q1+'</div>'
+        +'<input type="text" id="sq-rec-a1" placeholder="Tu respuesta" style="width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none">'
+        +'</div>'
+
+        +'<div style="margin-bottom:16px">'
+        +'<div style="font-size:12px;color:rgba(255,255,255,.7);margin-bottom:6px;font-weight:600">'+sqData.q2+'</div>'
+        +'<input type="text" id="sq-rec-a2" placeholder="Tu respuesta" style="width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none">'
+        +'</div>'
+
+        +'<button onclick="verifySQRecovery(\''+u+'\')" style="width:100%;background:#0288d1;color:#fff;border:none;border-radius:8px;padding:12px;font-size:13px;font-weight:700;cursor:pointer">VERIFICAR →</button>'
+        +'<div id="sq-rec-msg" style="display:none;font-size:13px;text-align:center;margin-top:10px"></div>'
+        +'</div>';
+      return;
+    }
+
+    // ── Sin preguntas configuradas → fallback email ──
     const subject = encodeURIComponent('Recuperacion de acceso SAB-5 Admin: '+u);
     const body    = encodeURIComponent('Hola, necesito recuperar el acceso al panel de administrador.\n\nUsuario: '+u+'\n\nPor favor enviarme la contraseña de recuperación.');
-    box.innerHTML = `
-      <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:14px;font-size:13px;color:#664d03">
-        <div style="font-weight:800;font-size:14px;margin-bottom:8px">👤 Cuenta de Superadministrador</div>
-        <p style="margin-bottom:12px">Para recuperar el acceso a esta cuenta, contactá directamente al responsable del sistema.</p>
-        <a href="mailto:${RECOVERY_EMAIL}?subject=${subject}&body=${body}"
-           style="display:block;background:#b71c1c;color:#fff;border-radius:8px;padding:11px;text-align:center;font-weight:700;text-decoration:none;font-size:13px">
-          📧 Enviar solicitud por email
-        </a>
-        <p style="margin-top:8px;font-size:11px;color:#888;text-align:center">Se abrirá tu cliente de correo</p>
-      </div>`;
+    box.innerHTML =
+      '<div style="background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:14px;font-size:13px;color:#664d03">'
+      +'<div style="font-weight:800;font-size:14px;margin-bottom:8px">👤 Cuenta de Superadministrador</div>'
+      +'<p style="margin-bottom:8px">No hay preguntas de seguridad configuradas. Contactá al responsable del sistema.</p>'
+      +'<p style="font-size:11px;color:#997;margin-bottom:12px">💡 Una vez que recuperes el acceso, configurá tus preguntas en Panel → Administradores.</p>'
+      +'<a href="mailto:'+RECOVERY_EMAIL+'?subject='+subject+'&body='+body+'"'
+      +' style="display:block;background:#b71c1c;color:#fff;border-radius:8px;padding:11px;text-align:center;font-weight:700;text-decoration:none;font-size:13px">'
+      +'📧 Enviar solicitud por email</a>'
+      +'<p style="margin-top:8px;font-size:11px;color:#888;text-align:center">Se abrirá tu cliente de correo</p>'
+      +'</div>';
     return;
   }
 
