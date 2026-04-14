@@ -2571,7 +2571,26 @@ function confirmQ(q){
   qAns[qIdx]={ok};
   const fb=gi('q-fb'); fb.style.display='block';
   const correctTxt=cs.map(i=>q.o[i]).join(' / ');
-  fb.innerHTML=`<div class="fb ${ok?'fb-ok':'fb-bad'}"><span>${ok?'✅':'❌'}</span><span>${ok?'¡Correcto!':'Incorrecto. Correcta(s): '+correctTxt}</span></div>`;
+  if(ok && q.porq){
+    const letters=cs.map(i=>String.fromCharCode(65+i)).join('/');
+    const emoji=getModEmoji(curMod?curMod.id:0);
+    fb.innerHTML=
+      '<div class="fb-why-card">'
+      +'<div class="fb-why-header">'
+        +'<div class="fb-why-check">✓</div>'
+        +'<div><div class="fb-why-label">RESPUESTA CORRECTA: '+letters+'</div>'
+        +'<div class="fb-why-ans">'+correctTxt+'</div></div>'
+      +'</div>'
+      +'<div class="fb-why-body">'
+        +'<div class="fb-why-left"><div class="fb-why-title">¿POR QUÉ?</div>'
+        +'<div class="fb-why-text">'+q.porq+'</div></div>'
+        +'<div class="fb-why-img">'+emoji+'</div>'
+      +'</div>'
+      +(q.tip?'<div class="fb-why-tip">'+q.tip+'</div>':'')
+      +'</div>';
+  } else {
+    fb.innerHTML='<div class="fb '+(ok?'fb-ok':'fb-bad')+'"><span>'+(ok?'✅':'❌')+'</span><span>'+(ok?'¡Correcto!':'Incorrecto. Correcta(s): '+correctTxt)+'</span></div>';
+  }
   const nb=gi('btn-qnext'); nb.style.display='block';
   nb.textContent=qIdx===curQ.length-1?'VER RESULTADO →':'SIGUIENTE →';
 }
