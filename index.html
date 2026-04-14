@@ -2921,7 +2921,8 @@ async function showFResult(){
 function skipCierre(){
   const cs = gi('s-cierre');
   const cv = gi('cierre-video');
-  cv.pause();
+  try{ cv.pause(); }catch(e){}
+  try{ window.speechSynthesis.cancel(); }catch(e){}
   cs.style.transition = 'opacity .5s';
   cs.style.opacity = '0';
   setTimeout(()=>{
@@ -2929,6 +2930,76 @@ function skipCierre(){
     if(_certData){ initFirmaScreen(); go('s-firma'); }
     else { go('s-fresult'); }
   }, 500);
+}
+
+// ── Voz de cierre (cuando cierre.mp4 no existe) ───────────────────
+function playCierreAudio(){
+  const cs = gi('s-cierre');
+
+  // Overlay visual de cierre
+  const ov = document.createElement('div');
+  ov.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;pointer-events:none';
+  ov.innerHTML=`
+    <div id="cierre-logo-wrap" style="text-align:center;opacity:0;transform:scale(.9);transition:opacity .8s ease,transform .8s ease">
+      <div style="font-size:64px;margin-bottom:12px">🎖️</div>
+      <div style="font-size:52px;font-weight:900;color:#fff;letter-spacing:-2px;font-family:system-ui,sans-serif">SAB<span style="color:#ef5350">-5</span></div>
+      <div style="color:rgba(255,255,255,.7);font-size:13px;letter-spacing:3px;margin-top:6px;font-family:system-ui">¡MÓDULO COMPLETADO!</div>
+      <div style="margin:18px auto 0;width:80px;height:2px;background:linear-gradient(90deg,transparent,#ef5350,transparent)"></div>
+      <div style="color:rgba(255,255,255,.4);font-size:10px;letter-spacing:2px;margin-top:12px;font-family:system-ui">SEGURIDAD PRIVADA · SAB-5</div>
+    </div>`;
+  cs.appendChild(ov);
+  setTimeout(()=>{
+    const lw=document.getElementById('cierre-logo-wrap');
+    if(lw){ lw.style.opacity='1'; lw.style.transform='scale(1)'; }
+  }, 120);
+
+  // Jingle de cierre (descendente: C6-G5-E5-C5)
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(AC){
+      const ctx=new AC();
+      const master=ctx.createGain(); master.gain.value=0.16; master.connect(ctx.destination);
+      function note(freq,t,dur,vol=1,type='sine'){
+        const o=ctx.createOscillator(),g=ctx.createGain();
+        o.type=type; o.frequency.setValueAtTime(freq,t);
+        g.gain.setValueAtTime(0,t);
+        g.gain.linearRampToValueAtTime(vol,t+0.04);
+        g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+        o.connect(g); g.connect(master); o.start(t); o.stop(t+dur+0.05);
+      }
+      const n=ctx.currentTime+0.2;
+      note(1046.50,n,       0.45,1.0);   // C6
+      note(783.99, n+0.38,  0.45,0.9);   // G5
+      note(659.25, n+0.74,  0.45,0.9);   // E5
+      note(523.25, n+1.08,  1.20,1.0);   // C5 largo
+      note(261.63, n,       2.50,0.25,'triangle');
+    }
+  }catch(e){}
+
+  // Voz de cierre — masculina latina
+  setTimeout(()=>{
+    if(!('speechSynthesis' in window)){ setTimeout(skipCierre,2500); return; }
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance('¡Felicitaciones! Módulo completado con éxito. Sistema de Capacitación SAB Cinco. Seguridad Privada.');
+    u.lang='es-MX'; u.rate=0.84; u.pitch=0.78; u.volume=1;
+    u.onend=()=>setTimeout(skipCierre,800);
+    u.onerror=()=>setTimeout(skipCierre,600);
+    function speak(){
+      const voices=window.speechSynthesis.getVoices();
+      const maleKeywords=['male','hombre','jorge','pablo','diego','carlos','miguel','juan'];
+      const esVoices=voices.filter(v=>v.lang.startsWith('es'));
+      let chosen=esVoices.find(v=>maleKeywords.some(k=>v.name.toLowerCase().includes(k)));
+      if(!chosen) chosen=esVoices.find(v=>v.lang==='es-MX')||esVoices.find(v=>v.lang==='es-US')||esVoices[0]||voices[0];
+      if(chosen) u.voice=chosen;
+      window.speechSynthesis.speak(u);
+    }
+    if(window.speechSynthesis.getVoices().length){ speak(); }
+    else{ window.speechSynthesis.onvoiceschanged=speak; setTimeout(speak,300); }
+  }, 1800);
+
+  // Fallback: skip a los 9 segundos
+  setTimeout(skipCierre, 9000);
+  cs.addEventListener('click', ()=>{ try{window.speechSynthesis.cancel();}catch(e){} skipCierre(); }, {once:true});
 }
 
 // ─── FIRMA DIGITAL ──────────────────────────────────────────────
