@@ -3423,8 +3423,8 @@ function showRecoveryInfo(){
 function doAdminLogin(){
   const u = gi('a-user').value.trim();
   const p = gi('a-pass').value;
-  // Super admin (principal o secundario)
-  if((u === ADMIN_USER && p === ADMIN_PASS)||(u === ADMIN_USER2 && p === ADMIN_PASS2)){
+  // Super admin (principal o secundario) — contraseña puede estar sobreescrita en localStorage
+  if((u === ADMIN_USER && p === getSAPass(ADMIN_USER))||(u === ADMIN_USER2 && p === getSAPass(ADMIN_USER2))){
     _currentAdmin = {username: u, isSuperAdmin: true, perms:{resultados:true,preguntas:true,portada:true}};
     gi('a-err').style.display = 'none';
     gi('a-pass').value = '';
