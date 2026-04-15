@@ -4234,8 +4234,8 @@ function deleteUser(username){
 // ─── ADMIN TABS ──────────────────────────────────────────────────
 // ─── COPIAR LINK ─────────────────────────────────────────────────
 function getShareLink(){
-  // Siempre usa la URL actual de la página, sin parámetros
-  return window.location.origin + window.location.pathname;
+  // Link permanente — siempre go.html (nunca index.html ni ?v=...)
+  return 'https://ortegajosedaniell-cpu.github.io/sab5-capacitacion/go.html';
 }
 function initShareLinks(){
   var link = getShareLink();
