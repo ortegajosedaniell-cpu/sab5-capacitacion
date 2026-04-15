@@ -3644,10 +3644,8 @@ function showRecoveryInfo(){
 
   // ¿Es un superadmin?
   if(u === ADMIN_USER || u === ADMIN_USER2){
-    // Verificar si tiene preguntas de seguridad configuradas
-    var sqKey  = (u === ADMIN_USER) ? 'sab5_sa_sq1' : 'sab5_sa_sq2';
-    var sqData = null;
-    try { sqData = JSON.parse(localStorage.getItem(sqKey)); } catch(e){}
+    // Obtener preguntas: localStorage si existen, sino defaults hardcodeados
+    var sqData = getSASecurityQ(u);
 
     if(sqData && sqData.q1 && sqData.q2 && sqData.a1 && sqData.a2){
       // ── Tiene preguntas → flujo de verificación ──
