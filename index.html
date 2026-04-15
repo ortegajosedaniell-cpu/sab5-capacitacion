@@ -4975,6 +4975,169 @@ function applyCover(s){
   setTimeout(fillLogin, 1200);
 })();
 
+// ─── MODO DEMO ───────────────────────────────────────────────────
+let _demoRunning = false;
+function _demoWait(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+function _demoTypeField(el, text){
+  return new Promise(resolve=>{
+    el.value=''; el.focus();
+    let i=0;
+    const iv=setInterval(()=>{
+      el.value+=text[i++];
+      el.dispatchEvent(new Event('input'));
+      if(i>=text.length){ clearInterval(iv); setTimeout(resolve,200); }
+    }, 55);
+  });
+}
+
+function _demoFakeSelfie(){
+  // Genera una selfie de demostración (círculo con ícono de persona)
+  const cv=document.getElementById('selfie-canvas');
+  if(!cv) return;
+  const ctx=cv.getContext('2d');
+  cv.width=260; cv.height=260;
+  // Fondo con gradiente
+  const g=ctx.createRadialGradient(130,130,10,130,130,130);
+  g.addColorStop(0,'#b71c1c'); g.addColorStop(1,'#7f0000');
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(130,130,130,0,Math.PI*2); ctx.fill();
+  // Ícono persona
+  ctx.fillStyle='rgba(255,255,255,0.9)';
+  ctx.beginPath(); ctx.arc(130,90,38,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(130,185,58,55,0,0,Math.PI*2); ctx.fill();
+  // Texto DEMO
+  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.font='bold 18px system-ui';
+  ctx.textAlign='center'; ctx.fillText('DEMO',130,240);
+  // Exponer al sistema
+  const dataUrl=cv.toDataURL('image/jpeg',0.85);
+  window._selfieDataUrl=dataUrl;
+  // Mostrar preview
+  const previewImg=document.getElementById('selfie-preview-img');
+  const previewStep=document.getElementById('selfie-preview-step');
+  const captureStep=document.getElementById('selfie-capture-step');
+  if(previewImg){ previewImg.src=dataUrl; }
+  if(previewStep){ previewStep.style.display=''; }
+  if(captureStep){ captureStep.style.display='none'; }
+}
+
+function _demoDrawFirma(){
+  const cv=document.getElementById('firma-canvas');
+  if(!cv) return;
+  const ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.strokeStyle='#111'; ctx.lineWidth=3; ctx.lineCap='round'; ctx.lineJoin='round';
+  // Firma cursiva simple (curvas tipo rúbrica)
+  const pts=[
+    [30,100],[50,70],[80,55],[110,65],[130,90],[145,115],[160,100],
+    [175,75],[200,65],[225,75],[240,95],[250,115],[255,130],
+    [240,125],[220,115],[200,120],[185,135],[180,150],[190,155],
+    [210,145],[235,140],[260,145]
+  ];
+  ctx.beginPath(); ctx.moveTo(pts[0][0],pts[0][1]);
+  for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i][0],pts[i][1]);
+  ctx.stroke();
+  // Rúbrica inferior
+  ctx.beginPath(); ctx.moveTo(30,155); ctx.lineTo(260,155);
+  ctx.strokeStyle='rgba(0,0,0,0.2)'; ctx.lineWidth=1; ctx.stroke();
+  // Guardar dataUrl
+  window._firmaDataUrl=cv.toDataURL('image/png');
+}
+
+async function runDemo(){
+  if(_demoRunning) return;
+  _demoRunning=true;
+  const btn=document.getElementById('btn-demo');
+  if(btn){ btn.disabled=true; btn.textContent='⏳ Corriendo demo...'; }
+
+  // Toast de inicio
+  const toast=document.createElement('div');
+  toast.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 22px;border-radius:24px;font-size:13px;font-weight:700;z-index:99999;box-shadow:0 4px 20px rgba(0,0,0,.4)';
+  toast.textContent='🎬 Iniciando demo automático...';
+  document.body.appendChild(toast);
+  await _demoWait(1000);
+
+  // 1. Rellenar formulario
+  toast.textContent='✏️ Completando datos...';
+  await _demoTypeField(document.getElementById('i-nombre'),'Carlos Rodríguez');
+  await _demoWait(300);
+  await _demoTypeField(document.getElementById('i-dni'),'30512874');
+  await _demoWait(500);
+
+  // Seleccionar primer módulo disponible
+  const sel=document.getElementById('i-modulo');
+  if(sel){
+    const opts=[...sel.options].filter(o=>o.value&&!o.disabled);
+    if(opts.length) opts[0].selected=true;
+  }
+  await _demoWait(600);
+
+  // 2. Login
+  toast.textContent='🚀 Ingresando al sistema...';
+  await doLogin();
+  await _demoWait(1200);
+
+  // 3. Abrir módulo (click en primer mcard)
+  toast.textContent='📚 Abriendo módulo...';
+  const mcard=document.querySelector('.mcard.available, .mcard');
+  if(mcard) mcard.click();
+  await _demoWait(1800);
+
+  // 4. Limitar a 3 preguntas en modo demo e ir al quiz
+  toast.textContent='📝 Cargando quiz (3 preguntas)...';
+  // Interceptar curQ para solo 3 preguntas
+  startModQuiz();
+  await _demoWait(400);
+  if(window.curQ && window.curQ.length>3){ window.curQ=window.curQ.slice(0,3); }
+  renderQ();
+  await _demoWait(1500);
+
+  // 5. Responder 3 preguntas automáticamente
+  for(let qi=0; qi<3; qi++){
+    toast.textContent='❓ Respondiendo pregunta '+(qi+1)+' de 3...';
+    const q=window.curQ[window.qIdx];
+    if(!q) break;
+    const cs=Array.isArray(q.c)?q.c:[q.c];
+    // Seleccionar respuesta(s) correcta(s)
+    await _demoWait(900);
+    const opts=document.querySelectorAll('#q-opts .opt');
+    cs.forEach(ci=>{ if(opts[ci]){ opts[ci].classList.add('selected'); }});
+    const confBtn=document.querySelector('#q-opts .btn-confirm');
+    if(confBtn){ confBtn.classList.add('ready'); }
+    await _demoWait(800);
+    // Confirmar
+    if(confBtn) confBtn.click();
+    await _demoWait(1600);
+    // Siguiente o finalizar
+    const nextBtn=document.getElementById('btn-qnext');
+    if(nextBtn && nextBtn.style.display!=='none') nextBtn.click();
+    await _demoWait(700);
+  }
+
+  // 6. Ir a resultado
+  toast.textContent='🏆 Mostrando resultado...';
+  showQResult();
+  await _demoWait(2500);
+
+  // 7. Ir a firma
+  toast.textContent='📸 Generando selfie y firma...';
+  go('s-firma');
+  await _demoWait(1000);
+  _demoFakeSelfie();
+  await _demoWait(600);
+  _demoDrawFirma();
+  await _demoWait(1000);
+
+  // 8. Generar certificado (bypass selfie check)
+  toast.textContent='📜 Generando certificado...';
+  window._firmaDataUrl=document.getElementById('firma-canvas').toDataURL('image/png');
+  stopSelfieCamera && stopSelfieCamera();
+  generarCertificado(()=>go('s-email-cert'));
+  await _demoWait(1000);
+
+  toast.textContent='✅ Demo completado. ¡Listo para presentar!';
+  setTimeout(()=>{ toast.remove(); _demoRunning=false; if(btn){btn.disabled=false;btn.textContent='🎬 VER DEMO COMPLETO';} }, 3000);
+}
+
 // ─── UTILIDADES ──────────────────────────────────────────────────
 // Acceso admin oculto: mantener presionado 3 segundos el punto invisible
 let _adminTimer = null;
