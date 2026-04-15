@@ -4867,7 +4867,7 @@ function playIntroAudio(){
   function playVoz(){
     if(!('speechSynthesis' in window)){ setTimeout(doSkip,2000); return; }
     window.speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance('Bienvenidos al Sistema de Capacitación de SAB Cinco, Seguridad Privada.');
+    const u=new SpeechSynthesisUtterance('Bienvenido.');
     u.lang='es-MX'; u.rate=0.84; u.pitch=0.78; u.volume=1;
     u.onend=()=>setTimeout(doSkip,900);
     u.onerror=()=>setTimeout(doSkip,800);
