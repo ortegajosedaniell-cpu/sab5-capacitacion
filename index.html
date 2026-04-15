@@ -3613,6 +3613,23 @@ const ADMIN_PASS  = 'sab5admin'; // ← contraseña principal
 const ADMIN_USER2 = 'jose';
 const ADMIN_PASS2 = 'SAB5jose2026'; // ← contraseña secundaria
 
+// ─── PREGUNTAS DE SEGURIDAD POR DEFECTO ──────────────────────────
+// Se usan cuando el localStorage está vacío (nuevo navegador/dispositivo)
+const DEFAULT_SQ1 = {q1:'¿Cuál es tu primer amor?',    a1:'dios',
+                     q2:'¿Cuál es el nombre de tu primera mascota?', a2:'camilo'};
+const DEFAULT_SQ2 = {q1:'¿Cuál es tu primer amor?',    a1:'dios',
+                     q2:'¿Cuál es el nombre de tu primera mascota?', a2:'camilo'};
+
+function getSASecurityQ(username){
+  var key    = (username === ADMIN_USER) ? 'sab5_sa_sq1' : 'sab5_sa_sq2';
+  var defSQ  = (username === ADMIN_USER) ? DEFAULT_SQ1   : DEFAULT_SQ2;
+  var stored = null;
+  try{ stored = JSON.parse(localStorage.getItem(key)); }catch(e){}
+  // Usar localStorage si tiene datos completos, sino los defaults
+  if(stored && stored.q1 && stored.q2 && stored.a1 && stored.a2) return stored;
+  return defSQ;
+}
+
 let adminFilter = 'todos';
 let _adminData  = []; // datos consolidados (GitHub + local)
 
