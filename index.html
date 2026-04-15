@@ -4873,25 +4873,21 @@ function playIntroAudio(){
     u.onerror=()=>setTimeout(doSkip,800);
 
     // Preferir voz masculina latina (es-MX, es-US, es-419, es)
+    let _spoken=false;
     function speak(){
+      if(_spoken) return; _spoken=true;
+      window.speechSynthesis.onvoiceschanged=null;
       const voices=window.speechSynthesis.getVoices();
-      // Intentar voz masculina: buscar por nombre o por lang
-      // Nombres de voces masculinas latinas conocidas en Windows/Android/iOS
       const maleKeywords=['raul','pablo','jorge','diego','carlos','miguel','juan','andrés','pedro','male','hombre','homem'];
       const esVoices=voices.filter(v=>v.lang.startsWith('es'));
-      // Excluir voces femeninas conocidas
       const femaleKeywords=['sabina','helena','conchita','paulina','laura','isabela','female','mujer'];
-      let chosen = esVoices.find(v=>{
-        const n=v.name.toLowerCase();
-        return maleKeywords.some(k=>n.includes(k)) && !femaleKeywords.some(k=>n.includes(k));
-      });
-      // Fallback: priorizar es-MX (Microsoft Raul), es-US, es-AR, cualquier español
+      let chosen=esVoices.find(v=>{ const n=v.name.toLowerCase(); return maleKeywords.some(k=>n.includes(k))&&!femaleKeywords.some(k=>n.includes(k)); });
       if(!chosen) chosen=esVoices.find(v=>v.lang==='es-MX')||esVoices.find(v=>v.lang==='es-US')||esVoices.find(v=>v.lang==='es-AR')||esVoices[0]||voices[0];
       if(chosen) u.voice=chosen;
       window.speechSynthesis.speak(u);
     }
     if(window.speechSynthesis.getVoices().length){ speak(); }
-    else{ window.speechSynthesis.onvoiceschanged=speak; setTimeout(speak,300); }
+    else{ window.speechSynthesis.onvoiceschanged=speak; setTimeout(speak,400); }
   }
 
   // Secuencia: jingle → pausa → voz
