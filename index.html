@@ -3808,21 +3808,59 @@ function setFilter(f, btn){
   renderTable();
 }
 
+// Módulos del sistema (para la tabla agrupada)
+const _ADMIN_MODS = [
+  {id:1, short:'M1', label:'Funciones del Vigilador',    icon:'🛡️'},
+  {id:2, short:'M2', label:'Lucha contra Incendios',     icon:'🔥'},
+  {id:3, short:'M3', label:'RCP y Primeros Auxilios',    icon:'❤️'},
+  {id:4, short:'M4', label:'Monitorista CCTV',           icon:'🖥️'},
+];
+
 function renderTable(){
   const search = (gi('admin-search')?.value||'').toLowerCase();
-  let data = [..._adminData];
-
-  if(adminFilter !== 'todos') data = data.filter(d=>d.resultado===adminFilter);
-  if(search) data = data.filter(d=>
-    (d.nombre||'').toLowerCase().includes(search) ||
-    (d.dni||'').toLowerCase().includes(search) ||
-    (d.coordinador||d.sede||'').toLowerCase().includes(search)
-  );
-
   const tbody = gi('admin-tbody');
   tbody.innerHTML = '';
 
-  if(!data.length){
+  // ── Agrupar todos los registros por DNI ─────────────────────────
+  const byDni = {};
+  _adminData.forEach(d=>{
+    const key = (d.dni||'sin-dni').trim();
+    if(!byDni[key]){ byDni[key]={ nombre:d.nombre||'-', dni:d.dni||'-', records:[] }; }
+    // Actualizar nombre con el más reciente
+    if(d.fin && (!byDni[key]._lastFin || d.fin > byDni[key]._lastFin)){ byDni[key].nombre=d.nombre||byDni[key].nombre; byDni[key]._lastFin=d.fin; }
+    byDni[key].records.push(d);
+  });
+
+  // ── Calcular estado de cada módulo por persona ──────────────────
+  let groups = Object.values(byDni).map(g=>{
+    const recs = g.records;
+    // Para cada módulo: score máximo en cualquier registro
+    const mods = _ADMIN_MODS.map(m=>{
+      const scores = recs.map(r=>+(r['mod'+m.id])||0).filter(s=>s>0);
+      if(!scores.length) return {...m, attempted:false, passed:false, score:0};
+      const best = Math.max(...scores);
+      return {...m, attempted:true, passed:best>=(typeof MIN_MOD!=='undefined'?MIN_MOD:6), score:best};
+    });
+    // Ordenar registros por fecha desc
+    recs.sort((a,b)=>new Date(b.fin||0)-new Date(a.fin||0));
+    const lastFecha = recs[0]?.fin ? new Date(recs[0].fin).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}) : '-';
+    const passedCount = mods.filter(m=>m.passed).length;
+    const hasAnyPassed = passedCount>0;
+    const hasAnyFailed = mods.some(m=>m.attempted&&!m.passed);
+    // Mejor registro (para diploma)
+    const bestRec = recs.reduce((b,r)=>( (+(r.final)||0) >= (+(b?.final)||0) ? r : b ), recs[0]);
+    return {nombre:g.nombre, dni:g.dni, mods, passedCount, hasAnyPassed, hasAnyFailed, lastFecha, bestRec, recs};
+  });
+
+  // ── Filtros ─────────────────────────────────────────────────────
+  if(search) groups=groups.filter(g=>
+    g.nombre.toLowerCase().includes(search)||
+    g.dni.toLowerCase().includes(search)
+  );
+  if(adminFilter==='APROBADO')    groups=groups.filter(g=>g.hasAnyPassed);
+  if(adminFilter==='DESAPROBADO') groups=groups.filter(g=>g.hasAnyFailed&&!g.hasAnyPassed);
+
+  if(!groups.length){
     gi('admin-table').style.display='none';
     gi('admin-nodata').style.display='block';
     return;
@@ -3830,29 +3868,33 @@ function renderTable(){
   gi('admin-table').style.display='table';
   gi('admin-nodata').style.display='none';
 
-  data.forEach(d=>{
-    const ok = d.resultado === 'APROBADO';
-    const score = +(d.final) || 0;
-    const color = score >= 7.5 ? '#2e7d32' : score >= 5 ? '#e65100' : '#c62828';
-    const fecha = d.fin ? new Date(d.fin).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}) : '-';
-    const modulo = d.modTitle || d.modulo || '-';
+  groups.forEach(g=>{
+    // Badges de módulos
+    const modBadges = g.mods.map(m=>{
+      if(!m.attempted) return `<span class="mst mst-none" title="${m.label}">— <span class="mod-name-short">${m.short}</span></span>`;
+      if(m.passed)     return `<span class="mst mst-ok"   title="${m.label} · Nota ${m.score.toFixed(1)}">✅ ${m.score.toFixed(1)} <span class="mod-name-short">${m.short}</span></span>`;
+      return             `<span class="mst mst-fail" title="${m.label} · Nota ${m.score.toFixed(1)}">❌ ${m.score.toFixed(1)} <span class="mod-name-short">${m.short}</span></span>`;
+    }).join('');
 
+    const isSA = _currentAdmin&&_currentAdmin.isSuperAdmin;
     const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><strong>${d.nombre||'-'}</strong><br><span style="font-size:11px;color:#999">DNI: ${d.dni||'-'}</span></td>
-      <td style="font-size:12px">${d.coordinador||d.sede||'-'}</td>
-      <td style="font-size:12px">${modulo}</td>
+    tr.innerHTML=`
       <td>
-        <div class="score-bar-wrap">
-          <strong style="color:${color};min-width:32px">${score.toFixed(1)}</strong>
-          <div class="score-bar"><div class="score-bar-fill" style="width:${score*10}%;background:${color}"></div></div>
+        <strong>${g.nombre}</strong><br>
+        <span style="font-size:11px;color:#999">DNI: ${g.dni}</span><br>
+        <span style="font-size:10px;color:#bbb">${g.recs.length} registro${g.recs.length!==1?'s':''}</span>
+      </td>
+      <td>
+        <div style="display:flex;flex-wrap:wrap;gap:2px;align-items:center">${modBadges}</div>
+        <div style="font-size:10px;color:#999;margin-top:4px">
+          ${g.passedCount} de ${_ADMIN_MODS.length} módulos aprobados
+          ${g.mods.filter(m=>m.passed).length>0?' · '+g.mods.filter(m=>m.passed).map(m=>'<span style="color:#2e7d32;font-size:9px">'+m.icon+' '+m.short+'</span>').join(' '):''}
         </div>
       </td>
-      <td><span class="${ok?'badge-ok':'badge-no'}">${ok?'✅ APROBADO':'❌ DESAP.'}</span></td>
-      <td style="font-size:11px;color:#777">${fecha}</td>
+      <td style="font-size:11px;color:#777;white-space:nowrap">${g.lastFecha}</td>
       <td style="white-space:nowrap">
-        ${ok?`<button onclick='downloadDiplomaAdmin(${JSON.stringify(d).replace(/'/g,"&#39;")})' style='background:var(--red);color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;margin-bottom:4px'>⬇ Diploma</button>`:''}
-        ${(_currentAdmin&&_currentAdmin.isSuperAdmin)?`<button onclick="deleteRecord('${(d.dni||'')+'|'+(d.fin||'')}')" style='background:#444;color:#fff;border:none;border-radius:6px;padding:4px 9px;font-size:10px;cursor:pointer;margin-top:2px;display:block'>🗑 Borrar</button>`:''}
+        ${g.hasAnyPassed&&g.bestRec?`<button onclick='downloadDiplomaAdmin(${JSON.stringify(g.bestRec).replace(/'/g,"&#39;")})' style='background:var(--red);color:#fff;border:none;border-radius:6px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;display:block;margin-bottom:4px'>⬇ Diploma</button>`:''}
+        ${isSA?`<button onclick="deleteRecordDni('${g.dni}')" style='background:#444;color:#fff;border:none;border-radius:6px;padding:4px 9px;font-size:10px;cursor:pointer'>🗑 Borrar</button>`:''}
       </td>`;
     tbody.appendChild(tr);
   });
