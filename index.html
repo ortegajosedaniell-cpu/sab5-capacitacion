@@ -2593,8 +2593,8 @@ function renderHome(){
     c.appendChild(d);
   });
 
-  const allDone = activeMods.every(m=>prog[m.id]?.done);
-  gi('final-card').style.display = allDone?'block':'none';
+  // final-card oculta (resultado se ve en la pantalla de resultado del módulo)
+  gi('final-card').style.display = 'none';
 }
 
 // ─── MÓDULO ──────────────────────────────────────────────────────
