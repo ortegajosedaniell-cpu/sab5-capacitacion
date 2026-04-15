@@ -4181,12 +4181,32 @@ function deleteUser(username){
 
 // ─── ADMIN TABS ──────────────────────────────────────────────────
 // ─── COPIAR LINK ─────────────────────────────────────────────────
+function getShareLink(){
+  // Siempre usa la URL actual de la página, sin parámetros
+  return window.location.origin + window.location.pathname;
+}
+function initShareLinks(){
+  var link = getShareLink();
+  var box = gi('share-link-box');
+  if(box) box.textContent = link;
+  var wa = gi('share-wa');
+  if(wa) wa.href = 'https://wa.me/?text='+encodeURIComponent('Ingresá a tu capacitación SAB-5 desde este link: '+link);
+  var em = gi('share-email');
+  if(em) em.href = 'mailto:?subject='+encodeURIComponent('Capacitación SAB-5')+'&body='+encodeURIComponent('Ingresá a tu capacitación desde: '+link);
+}
 function copiarLink(){
-  var link = 'https://ortegajosedaniell-cpu.github.io/sab5-capacitacion/go.html';
+  var link = getShareLink();
   if(navigator.clipboard){ navigator.clipboard.writeText(link); }
   else { var t=document.createElement('textarea'); t.value=link; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); }
   var msg = gi('share-copied');
   if(msg){ msg.style.display='block'; setTimeout(()=>msg.style.display='none', 2500); }
+}
+async function deleteRecordDni(dni){
+  if(!confirm('¿Borrar TODOS los registros de DNI '+dni+'? Esta acción no se puede deshacer.')) return;
+  _adminData = _adminData.filter(d=>(d.dni||'').trim()!==dni.trim());
+  localStorage.setItem('sab5_evaluaciones', JSON.stringify(_adminData));
+  await pushEvaluaciones(_adminData);
+  loadAdmin();
 }
 function copiarTexto(elId, btnId){
   var el = gi(elId);
