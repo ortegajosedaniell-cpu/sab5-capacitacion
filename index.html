@@ -2527,35 +2527,86 @@ function go(id){
 }
 
 // ─── LOGIN ───────────────────────────────────────────────────────
+// Devuelve set de IDs de módulos aprobados para un DNI (chequea local)
+function getModulosAprobadosDni(dni){
+  const MIN = typeof MIN_MOD!=='undefined' ? MIN_MOD : 6;
+  const all = JSON.parse(localStorage.getItem('sab5_evaluaciones')||'[]');
+  const aprobados = new Set();
+  all.filter(r=>r.dni===dni).forEach(r=>{
+    [1,2,3,4].forEach(id=>{ if((+(r['mod'+id])||0) >= MIN) aprobados.add(id); });
+    // También por modId/modTitle si tiene resultado aprobado
+    if(r.resultado==='APROBADO'){
+      const mid = parseInt(r.modId)||0;
+      if(mid) aprobados.add(mid);
+      MODS.forEach(m=>{ if(m.title===(r.modTitle||r.modulo)) aprobados.add(m.id); });
+    }
+  });
+  return aprobados;
+}
+
+// Actualiza el dropdown mostrando qué módulos ya están aprobados
+let _dniCheckTimer=null;
+function checkDniModulos(dni){
+  clearTimeout(_dniCheckTimer);
+  if(!dni||dni.length<6){ renderModuleSelect(); return; }
+  _dniCheckTimer=setTimeout(()=>{
+    const aprobados = getModulosAprobadosDni(dni.trim());
+    const sel = gi('i-modulo');
+    if(!sel) return;
+    const cur = sel.value;
+    const enabled = getEnabledModules();
+    sel.innerHTML = '<option value="">-- Seleccioná el módulo --</option>';
+    MODS.forEach(m=>{
+      if(!enabled.includes(m.id)) return;
+      const o = document.createElement('option');
+      const yaOk = aprobados.has(m.id);
+      o.value = m.id;
+      o.textContent = (yaOk ? '✅ ' : '') + m.icon + ' ' + m.title + (yaOk ? ' (ya aprobado)' : '');
+      if(yaOk){ o.disabled=true; o.style.color='#aaa'; }
+      if(String(m.id)===cur && !yaOk) o.selected=true;
+      sel.appendChild(o);
+    });
+    // Aviso visual debajo del select
+    let hint = gi('dni-mod-hint');
+    if(!hint){ hint=document.createElement('p'); hint.id='dni-mod-hint'; hint.style.cssText='font-size:11px;color:#2e7d32;margin-top:4px;text-align:center'; sel.parentNode.appendChild(hint); }
+    hint.textContent = aprobados.size ? '✅ Este DNI ya aprobó '+aprobados.size+' módulo(s). Solo podés elegir los que faltan.' : '';
+  }, 400);
+}
+
 async function doLogin(){
-  const n=v('i-nombre'), d=v('i-dni');
+  const n=v('i-nombre'), d=v('i-dni').replace(/\D/g,'');
   const modId = parseInt(gi('i-modulo').value)||0;
   if(!n||!d||!modId){ alert('Completá todos los campos para continuar.'); return; }
 
-  // ── Verificar si el DNI ya aprobó este módulo específico ──
+  // ── Verificar si el DNI ya aprobó este módulo (local + GitHub) ──
   const btnLogin = gi('btn-login');
+  const MIN = typeof MIN_MOD!=='undefined' ? MIN_MOD : 6;
   if(btnLogin){ btnLogin.disabled=true; btnLogin.textContent='Verificando...'; }
-  const selMod0 = MODS.find(m=>m.id===modId);
-  const modTitleCheck = selMod0 ? selMod0.title : '';
-  let yaAprobado = false;
-  try {
-    const matchesMod = r => r.dni===d && r.resultado==='APROBADO' && (r.modulo===modTitleCheck || r.modTitle===modTitleCheck || r.modId===modId);
-    // Chequear local primero
-    const local = JSON.parse(localStorage.getItem('sab5_evaluaciones')||'[]');
-    if(local.some(matchesMod)) yaAprobado=true;
-    // Chequear GitHub si no encontró local
-    if(!yaAprobado){
+
+  // Chequeo local
+  let aprobados = getModulosAprobadosDni(d);
+
+  // Chequeo GitHub si no encontró localmente
+  if(!aprobados.has(modId)){
+    try{
       const res = await fetch(`https://raw.githubusercontent.com/${GH_REPO}/main/evaluaciones.json?_=${Date.now()}`);
       if(res.ok){
         const remote = await res.json();
-        if(remote.some(matchesMod)) yaAprobado=true;
+        remote.filter(r=>r.dni===d).forEach(r=>{
+          [1,2,3,4].forEach(id=>{ if((+(r['mod'+id])||0)>=MIN) aprobados.add(id); });
+          if(r.resultado==='APROBADO'){
+            const mid=parseInt(r.modId)||0; if(mid) aprobados.add(mid);
+            MODS.forEach(m=>{ if(m.title===(r.modTitle||r.modulo)) aprobados.add(m.id); });
+          }
+        });
       }
-    }
-  } catch(e){ /* si falla la red, permite continuar */ }
+    }catch(e){}
+  }
   if(btnLogin){ btnLogin.disabled=false; btnLogin.textContent='COMENZAR CAPACITACIÓN →'; }
 
-  if(yaAprobado){
-    alert('⚠️ El DNI '+d+' ya aprobó el módulo "'+modTitleCheck+'".\n\nPodés elegir otro módulo para continuar tu capacitación.');
+  if(aprobados.has(modId)){
+    const selMod0 = MODS.find(m=>m.id===modId);
+    alert('⚠️ El DNI '+d+' ya aprobó el módulo "'+( selMod0?selMod0.title:'seleccionado' )+'".\n\nElegí otro módulo que no hayas aprobado todavía.');
     return;
   }
 
