@@ -4965,66 +4965,77 @@ function playIntroAudio(){
       const AC=window.AudioContext||window.webkitAudioContext;
       if(!AC) return;
       const ctx=new AC();
-      const master=ctx.createGain(); master.gain.value=0.0; master.connect(ctx.destination);
-      master.gain.linearRampToValueAtTime(0.20, ctx.currentTime+0.12);
+      // Desbloquear el contexto si está suspendido (política autoplay del browser)
+      ctx.resume();
+      const master=ctx.createGain();
+      master.gain.setValueAtTime(0.001, ctx.currentTime);
+      master.gain.linearRampToValueAtTime(0.22, ctx.currentTime+0.1);
+      master.connect(ctx.destination);
 
-      // Delay/reverb simulado
-      const dly=ctx.createDelay(0.6); dly.delayTime.value=0.32;
-      const dlyG=ctx.createGain(); dlyG.gain.value=0.15;
+      // Eco corto (simula sala grande)
+      const dly=ctx.createDelay(0.5); dly.delayTime.value=0.28;
+      const dlyG=ctx.createGain(); dlyG.gain.value=0.14;
       dly.connect(dlyG); dlyG.connect(master);
 
-      function note(freq,t,dur,vol=1,type='sine'){
+      function note(freq,t,dur,vol,type){
+        type=type||'sine'; vol=vol||1;
         const o=ctx.createOscillator(), g=ctx.createGain();
         o.type=type; o.frequency.setValueAtTime(freq,t);
-        g.gain.setValueAtTime(0,t);
-        g.gain.linearRampToValueAtTime(vol,t+0.05);
-        g.gain.setValueAtTime(vol,t+dur*0.55);
+        g.gain.setValueAtTime(0.001,t);
+        g.gain.linearRampToValueAtTime(vol,t+0.06);
+        g.gain.setValueAtTime(vol,t+dur*0.6);
         g.gain.exponentialRampToValueAtTime(0.001,t+dur);
         o.connect(g); g.connect(master); g.connect(dly);
-        o.start(t); o.stop(t+dur+0.1);
+        o.start(t); o.stop(t+dur+0.08);
       }
 
-      const n=ctx.currentTime+0.15;
-      // ── Melodía: fanfare institucional ascendente (Sol-La-Do-Mi-Sol-La-Do) ──
-      note(392.00, n+0.00, 0.22, 0.85, 'sine');  // G4
-      note(440.00, n+0.20, 0.18, 0.80, 'sine');  // A4
-      note(523.25, n+0.36, 0.28, 0.90, 'sine');  // C5
-      note(659.25, n+0.60, 0.22, 0.85, 'sine');  // E5
-      note(783.99, n+0.80, 0.28, 0.90, 'sine');  // G5
-      note(880.00, n+1.05, 0.20, 0.80, 'sine');  // A5
-      note(1046.50,n+1.22, 1.80, 1.00, 'sine');  // C6 — nota final sostenida
-      // ── Bajo (fundamento armónico) ──
-      note(130.81, n+0.00, 0.90, 0.40,'triangle'); // C3
-      note(196.00, n+0.60, 1.00, 0.35,'triangle'); // G3
-      note(261.63, n+1.22, 2.00, 0.45,'triangle'); // C4
-      // ── Pad (cuerpo del sonido) ──
-      note(261.63, n+0.00, 0.55, 0.22,'triangle'); // C4
-      note(329.63, n+0.36, 0.90, 0.18,'triangle'); // E4
-      note(392.00, n+0.80, 1.20, 0.22,'triangle'); // G4
-      note(523.25, n+1.22, 2.00, 0.28,'triangle'); // C5
+      const n=ctx.currentTime+0.2;
+      // Fanfare institucional — Sol·La·Do·Mi·Sol·La·Do (ascendente)
+      note(392.00, n+0.00, 0.24, 0.85);  // G4
+      note(440.00, n+0.22, 0.20, 0.80);  // A4
+      note(523.25, n+0.40, 0.30, 0.90);  // C5
+      note(659.25, n+0.66, 0.24, 0.85);  // E5
+      note(783.99, n+0.88, 0.30, 0.90);  // G5
+      note(880.00, n+1.14, 0.22, 0.80);  // A5
+      note(1046.50,n+1.33, 1.90, 1.00);  // C6 — final sostenido
+      // Bajo armónico
+      note(130.81, n+0.00, 0.85, 0.38,'triangle'); // C3
+      note(196.00, n+0.66, 0.95, 0.33,'triangle'); // G3
+      note(261.63, n+1.33, 2.10, 0.42,'triangle'); // C4
+      // Pad (da cuerpo)
+      note(261.63, n+0.00, 0.50, 0.20,'triangle');
+      note(329.63, n+0.40, 0.85, 0.17,'triangle');
+      note(392.00, n+0.88, 1.10, 0.20,'triangle');
+      note(523.25, n+1.33, 2.10, 0.26,'triangle');
     }catch(e){}
   }
 
-  // ── Voz en off masculina latina con Web Speech API ───────────────
+  // ── Voz latina (cualquier género, prioridad América Latina) ──────
   function playVoz(){
     if(!('speechSynthesis' in window)){ setTimeout(doSkip,2000); return; }
     window.speechSynthesis.cancel();
     const u=new SpeechSynthesisUtterance('Bienvenido al Sistema de Capacitación Profesional. SAB Cinco, Seguridad Privada.');
-    u.lang='es-MX'; u.rate=0.82; u.pitch=0.78; u.volume=1;
+    u.lang='es-MX'; u.rate=0.82; u.pitch=0.9; u.volume=1;
     u.onend=()=>setTimeout(doSkip,900);
     u.onerror=()=>setTimeout(doSkip,800);
 
-    // Preferir voz masculina latina (es-MX, es-US, es-419, es)
     let _spoken=false;
     function speak(){
       if(_spoken) return; _spoken=true;
       window.speechSynthesis.onvoiceschanged=null;
       const voices=window.speechSynthesis.getVoices();
-      const maleKeywords=['raul','pablo','jorge','diego','carlos','miguel','juan','andrés','pedro','male','hombre','homem'];
-      const esVoices=voices.filter(v=>v.lang.startsWith('es'));
-      const femaleKeywords=['sabina','helena','conchita','paulina','laura','isabela','female','mujer'];
-      let chosen=esVoices.find(v=>{ const n=v.name.toLowerCase(); return maleKeywords.some(k=>n.includes(k))&&!femaleKeywords.some(k=>n.includes(k)); });
-      if(!chosen) chosen=esVoices.find(v=>v.lang==='es-MX')||esVoices.find(v=>v.lang==='es-US')||esVoices.find(v=>v.lang==='es-AR')||esVoices[0]||voices[0];
+      // Prioridad: cualquier voz latinoamericana (sin filtro de género)
+      const latinLocales=['es-MX','es-US','es-419','es-AR','es-CO','es-CL','es-PE','es-VE','es-EC','es-BO'];
+      const spainBlacklist=['es-ES','sabina','helena','conchita','jorge'];
+      let chosen=null;
+      for(const loc of latinLocales){
+        chosen=voices.find(v=>v.lang===loc);
+        if(chosen) break;
+      }
+      // Segundo intento: cualquier es- que no sea España
+      if(!chosen) chosen=voices.find(v=>v.lang.startsWith('es')&&!spainBlacklist.some(b=>v.lang===b||v.name.toLowerCase().includes(b)));
+      // Último recurso
+      if(!chosen) chosen=voices.find(v=>v.lang.startsWith('es'))||voices[0];
       if(chosen) u.voice=chosen;
       window.speechSynthesis.speak(u);
     }
