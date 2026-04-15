@@ -2752,7 +2752,7 @@ function confirmQ(q){
     fb.innerHTML='<div class="fb '+(ok?'fb-ok':'fb-bad')+'"><span>'+(ok?'✅':'❌')+'</span><span>'+(ok?'¡Correcto!':'Incorrecto. Correcta(s): '+correctTxt)+'</span></div>';
   }
   const nb=gi('btn-qnext'); nb.style.display='block';
-  nb.textContent=qIdx===curQ.length-1?'VER RESULTADO →':'SIGUIENTE →';
+  nb.textContent=qIdx===curQ.length-1?'FINALIZAR →':'SIGUIENTE →';
 }
 
 function nextQ(){ if(qIdx===curQ.length-1) showQResult(); else { qIdx++; renderQ(); } }
@@ -2845,7 +2845,7 @@ function confirmF(q){
   const correctTxt=cs.map(i=>q.o[i]).join(' / ');
   fb.innerHTML=`<div class="fb ${ok?'fb-ok':'fb-bad'}"><span>${ok?'✅':'❌'}</span><span>${ok?'¡Correcto!':'Correcta(s): '+correctTxt}</span></div>`;
   const nb=gi('btn-fnext'); nb.style.display='block';
-  nb.textContent=fIdx===EXAM.length-1?'VER RESULTADO FINAL →':'SIGUIENTE →';
+  nb.textContent=fIdx===EXAM.length-1?'FINALIZAR →':'SIGUIENTE →';
 }
 
 function nextF(){ if(fIdx===EXAM.length-1) showFResult(); else { fIdx++; renderF(); } }
