@@ -4272,9 +4272,7 @@ function loadSecurityQuestionsAdmin(){
 }
 
 function verifySQRecovery(username){
-  var sqKey  = (username === ADMIN_USER) ? 'sab5_sa_sq1' : 'sab5_sa_sq2';
-  var sqData = null;
-  try { sqData = JSON.parse(localStorage.getItem(sqKey)); } catch(e){}
+  var sqData = getSASecurityQ(username);
   if(!sqData) return;
   var a1  = (gi('sq-rec-a1').value||'').trim().toLowerCase();
   var a2  = (gi('sq-rec-a2').value||'').trim().toLowerCase();
