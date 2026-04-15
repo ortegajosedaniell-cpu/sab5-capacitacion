@@ -4897,6 +4897,81 @@ function applyCover(s){
   applyCover(getCoverSettings());
 })();
 
+// ─── MODO DEMO ───────────────────────────────────────────────────
+(function initDemo(){
+  if(!/[?&]demo=1/.test(location.search)) return;
+
+  // Badge flotante "DEMO"
+  const badge = document.createElement('div');
+  badge.innerHTML = '🎬 MODO DEMO';
+  badge.style.cssText = [
+    'position:fixed;top:12px;right:12px;z-index:99999',
+    'background:linear-gradient(135deg,#ef5350,#b71c1c)',
+    'color:#fff;font-size:11px;font-weight:800;letter-spacing:2px',
+    'padding:5px 13px;border-radius:20px',
+    'box-shadow:0 3px 14px rgba(239,83,80,.5)',
+    'pointer-events:none;animation:_demoP 2s ease-in-out infinite'
+  ].join(';');
+  const st=document.createElement('style');
+  st.textContent='@keyframes _demoP{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.75;transform:scale(.96)}}';
+  document.head.appendChild(st);
+  document.body.appendChild(badge);
+
+  // Rellenar formulario cuando la pantalla login esté visible
+  function fillLogin(){
+    const nombre = gi('i-nombre');
+    const dni    = gi('i-dni');
+    if(!nombre || !dni) return;
+    if(nombre.value) return; // ya rellenado
+
+    // Animación de tipeo realista
+    function typeField(el, text, cb){
+      el.value=''; el.focus();
+      let i=0;
+      const iv=setInterval(()=>{
+        el.value+=text[i++];
+        el.dispatchEvent(new Event('input'));
+        if(i>=text.length){ clearInterval(iv); setTimeout(cb||function(){},300); }
+      }, 65);
+    }
+
+    setTimeout(()=>{
+      typeField(nombre, 'Carlos Rodríguez', ()=>{
+        setTimeout(()=>{
+          typeField(dni, '30512874', ()=>{
+            // Seleccionar primer módulo disponible
+            setTimeout(()=>{
+              const sel=gi('i-modulo');
+              if(sel){
+                const opts=[...sel.options].filter(o=>o.value&&!o.disabled);
+                if(opts.length){ opts[0].selected=true; }
+              }
+              // Pulsar botón con efecto visual
+              setTimeout(()=>{
+                const btn=gi('btn-login');
+                if(btn){
+                  btn.style.transform='scale(1.04)';
+                  btn.style.boxShadow='0 0 0 4px rgba(239,83,80,.35)';
+                  setTimeout(()=>{ btn.style.transform=''; btn.style.boxShadow=''; }, 600);
+                }
+              }, 600);
+            }, 400);
+          });
+        }, 500);
+      });
+    }, 800);
+  }
+
+  // Observar cambio de pantalla para activar el relleno
+  const obs=new MutationObserver(()=>{
+    const login=gi('s-login');
+    if(login && login.classList.contains('active')) fillLogin();
+  });
+  obs.observe(document.body, {subtree:true, attributeFilter:['class']});
+  // También intentar al inicio
+  setTimeout(fillLogin, 1200);
+})();
+
 // ─── UTILIDADES ──────────────────────────────────────────────────
 // Acceso admin oculto: mantener presionado 3 segundos el punto invisible
 let _adminTimer = null;
