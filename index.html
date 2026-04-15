@@ -5066,8 +5066,11 @@ async function runDemo(){
   await _demoWait(500);
   const selMod=document.getElementById('i-modulo');
   if(selMod){
-    const opts=[...selMod.options].filter(o=>o.value&&!o.disabled);
-    if(opts.length) opts[0].selected=true;
+    // Demo siempre usa Módulo 2: Lucha contra Incendios
+    const optFuego=[...selMod.options].find(o=>o.value==='2'&&!o.disabled);
+    const optFallback=[...selMod.options].find(o=>o.value&&!o.disabled);
+    if(optFuego) optFuego.selected=true;
+    else if(optFallback) optFallback.selected=true;
   }
   await _demoWait(800);
 
