@@ -1,23 +1,23 @@
 [
   {
-    "nombre": "jose Ortega",
+    "nombre": "Jose ortega",
     "legajo": "",
     "dni": "32513789",
     "sede": "",
     "coordinador": "",
-    "modId": 4,
-    "modTitle": "Capacitación de Monitorista",
-    "inicio": "2026-04-15T00:16:09.115Z",
-    "fin": "2026-04-15T00:23:52.038Z",
-    "minutos": 8,
+    "modId": 3,
+    "modTitle": "RCP / DEA / Primeros Auxilios",
+    "inicio": "2026-04-15T00:27:25.608Z",
+    "fin": "2026-04-15T00:33:47.279Z",
+    "minutos": 6,
     "mod1": 0,
     "mod2": 0,
-    "mod3": 0,
-    "mod4": 8.8,
+    "mod3": 8.8,
+    "mod4": 0,
     "final": 8.8,
     "resultado": "APROBADO",
     "correctas": 14,
     "total": 16,
-    "certCode": "A816-B007-D22F-E7CE"
+    "certCode": "C6B0-886E-741B-3223"
   }
 ]
