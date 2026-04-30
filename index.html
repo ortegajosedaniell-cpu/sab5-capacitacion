@@ -1200,6 +1200,67 @@ const MIN_FINAL= 7.5; // nota mínima para aprobar evaluación (escala 0-10)
 const CERT_SECRET = 'SAB5-2026-SEGPRI-AR';
 
 
+// ─── MÓDULO 5: MANEJO SEGURO DE VEHÍCULO ────────────────────────
+function mod5(){ return `
+<div class="card"><h3>🚗 El vehículo SAB-5: una herramienta de trabajo con responsabilidad</h3>
+<p>El vehículo asignado al servicio no es un auto particular. Es una herramienta de trabajo de la empresa. Quien lo conduce asume responsabilidad civil, legal y operativa. Conocer los protocolos de inspección, comunicación y manejo puede evitar accidentes, sanciones y responsabilidades legales.</p></div>
+
+<div class="divider">🔍 INSPECCIÓN PRE-GUARDIA — ANTES DE ARRANCAR</div>
+<div class="card">
+<p style="font-size:13px;color:#555;margin-bottom:10px">Antes de iniciar el turno debés inspeccionar el vehículo completamente y <strong>documentar su estado con fotos</strong>. Si hay daños previos y no los documentás, pueden imputártelos a vos.</p>
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Carrocería exterior</h4><p>Revisá abolladuras, rayones, roturas de vidrios o espejos. Fotografiá cualquier daño visible antes de arrancar. Si encontrás daño nuevo no registrado, reportalo al coordinador de inmediato.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Neumáticos</h4><p>Verificá presión visual de los 4 neumáticos (y la rueda de auxilio). Un neumático blando puede reventar a velocidad. Si notás baja presión, reportar y no salir hasta tener autorización.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Luces</h4><p>Delantera, trasera, de freno, giros y balizas. Sin luces traseras no podés circular de noche — es peligroso e ilegal. Reportar al coordinador antes de salir.</p></div></div>
+<div class="estep"><div class="enum">4</div><div class="etxt"><h4>Líquidos y frenos</h4><p>Aceite, agua del radiador, líquido de frenos. Si el nivel de aceite está en mínimo, reportar. No arrancar si el freno de mano no funciona o el pedal de freno cede.</p></div></div>
+<div class="estep"><div class="enum">5</div><div class="etxt"><h4>Interior y equipamiento</h4><p>Matafuego vigente, botiquín de primeros auxilios, triángulos de emergencia, documentación. Sin cualquiera de estos elementos el vehículo no está en condiciones de salir.</p></div></div>
+<div class="estep"><div class="enum">6</div><div class="etxt"><h4>Nivel de combustible</h4><p>Registrar el nivel exacto en el libro de guardia. Si está bajo, reportar al coordinador antes de salir para definir la carga.</p></div></div>
+<div class="do-c"><div class="rtitle">✅ Regla de oro de la inspección</div><div class="rdesc">Si al asumir el turno encontrás un vehículo con daño no reportado por el turno anterior, <strong>NO firmés la recepción sin documentarlo</strong>. Una firma en esas condiciones implica que aceptás ese daño como propio.</div></div>
+</div>
+
+<div class="divider">📋 DOCUMENTACIÓN OBLIGATORIA DEL VEHÍCULO</div>
+<div class="card">
+<p style="font-size:13px;color:#555;margin-bottom:10px">Estos documentos deben estar presentes en el vehículo durante todo el servicio. Si falta alguno, el vehículo no puede salir.</p>
+<div class="do-c"><div class="rtitle">📄 Tarjeta verde</div><div class="rdesc">Título del vehículo. Demuestra que el vehículo pertenece a quien dice pertenecer. Sin ella el vehículo puede ser retenido.</div></div>
+<div class="do-c"><div class="rtitle">🛡️ Seguro de responsabilidad civil vigente</div><div class="rdesc">Debe estar dentro del vehículo, no solo "contratado". Si venció ayer, hoy no podés circular. En caso de accidente sin seguro vigente, la responsabilidad económica recae sobre el conductor.</div></div>
+<div class="do-c"><div class="rtitle">🔧 VTV vigente (Verificación Técnica Vehicular)</div><div class="rdesc">Certifica que el vehículo está en condiciones mecánicas y de seguridad para circular. Sin VTV vigente podés recibir multa y el vehículo puede ser secuestrado en el lugar.</div></div>
+<div class="do-c"><div class="rtitle">🪪 Registro de conducir del vigilador — vigente</div><div class="rdesc">Tu registro debe estar vigente y ser de la categoría correcta para el vehículo. Conducir sin registro vigente o con categoría incorrecta es una infracción grave.</div></div>
+<div class="alert-txt"><strong>Importante:</strong> Si al asumir la guardia detectás que algún documento está vencido, reportar al coordinador antes de salir. No salir sin documentación completa.</div>
+</div>
+
+<div class="divider">📻 COMUNICACIÓN CON COORDINADOR Y OPERACIONES</div>
+<div class="card">
+<p style="font-size:13px;color:#555;margin-bottom:10px">La comunicación no es opcional — es parte del protocolo de seguridad. Si perdés contacto, operaciones activa protocolos de búsqueda.</p>
+<div class="estep"><div class="enum">A</div><div class="etxt"><h4>Check-in al inicio del turno</h4><p>Al asumir el vehículo: reportar tu nombre, posición, estado del vehículo y documentación verificada. Es la primera comunicación oficial del turno.</p></div></div>
+<div class="estep"><div class="enum">B</div><div class="etxt"><h4>Reportes periódicos</h4><p>Cada 60-90 minutos según el protocolo de la empresa (o ante cualquier novedad). El check-in periódico confirma que el vigilador está operativo y sin novedades.</p></div></div>
+<div class="estep"><div class="enum">C</div><div class="etxt"><h4>Novedades inmediatas</h4><p>Cualquier incidente, anomalía o situación fuera de lo habitual se reporta de inmediato — sin esperar al próximo check-in periódico.</p></div></div>
+<div class="estep"><div class="enum">D</div><div class="etxt"><h4>Check-out al cierre del turno</h4><p>Reportar km final, estado del vehículo, novedades del turno y confirmación de entrega al vigilador entrante.</p></div></div>
+<div class="dont-c"><div class="rtitle">❌ Nunca usar el celular personal conduciendo</div><div class="rdesc">Ni con manos libres ni con auriculares. Si necesitás comunicarte: detenés el vehículo en lugar seguro, realizás la comunicación y luego continuás. El uso del celular al volante multiplica el riesgo de accidente y es falta grave en el servicio.</div></div>
+</div>
+
+<div class="divider">🏘️ MANEJO EN BARRIO PRIVADO — REGLAS ESPECÍFICAS</div>
+<div class="card">
+<div class="estep"><div class="enum">1</div><div class="etxt"><h4>Velocidad máxima: 20 km/h</h4><p>O la establecida por el reglamento interno del barrio. Los barrios privados tienen muchos peatones, niños y ciclistas. Un accidente dentro del barrio con el vehículo de la empresa tiene consecuencias contractuales graves.</p></div></div>
+<div class="estep"><div class="enum">2</div><div class="etxt"><h4>Luces siempre encendidas</h4><p>Incluso durante el día. Las luces bajas hacen al vehículo más visible y son obligatorias en muchos reglamentos internos de barrios privados.</p></div></div>
+<div class="estep"><div class="enum">3</div><div class="etxt"><h4>Prioridad absoluta al peatón</h4><p>En todo momento y en toda situación. Ceder el paso aunque el peatón esté cruzando por un lugar incorrecto.</p></div></div>
+<div class="estep"><div class="enum">4</div><div class="etxt"><h4>No usar bocina salvo emergencia real</h4><p>La bocina en un barrio privado genera quejas de residentes. Solo se usa en emergencia genuina.</p></div></div>
+<div class="estep"><div class="enum">5</div><div class="etxt"><h4>Patrullaje sistemático</h4><p>El recorrido debe ser ordenado y registrado con hora en cada punto. Variaciones del recorrido se informan al coordinador.</p></div></div>
+<p style="font-size:13px;font-weight:700;margin-top:14px;color:#1a1a1a">¿Qué observar y reportar durante el patrullaje?</p>
+<div class="do-c"><div class="rtitle">🚪 Portones o puertas abiertas fuera de horario</div><div class="rdesc">A las 2 AM una puerta abierta puede ser descuido o puede ser que alguien ingresó. Reportar con hora y ubicación, intentar contactar al propietario por los canales del barrio. No ingresar a la propiedad sin autorización.</div></div>
+<div class="do-c"><div class="rtitle">💡 Luminarias apagadas o dañadas</div><div class="rdesc">Una luminaria apagada puede ser falla técnica o puede haberse dañado intencionalmente para operar en la oscuridad. Reportar al coordinador y al consorcio del barrio.</div></div>
+<div class="do-c"><div class="rtitle">🚗 Vehículos desconocidos estacionados más de 3 horas</div><div class="rdesc">Registrar patente, color, modelo y hora. No actuar por cuenta propia: reportar al coordinador para que evalúe si se contacta al propietario o a la policía.</div></div>
+<div class="do-c"><div class="rtitle">👥 Personas a pie de madrugada sin actividad clara</div><div class="rdesc">No interceptar ni confrontar. Observar, registrar descripción detallada y reportar al coordinador. Si hay actitud claramente sospechosa o amenazante, llamar al 911.</div></div>
+</div>
+
+<div class="divider">📝 ELABORACIÓN DEL INFORME DE GUARDIA</div>
+<div class="card">
+<p style="font-size:13px;color:#555;margin-bottom:10px">El libro de guardia del vehículo es el documento legal del turno. Debe ser completo, ordenado y firmado.</p>
+<div class="estep"><div class="enum">INICIO</div><div class="etxt"><h4>Al asumir</h4><p>Nombre del vigilador · Hora de asunción · Km inicial del vehículo · Nivel de combustible · Estado del vehículo (observaciones) · Documentación verificada · Firma</p></div></div>
+<div class="estep"><div class="enum">TURNO</div><div class="etxt"><h4>Durante el servicio</h4><p>Hora y descripción de cada ronda realizada · Novedades con hora exacta, lugar y descripción detallada · Comunicaciones con operaciones realizadas</p></div></div>
+<div class="estep"><div class="enum">CIERRE</div><div class="etxt"><h4>Al finalizar</h4><p>Km final · Nivel de combustible al cierre · Estado del vehículo al entregar · Resumen de novedades del turno · Firma del vigilador saliente · Firma del vigilador entrante (conformidad de recepción)</p></div></div>
+<div class="alert-txt"><strong>Ante un accidente:</strong> No mover el vehículo (salvo riesgo de vida) · Llamar al coordinador de inmediato · Fotografiar la escena completa · Tomar datos del otro conductor y testigos · Nunca firmar ni admitir culpa sin autorización · Esperar instrucciones del coordinador.</div>
+</div>
+`;}
+
 // ─── CONTENIDO MÓDULOS ──────────────────────────────────────────
 const MODS = [
   { id:1, icon:'🛡️', title:'Funciones del Vigilador',          desc:'Rol, obligaciones y prohibiciones del vigilador', duration:'⏱ 25 min', html: mod1() },
