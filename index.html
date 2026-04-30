@@ -3122,7 +3122,7 @@ async function showQResult(){
     const fecha=now.toLocaleDateString('es-AR')+' '+now.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
     const certCode = await genCertCode(user.dni, user.legajo||'', fin);
     const data={...user, fin, minutos:min,
-      mod1:prog[1]?.score??0, mod2:prog[2]?.score??0, mod3:prog[3]?.score??0, mod4:prog[4]?.score??0,
+      mod1:prog[1]?.score??0, mod2:prog[2]?.score??0, mod3:prog[3]?.score??0, mod4:prog[4]?.score??0, mod5:prog[5]?.score??0,
       final:sc, resultado:'APROBADO', correctas:ok, total:tot, certCode};
     saveSheets(data);
     _certData={sc, ok, tot, min, fecha, data};
