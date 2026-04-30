@@ -2320,6 +2320,54 @@ function ejCCTV4bAns(i){
   }
 }
 
+// ── MOD5-VEHICULO: "¿OK o Novedad?" ─────────────────────────────
+const _EJ_VEH = [
+  {s:'El tanque de combustible marca 60% al inicio del turno.',r:'ok',exp:'Nivel por encima del mínimo operativo (25%). Podés salir en servicio normalmente.'},
+  {s:'El espejo retrovisor exterior derecho está rajado y girado hacia adentro.',r:'novedad',exp:'Un espejo dañado limita la visibilidad. Es una falla que debe quedar asentada antes de salir y debe ser reportada al coordinador.'},
+  {s:'El piso del interior está limpio, sin objetos sueltos y el cinturón funciona correctamente.',r:'ok',exp:'Interior en condiciones. Podés asumir el servicio.'},
+  {s:'El seguro del automotor venció hace 3 días según el comprobante que está en la guantera.',r:'novedad',exp:'Sin seguro vigente no podés circular legalmente. Avisás al coordinador antes de mover el vehículo. No es opcional.'},
+  {s:'Al encender el vehículo las luces de freno responden correctamente a la prueba estática.',r:'ok',exp:'Luces de freno operativas. Correcto — es parte de la inspección previa al turno.'},
+  {s:'El odómetro registra 180 km más que cuando lo recibiste en el turno anterior, sin que te hayan asignado ninguna ruta larga.',r:'novedad',exp:'Una diferencia de kilometraje injustificada es una anomalía que se reporta al coordinador. Puede indicar uso no autorizado del vehículo.'},
+  {s:'Encontrás el asiento del conductor empapado porque quedó la ventanilla abierta durante la lluvia.',r:'novedad',exp:'Daño por agua en el interior. Se asienta en el libro como novedad recibida. Puede haber humedad en la electrónica.'},
+  {s:'La presión de los cuatro neumáticos es correcta según el manómetro de la guantera del vehículo.',r:'ok',exp:'Presión correcta. Todo en orden — podés continuar con la inspección.'},
+];
+let _ejVehIdx=0, _ejVehScore=0;
+function ejVehStart(){_ejVehIdx=0;_ejVehScore=0;ejVehRender();}
+function ejVehRender(){
+  const el=document.getElementById('ejVeh-body');if(!el)return;
+  if(_ejVehIdx>=_EJ_VEH.length){
+    const pct=Math.round(_ejVehScore/_EJ_VEH.length*100);
+    el.innerHTML=`<div class="ej-score">Resultado: <span>${_ejVehScore}/${_EJ_VEH.length}</span> correctas (${pct}%)</div>
+      <div class="ej-feedback ${pct>=75?'ok':'err'}" style="display:block;margin-top:6px">${pct>=75?'✅ Buen criterio para la inspección y el manejo del vehículo SAB-5.':'⚠️ Repasá el protocolo de inspección previa y las condiciones de servicio.'}</div>
+      <button class="ej-reiniciar" onclick="ejVehStart()">🔄 Volver a intentar</button>`;
+    return;
+  }
+  const q=_EJ_VEH[_ejVehIdx];
+  el.innerHTML=`<div class="ej-progress">Situación ${_ejVehIdx+1} de ${_EJ_VEH.length} — Puntaje: ${_ejVehScore}</div>
+    <div class="ej-scenario">${q.s}</div>
+    <div class="ej-btns">
+      <button class="ej-btn verde" onclick="ejVehAns('ok')">✅ OK — Todo bien</button>
+      <button class="ej-btn rojo" onclick="ejVehAns('novedad')">🔴 Novedad — Reportar</button>
+    </div>
+    <div id="ejVeh-fb" class="ej-feedback" style="display:none"></div>`;
+}
+function ejVehAns(resp){
+  const q=_EJ_VEH[_ejVehIdx];
+  const ok=resp===q.r;
+  if(ok) _ejVehScore++;
+  document.querySelectorAll('#ejVeh-body .ej-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('ejVeh-fb');
+  if(!fb)return;
+  fb.className='ej-feedback '+(ok?'ok':'err');
+  fb.style.display='block';
+  fb.innerHTML=(ok?'✅ Correcto — ':'❌ Incorrecto — ')+q.exp;
+  const next=document.createElement('button');
+  next.className='ej-next';
+  next.textContent=_ejVehIdx+1<_EJ_VEH.length?'Siguiente situación →':'Ver resultado';
+  next.onclick=()=>{_ejVehIdx++;ejVehRender();};
+  fb.after(next);
+}
+
 // ─── QUIZZES ────────────────────────────────────────────────────
 const QUIZZES = {
   1:[
