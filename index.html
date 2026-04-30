@@ -3930,12 +3930,22 @@ function showRecoveryInfo(){
 }
 
 function doAdminLogin(){
+  const errEl = gi('a-err');
+  // ── Verificar bloqueo activo ──────────────────────────────────
+  const now = Date.now();
+  if(_loginState.lockUntil > now){
+    const mins = Math.ceil((_loginState.lockUntil - now) / 60000);
+    errEl.textContent = `🔒 Acceso bloqueado. Reintentá en ${mins} min.`;
+    errEl.style.display = 'block';
+    return;
+  }
   const u = gi('a-user').value.trim();
   const p = gi('a-pass').value;
   // Super admin (principal o secundario) — contraseña puede estar sobreescrita en localStorage
   if((u === ADMIN_USER && p === getSAPass(ADMIN_USER))||(u === ADMIN_USER2 && p === getSAPass(ADMIN_USER2))){
+    _loginState.count = 0; _loginState.lockUntil = 0;
     _currentAdmin = {username: u, isSuperAdmin: true, perms:{resultados:true,preguntas:true,portada:true}};
-    gi('a-err').style.display = 'none';
+    errEl.style.display = 'none';
     gi('a-pass').value = '';
     loadAdmin();
     go('s-admin');
@@ -3944,14 +3954,25 @@ function doAdminLogin(){
   // Admins secundarios
   const found = getAdminUsers().find(x=>x.username===u && x.pass===p);
   if(found){
+    _loginState.count = 0; _loginState.lockUntil = 0;
     _currentAdmin = {username: found.username, isSuperAdmin: false, perms: found.perms};
-    gi('a-err').style.display = 'none';
+    errEl.style.display = 'none';
     gi('a-pass').value = '';
     loadAdmin();
     go('s-admin');
     return;
   }
-  gi('a-err').style.display = 'block';
+  // ── Intento fallido ──────────────────────────────────────────
+  _loginState.count++;
+  const left = 3 - _loginState.count;
+  if(_loginState.count >= 3){
+    _loginState.lockUntil = Date.now() + 5 * 60 * 1000;
+    _loginState.count = 0;
+    errEl.textContent = '🔒 3 intentos fallidos. Bloqueado por 5 minutos.';
+  } else {
+    errEl.textContent = `❌ Datos incorrectos. ${left} intento${left!==1?'s':''} restante${left!==1?'s':''}.`;
+  }
+  errEl.style.display = 'block';
 }
 
 async function loadAdmin(){
