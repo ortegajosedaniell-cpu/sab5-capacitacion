@@ -2813,7 +2813,7 @@ function getModulosAprobadosDni(dni){
   const all = JSON.parse(localStorage.getItem('sab5_evaluaciones')||'[]');
   const aprobados = new Set();
   all.filter(r=>r.dni===dni).forEach(r=>{
-    [1,2,3,4].forEach(id=>{ if((+(r['mod'+id])||0) >= MIN) aprobados.add(id); });
+    [1,2,3,4,5].forEach(id=>{ if((+(r['mod'+id])||0) >= MIN) aprobados.add(id); });
     // También por modId/modTitle si tiene resultado aprobado
     if(r.resultado==='APROBADO'){
       const mid = parseInt(r.modId)||0;
