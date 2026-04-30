@@ -4861,7 +4861,7 @@ function applyQuestions(all){
   // Si tienen menos, ignorar para no pisar las preguntas actuales
   const valid = [1,2,3,4].every(i => !all[i] || all[i].length >= 16);
   if(valid){
-    [1,2,3,4].forEach(i=>{ if(all[i]) QUIZZES[i]=all[i]; });
+    [1,2,3,4,5].forEach(i=>{ if(all[i]) QUIZZES[i]=all[i]; });
   } else {
     // Borrar datos viejos incompatibles
     localStorage.removeItem('sab5_questions');
