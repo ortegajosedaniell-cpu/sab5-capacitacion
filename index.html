@@ -3788,21 +3788,47 @@ function saveLocal(data){
   pushEvaluaciones(list);
 }
 
-async function pushEvaluaciones(list){
-  try {
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(list, null, 2))));
-    // Obtener SHA actual si existe
-    const shaRes = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/evaluaciones.json`,
-      {headers:{'Authorization':'token '+GH_TOKEN}});
-    const sha = shaRes.ok ? (await shaRes.json()).sha : undefined;
-    const body = {message:'Nueva evaluación registrada', content};
-    if(sha) body.sha = sha;
-    await fetch(`https://api.github.com/repos/${GH_REPO}/contents/evaluaciones.json`,{
-      method:'PUT',
-      headers:{'Authorization':'token '+GH_TOKEN,'Content-Type':'application/json'},
-      body: JSON.stringify(body)
-    });
-  } catch(e){ console.log('Sync evaluaciones:', e.message); }
+async function pushEvaluaciones(localList){
+  // Reintentos con back-off para manejar conflictos concurrentes (usuarios simultáneos)
+  const MAX_RETRIES = 3;
+  for(let attempt = 0; attempt < MAX_RETRIES; attempt++){
+    try {
+      // 1. Obtener estado actual del remoto (SHA + datos)
+      const shaRes = await fetch(
+        `https://api.github.com/repos/${GH_REPO}/contents/evaluaciones.json`,
+        {headers:{'Authorization':'token '+GH_TOKEN}}
+      );
+      let remoteList = [], sha;
+      if(shaRes.ok){
+        const j = await shaRes.json();
+        sha = j.sha;
+        try{ remoteList = JSON.parse(atob(j.content.replace(/\n/g,''))); }catch(e){}
+      }
+      // 2. Merge: partir del remoto y agregar items locales que no estén allí
+      const remoteKeys = new Set(remoteList.map(d=>(d.dni||'')+'|'+(d.fin||'')));
+      const merged = [...remoteList];
+      for(const d of localList){
+        if(!remoteKeys.has((d.dni||'')+'|'+(d.fin||''))) merged.unshift(d);
+      }
+      merged.sort((a,b)=>new Date(b.fin||0)-new Date(a.fin||0));
+
+      // 3. Push merged al repositorio
+      const content = btoa(unescape(encodeURIComponent(JSON.stringify(merged, null, 2))));
+      const body = {message:'Nueva evaluación registrada', content};
+      if(sha) body.sha = sha;
+      const putRes = await fetch(
+        `https://api.github.com/repos/${GH_REPO}/contents/evaluaciones.json`,
+        {method:'PUT', headers:{'Authorization':'token '+GH_TOKEN,'Content-Type':'application/json'}, body:JSON.stringify(body)}
+      );
+      if(putRes.ok || putRes.status===201) return; // ✅ éxito
+      if(putRes.status===409){
+        // Conflicto (otro usuario publicó primero) → esperar y reintentar
+        await new Promise(r=>setTimeout(r, 800 + Math.random()*1500));
+        continue;
+      }
+      return; // otro error: no reintentar
+    } catch(e){ console.log('Sync evaluaciones:', e.message); return; }
+  }
 }
 
 function getLocal(){
