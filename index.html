@@ -3835,6 +3835,9 @@ function getSASecurityQ(username){
 let adminFilter = 'todos';
 let _adminData  = []; // datos consolidados (GitHub + local)
 
+// ─── PROTECCIÓN ANTI FUERZA BRUTA ────────────────────────────────
+const _loginState = { count: 0, lockUntil: 0 };
+
 // ─── RECUPERACIÓN DE CONTRASEÑA ──────────────────────────────────
 const RECOVERY_EMAIL = 'ortegajosedaniell@gmail.com';
 
