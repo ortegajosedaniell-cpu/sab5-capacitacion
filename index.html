@@ -5414,53 +5414,51 @@ async function runDemo(){
   if(mcard) mcard.click();
   await _demoWait(_DW);
 
-  // ── 4. Ir al quiz con solo 3 preguntas ──────────────────────────
-  _demoToast('📝 Iniciando evaluación (3 preguntas demo)...', toast);
+  // ── 4. Ir al quiz con solo 2 preguntas ──────────────────────────
+  _demoToast('📝 Evaluación (2 preguntas de muestra)...', toast);
   startModQuiz();
   await _demoWait(300);
-  // Recortar a 3 preguntas (acceso directo — mismo scope)
-  if(curQ.length>3){ curQ = curQ.slice(0,3); }
+  // Recortar a 2 preguntas (acceso directo — mismo scope)
+  if(curQ.length>2){ curQ = curQ.slice(0,2); }
   qIdx=0; qAns=[];
   renderQ();
-  await _demoWait(_DW);
+  await _demoWait(2000);
 
-  // ── 5. Responder 3 preguntas ────────────────────────────────────
-  for(let qi=0; qi<3; qi++){
+  // ── 5. Responder 2 preguntas ────────────────────────────────────
+  for(let qi=0; qi<2; qi++){
     const q=curQ[qIdx];
     if(!q) break;
-    _demoToast('❓ Respondiendo pregunta '+(qi+1)+' de 3...', toast);
+    _demoToast('❓ Pregunta '+(qi+1)+' de 2...', toast);
     const cs=Array.isArray(q.c)?q.c:[q.c];
-    await _demoWait(3000); // pausa para que se lea la pregunta
+    await _demoWait(2000); // pausa para que se lea la pregunta
     // Seleccionar respuesta(s) correcta(s)
     const optBtns=document.querySelectorAll('#q-opts .opt');
     cs.forEach(ci=>{ if(optBtns[ci]) optBtns[ci].classList.add('selected'); });
     const confBtn=document.querySelector('#q-opts .btn-confirm');
     if(confBtn) confBtn.classList.add('ready');
-    await _demoWait(1500);
+    await _demoWait(800);
     if(confBtn) confBtn.click(); // muestra feedback correcto
-    await _demoWait(4000); // 4s para leer el feedback
+    await _demoWait(2800); // 2.8s para leer el feedback con tarjeta "¿Por qué?"
     // Siguiente (la función nextQ ya sabe si es la última)
     const nextBtn=document.getElementById('btn-qnext');
     if(nextBtn && nextBtn.style.display!=='none') nextBtn.click();
-    if(qi<2) await _demoWait(_DW); // esperar 10s entre preguntas
+    if(qi<1) await _demoWait(1500);
   }
 
   // ── 6. Resultado ────────────────────────────────────────────────
-  await _demoWait(1500);
-  _demoToast('🏆 ¡Módulo aprobado! Mostrando resultado...', toast);
-  // showQResult ya fue llamado por nextQ en la última pregunta
+  await _demoWait(800);
+  _demoToast('🏆 ¡Módulo aprobado!', toast);
   await _demoWait(_DW);
 
-  // ── 7. Pantalla de firma ────────────────────────────────────────
-  _demoToast('✍️ Generando firma y foto para el certificado...', toast);
-  // Ir a firma (click en botón certificado si existe)
+  // ── 7. Cierre: firma + selfie ───────────────────────────────────
+  _demoToast('✍️ Firma y foto para el certificado...', toast);
   const certBtn=document.getElementById('btn-qresult-cert');
   if(certBtn) certBtn.click(); else go('s-firma');
-  await _demoWait(2000);
+  await _demoWait(1200);
   _demoFakeSelfie();
-  await _demoWait(1000);
+  await _demoWait(700);
   _demoDrawFirma();
-  await _demoWait(_DW);
+  await _demoWait(2500);
 
   // ── 8. Generar certificado ──────────────────────────────────────
   _demoToast('📜 Generando certificado oficial...', toast);
@@ -5468,12 +5466,12 @@ async function runDemo(){
   generarCertificado(()=>go('s-email-cert'));
   await _demoWait(_DW);
 
-  _demoToast('✅ Demo finalizado — certificado listo para descargar', toast);
+  _demoToast('✅ Demo finalizado — certificado listo', toast);
   setTimeout(()=>{
     toast.remove();
     _demoRunning=false;
-    if(btn){ btn.disabled=false; btn.textContent='🎬 VER DEMO COMPLETO'; }
-  }, 4000);
+    if(btn){ btn.disabled=false; btn.textContent='🎬 VER DEMO INTERACTIVO'; }
+  }, 3000);
 }
 
 // ─── UTILIDADES ──────────────────────────────────────────────────
