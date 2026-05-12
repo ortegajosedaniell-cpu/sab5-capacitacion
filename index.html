@@ -105,10 +105,12 @@
     input[type="checkbox"]{width:20px;height:20px;min-width:20px;padding:0;margin:0;border:2px solid #ccc;border-radius:4px;accent-color:var(--red);cursor:pointer;appearance:auto;-webkit-appearance:checkbox;flex-shrink:0}
 
     /* BUTTONS */
-    .btn{display:block;width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;text-align:center;transition:transform .1s,opacity .2s}
+    .btn{display:block;width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;text-align:center;transition:transform .1s,opacity .2s,box-shadow .2s}
     .btn:active{transform:scale(.98)}
-    .btn-primary{background:var(--red);color:#fff;letter-spacing:.5px}
-    .btn-primary:hover{background:var(--red2)}
+    .btn-primary{background:linear-gradient(135deg,var(--red) 0%,var(--red2) 100%);color:#fff;letter-spacing:.8px;box-shadow:0 6px 18px rgba(204,0,0,.32);position:relative;overflow:hidden}
+    .btn-primary::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transition:left .6s}
+    .btn-primary:hover{box-shadow:0 8px 24px rgba(204,0,0,.45)}
+    .btn-primary:hover::after{left:100%}
     .btn-success{background:var(--green);color:#fff}
     .btn-outline{background:transparent;border:2px solid var(--red);color:var(--red)}
     .btn-dark{background:var(--navy);color:#fff}
@@ -301,18 +303,49 @@
     .cover-preview-line{width:40px;height:2px;margin:8px auto;border-radius:2px}
     .cover-preview-sub{font-size:12px;opacity:.75}
 
+    /* ── INDICADOR EN VIVO ────────────────────────────────────────── */
+    .live-bar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#0a1f0a 0%,#1a3a1a 100%);border:1px solid rgba(76,175,80,.3);border-radius:12px;padding:10px 14px;margin-bottom:12px;color:#fff;box-shadow:0 2px 10px rgba(76,175,80,.15)}
+    .live-bar-left{display:flex;align-items:center;gap:9px}
+    .live-bar-right{display:flex;align-items:center;gap:14px}
+    .live-dot{width:9px;height:9px;border-radius:50%;background:#4caf50;box-shadow:0 0 0 0 rgba(76,175,80,.7);animation:livepulse 1.6s infinite}
+    @keyframes livepulse{0%{box-shadow:0 0 0 0 rgba(76,175,80,.7)}70%{box-shadow:0 0 0 10px rgba(76,175,80,0)}100%{box-shadow:0 0 0 0 rgba(76,175,80,0)}}
+    .live-txt{font-size:11px;font-weight:800;letter-spacing:2px;color:#a5d6a7}
+    .live-time{font-size:11px;color:rgba(255,255,255,.7);font-variant-numeric:tabular-nums}
+    .live-toggle{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,.85);cursor:pointer;user-select:none;font-weight:600}
+    .live-toggle input{accent-color:#4caf50;cursor:pointer}
+    .live-bar.flash{animation:liveflash 1s ease-out}
+    @keyframes liveflash{0%{background:linear-gradient(135deg,#1b5e20 0%,#2e7d32 100%);box-shadow:0 0 24px rgba(76,175,80,.6)}100%{background:linear-gradient(135deg,#0a1f0a 0%,#1a3a1a 100%);box-shadow:0 2px 10px rgba(76,175,80,.15)}}
+
+    /* ── KPI MODERNAS ─────────────────────────────────────────────── */
     .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-    .kpi{background:#fff;border-radius:var(--r);padding:14px 12px;box-shadow:var(--shadow);text-align:center;border-top:3px solid var(--border)}
-    .kpi.aprobados{border-top-color:var(--green)}
-    .kpi.desaprobados{border-top-color:var(--red)}
-    .kpi.total{border-top-color:#1a1a1a}
-    .kpi.promedio{border-top-color:#e65100}
-    .kpi-n{font-size:30px;font-weight:900;line-height:1}
+    .kpi{background:#fff;border-radius:14px;padding:16px 12px;box-shadow:0 4px 14px rgba(0,0,0,.06);text-align:center;border-top:3px solid var(--border);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+    .kpi::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0) 50%,rgba(0,0,0,.02) 100%);pointer-events:none}
+    .kpi:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.1)}
+    .kpi.aprobados{border-top-color:var(--green);background:linear-gradient(180deg,#fff 0%,#f1f8e9 100%)}
+    .kpi.desaprobados{border-top-color:var(--red);background:linear-gradient(180deg,#fff 0%,#ffebee 100%)}
+    .kpi.total{border-top-color:#1a1a1a;background:linear-gradient(180deg,#fff 0%,#f5f5f5 100%)}
+    .kpi.promedio{border-top-color:#e65100;background:linear-gradient(180deg,#fff 0%,#fff3e0 100%)}
+    .kpi-n{font-size:32px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
     .kpi.aprobados .kpi-n{color:var(--green)}
     .kpi.desaprobados .kpi-n{color:var(--red)}
     .kpi.total .kpi-n{color:#1a1a1a}
     .kpi.promedio .kpi-n{color:#e65100}
-    .kpi-l{font-size:11px;color:var(--muted);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+    .kpi-l{font-size:11px;color:var(--muted);margin-top:6px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+    .kpi-n.bump{animation:kpibump .55s cubic-bezier(.34,1.56,.64,1)}
+    @keyframes kpibump{0%{transform:scale(1)}50%{transform:scale(1.18);color:#4caf50}100%{transform:scale(1)}}
+
+    /* ── AVATAR INICIALES ─────────────────────────────────────────── */
+    .avatar{width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;letter-spacing:.3px;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+    .row-person{display:flex;align-items:center;gap:10px}
+    .row-person-info{min-width:0}
+    .row-person-name{font-weight:700;font-size:13px;color:#1a1a1a;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .row-person-dni{font-size:11px;color:#888;margin-top:1px}
+    .row-person-cnt{font-size:10px;color:#bbb;margin-top:1px}
+    .badge-new{display:inline-block;background:linear-gradient(135deg,#4caf50,#2e7d32);color:#fff;font-size:9px;font-weight:800;letter-spacing:.6px;padding:2px 7px;border-radius:8px;animation:newpulse 1.8s infinite}
+    @keyframes newpulse{0%,100%{box-shadow:0 0 0 0 rgba(76,175,80,.5)}50%{box-shadow:0 0 0 5px rgba(76,175,80,0)}}
+    .result-table tbody tr{transition:background .2s}
+    .result-table tbody tr.new-row{animation:newrow 1.2s ease-out}
+    @keyframes newrow{0%{background:#e8f5e9}100%{background:transparent}}
 
     .filter-bar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
     .filter-btn{padding:7px 14px;border:2px solid var(--border);border-radius:20px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .15s}
@@ -640,8 +673,8 @@
     </div>
     <button id="btn-login" class="btn btn-primary" onclick="doLogin()" style="margin-top:6px">COMENZAR CAPACITACIÓN →</button>
     <p style="text-align:center;font-size:11px;color:#aaa;margin-top:14px">Tus datos serán registrados con fines de capacitación.</p>
-    <div style="margin-top:18px;text-align:center">
-      <button id="btn-demo" onclick="runDemo()" style="background:linear-gradient(135deg,#1a1a1a,#4a0000);border:none;border-radius:24px;color:#fff;font-size:12px;font-weight:800;letter-spacing:2px;cursor:pointer;padding:10px 24px;box-shadow:0 4px 18px rgba(0,0,0,.35)">🎬 VER DEMO COMPLETO</button>
+    <div style="margin-top:20px;text-align:center">
+      <button id="btn-demo" onclick="runDemo()" style="background:linear-gradient(135deg,#2a2a2a,#0a0a0a);border:1px solid rgba(239,83,80,.3);border-radius:26px;color:#fff;font-size:11px;font-weight:800;letter-spacing:2.5px;cursor:pointer;padding:11px 26px;box-shadow:0 4px 18px rgba(0,0,0,.25);transition:all .2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(239,83,80,.35)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(0,0,0,.25)'">🎬 VER DEMO INTERACTIVO</button>
     </div>
     <p style="text-align:center;margin-top:16px">
       <button onclick="go('s-admin-login')" style="background:none;border:1px solid #ddd;border-radius:20px;font-size:11px;color:#ccc;cursor:pointer;padding:5px 16px;letter-spacing:.5px">Administrador</button>
@@ -708,7 +741,7 @@
       <span class="brand-sm">SAB<span>-5</span></span>
       <span class="adm-tag">ADMIN</span>
     </div>
-    <button class="logout-btn" onclick="go('s-login')">Salir</button>
+    <button class="logout-btn" onclick="stopAdminAutoRefresh();go('s-login')">Salir</button>
   </div>
 
   <!-- TABS -->
@@ -743,6 +776,21 @@
           </a>
         </div>
         <div id="share-copied" style="display:none;text-align:center;color:#4caf50;font-size:12px;font-weight:700;margin-top:6px">✅ ¡Link copiado!</div>
+      </div>
+
+      <!-- Indicador EN VIVO -->
+      <div id="live-bar" class="live-bar">
+        <div class="live-bar-left">
+          <span class="live-dot"></span>
+          <span class="live-txt">EN VIVO</span>
+        </div>
+        <div class="live-bar-right">
+          <span id="live-time" class="live-time">Conectando…</span>
+          <label class="live-toggle">
+            <input type="checkbox" id="live-auto" checked>
+            <span>Auto</span>
+          </label>
+        </div>
       </div>
 
       <div class="kpi-grid">
@@ -4000,7 +4048,36 @@ function doAdminLogin(){
   errEl.style.display = 'block';
 }
 
-async function loadAdmin(){
+// ─── AUTO-REFRESH: sync continuo desde GitHub ───────────────────
+let _adminAutoTimer = null;
+let _adminLastTotal = 0;
+let _adminNewKeys   = new Set(); // claves (dni|fin) marcadas como "NUEVO"
+let _adminLastFetch = 0;
+
+function startAdminAutoRefresh(){
+  stopAdminAutoRefresh();
+  _adminAutoTimer = setInterval(()=>{
+    const auto = gi('live-auto');
+    if(!auto || !auto.checked) return;
+    if(document.hidden) return; // pausar si el tab no está visible
+    loadAdmin(true);
+  }, 20000); // cada 20 segundos
+}
+function stopAdminAutoRefresh(){
+  if(_adminAutoTimer){ clearInterval(_adminAutoTimer); _adminAutoTimer=null; }
+}
+function updateLiveTime(){
+  const el = gi('live-time');
+  if(!el || !_adminLastFetch) return;
+  const secs = Math.floor((Date.now()-_adminLastFetch)/1000);
+  const txt = secs<5 ? 'Recién actualizado' :
+              secs<60 ? `Actualizado hace ${secs}s` :
+              `Actualizado hace ${Math.floor(secs/60)} min`;
+  el.textContent = txt;
+}
+setInterval(updateLiveTime, 1000);
+
+async function loadAdmin(isAuto){
   // ── Fetch desde GitHub (datos de TODOS los dispositivos) ──────
   let remoteData = [];
   try {
@@ -4016,7 +4093,22 @@ async function loadAdmin(){
     if(!keys.has((d.dni||'')+'|'+(d.fin||''))) remoteData.push(d);
   }
   remoteData.sort((a,b)=>new Date(b.fin||0)-new Date(a.fin||0));
+
+  // ── Detectar nuevos registros (vs último snapshot) ───────────
+  const prevKeys = new Set(_adminData.map(d=>(d.dni||'')+'|'+(d.fin||'')));
+  const incomingNew = [];
+  for(const d of remoteData){
+    const k = (d.dni||'')+'|'+(d.fin||'');
+    if(!prevKeys.has(k) && isAuto && _adminData.length>0){
+      incomingNew.push(k);
+      _adminNewKeys.add(k);
+    }
+  }
+  // Limpiar marcas "NUEVO" más viejas de 5 min
+  setTimeout(()=>{ incomingNew.forEach(k=>_adminNewKeys.delete(k)); if(gi('s-admin').classList.contains('active')) renderTable(); }, 5*60*1000);
+
   _adminData = remoteData;
+  _adminLastFetch = Date.now();
 
   // ── KPIs ──────────────────────────────────────────────────────
   const total = _adminData.length;
@@ -4024,27 +4116,42 @@ async function loadAdmin(){
   const no    = _adminData.filter(d=>d.resultado==='DESAPROBADO').length;
   const avg = total ? Math.round(_adminData.reduce((s,d)=>s+(d.final||0),0)/total*10)/10 : null;
 
+  // Animar KPIs si cambió el total
+  const totalEl = gi('kpi-total');
+  if(totalEl && total !== _adminLastTotal){
+    totalEl.classList.remove('bump'); void totalEl.offsetWidth; totalEl.classList.add('bump');
+    // Flash en la barra EN VIVO
+    const lb = gi('live-bar');
+    if(lb && _adminLastTotal>0){ lb.classList.remove('flash'); void lb.offsetWidth; lb.classList.add('flash'); }
+  }
+  _adminLastTotal = total;
+
   gi('kpi-total').textContent = total;
   gi('kpi-ok').textContent    = ok;
   gi('kpi-no').textContent    = no;
   gi('kpi-avg').textContent   = avg !== null ? avg.toFixed(1) : '-';
+  updateLiveTime();
 
-  // ── Tabs según permisos ───────────────────────────────────────
-  const p = _currentAdmin ? _currentAdmin.perms : {};
-  const sa = _currentAdmin && _currentAdmin.isSuperAdmin;
-  gi('tab-preguntas').style.display  = (sa || p.preguntas) ? '' : 'none';
-  gi('tab-usuarios').style.display   = sa ? '' : 'none';
-  gi('tab-portada').style.display    = (sa || p.portada)   ? '' : 'none';
-  gi('btn-delete-all').style.display = sa ? '' : 'none';
+  // En auto-refresh NO reiniciamos los tabs (preservar lo que el admin está mirando)
+  if(!isAuto){
+    const p = _currentAdmin ? _currentAdmin.perms : {};
+    const sa = _currentAdmin && _currentAdmin.isSuperAdmin;
+    gi('tab-preguntas').style.display  = (sa || p.preguntas) ? '' : 'none';
+    gi('tab-usuarios').style.display   = sa ? '' : 'none';
+    gi('tab-portada').style.display    = (sa || p.portada)   ? '' : 'none';
+    gi('btn-delete-all').style.display = sa ? '' : 'none';
 
-  document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.admin-tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelector('.admin-tab').classList.add('active');
-  gi('t-resultados').classList.add('active');
+    document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.admin-tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelector('.admin-tab').classList.add('active');
+    gi('t-resultados').classList.add('active');
 
-  renderTable();
-  renderUserList();
-  initShareLinks(); // Actualiza links con la URL actual
+    renderUserList();
+    initShareLinks();
+    startAdminAutoRefresh();
+  }
+
+  renderTable(incomingNew);
 }
 
 function setFilter(f, btn){
@@ -4063,10 +4170,22 @@ const _ADMIN_MODS = [
   {id:5, short:'M5', label:'Manejo Seguro Vehículo',     icon:'🚗'},
 ];
 
-function renderTable(){
+// ── Helpers visuales ───────────────────────────────────────────
+function avatarHtml(name){
+  const parts = String(name||'?').trim().split(/\s+/);
+  const ini = ((parts[0]?.[0]||'?') + (parts[1]?.[0]||'')).toUpperCase();
+  // Color determinista por nombre
+  let hash=0; for(const c of name||'') hash = (hash*31 + c.charCodeAt(0))>>>0;
+  const palette = ['#1976d2','#388e3c','#d32f2f','#7b1fa2','#f57c00','#0288d1','#00796b','#5d4037','#455a64','#c2185b'];
+  const bg = palette[hash % palette.length];
+  return `<span class="avatar" style="background:${bg}">${escHtml(ini)}</span>`;
+}
+
+function renderTable(newKeys){
   const search = (gi('admin-search')?.value||'').toLowerCase();
   const tbody = gi('admin-tbody');
   tbody.innerHTML = '';
+  newKeys = newKeys || [];
 
   // ── Agrupar todos los registros por DNI ─────────────────────────
   const byDni = {};
@@ -4127,11 +4246,20 @@ function renderTable(){
     const tr = document.createElement('tr');
     const safeNombre = escHtml(g.nombre);
     const safeDni    = escHtml(g.dni);
+    // ¿Hay un registro NUEVO (últimos 5 min) en este grupo?
+    const isNew = g.recs.some(r=>_adminNewKeys.has((r.dni||'')+'|'+(r.fin||'')));
+    if(isNew) tr.classList.add('new-row');
+    const newBadge = isNew ? '<span class="badge-new">● NUEVO</span>' : '';
     tr.innerHTML=`
       <td>
-        <strong>${safeNombre}</strong><br>
-        <span style="font-size:11px;color:#999">DNI: ${safeDni}</span><br>
-        <span style="font-size:10px;color:#bbb">${g.recs.length} registro${g.recs.length!==1?'s':''}</span>
+        <div class="row-person">
+          ${avatarHtml(g.nombre)}
+          <div class="row-person-info">
+            <div class="row-person-name">${safeNombre}${newBadge}</div>
+            <div class="row-person-dni">DNI: ${safeDni}</div>
+            <div class="row-person-cnt">${g.recs.length} registro${g.recs.length!==1?'s':''}</div>
+          </div>
+        </div>
       </td>
       <td>
         <div style="display:flex;flex-wrap:wrap;gap:2px;align-items:center">${modBadges}</div>
@@ -4973,7 +5101,7 @@ function loadCoverImage(input){
 }
 
 // GitHub config para publicar cambios
-const GH_TOKEN = ['ghp_3lJN','JJ9HkSAMY','taZG0D1tvy','ZAsddYc3Y3Blw'].join('');
+const GH_TOKEN = ['ghp_AXrw','YcOUb6vIX1','PQOCmxeOl2','ZHJU4049LwdQ'].join('');
 const GH_REPO  = 'ortegajosedaniell-cpu/sab5-capacitacion';
 
 async function saveCover(){
