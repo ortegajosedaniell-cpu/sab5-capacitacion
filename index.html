@@ -2860,15 +2860,98 @@ function shuffleOpts(q){
   return {...q, o:newO, c:newC};
 }
 
+// ─── BANCO DE PREGUNTAS FÁCILES PARA EL MODO PRÁCTICA ────────────
+// 3 preguntas obvias por módulo: pensadas para demos y presentaciones.
+// Respuesta correcta = la opción más razonable y alineada con la doctrina.
+const DEMO_QUIZ = {
+  1: [
+    {q:"Durante tu turno notás que una persona intenta entrar sin identificarse. ¿Qué hacés?",
+     o:["Lo dejás pasar sin preguntar","Le pedís identificación amablemente y si se niega avisás a la Central de Operaciones","Lo insultás y lo echás del lugar","Lo ignorás y seguís tu ronda"],c:[1],
+     porq:"El control de acceso es la función principal del vigilador: verificar identidad antes de permitir el ingreso. Ante negativa o duda, la Central de Operaciones evalúa los siguientes pasos.",
+     tip:"Identificación primero, siempre. Sin identificación, no entra."},
+    {q:"Encontrás durante tu ronda a una persona claramente ebria en la puerta agrediendo a clientes. ¿Qué hacés?",
+     o:["Lo golpeás para hacerlo entender","Intentás mediar verbalmente y si escala avisás a la Central de Operaciones (botón de pánico)","Lo ignorás: no es tu problema","Le pedís disculpas y te alejás"],c:[1],
+     porq:"La fuerza física solo es válida si es proporcional y necesaria. La primera respuesta siempre es verbal. Si la situación escala, la Central despacha la respuesta adecuada.",
+     tip:"Primero la palabra, después la Central. Nunca confrontes solo."},
+    {q:"Tu turno termina pero el relevo no llegó todavía. ¿Qué hacés?",
+     o:["Te vas igual: tu horario ya terminó","Esperás al relevo y avisás a la Central de Operaciones que tu reemplazo no llegó","Cerrás todo y dejás el puesto vacío","Llamás a un amigo para que te reemplace"],c:[1],
+     porq:"El puesto de vigilancia nunca puede quedar abandonado. La Central de Operaciones es quien coordina el relevo y resuelve la situación.",
+     tip:"No abandones el puesto. La Central resuelve el relevo."}
+  ],
+  2: [
+    {q:"Detectás humo saliendo de una oficina. ¿Cuál es tu primera acción?",
+     o:["Abrís la puerta para ver qué pasa","Activás la alarma de incendio y avisás a la Central de Operaciones (botón de pánico)","Buscás un balde de agua","Esperás a ver si el humo se disipa solo"],c:[1],
+     porq:"Ante humo o fuego, la prioridad absoluta es activar la alarma y comunicar a la Central de Operaciones. La Central despacha a Bomberos (100). Abrir la puerta puede avivar el fuego.",
+     tip:"Alarma + Central de Operaciones. Siempre en ese orden."},
+    {q:"En una evacuación por incendio, ¿qué medio de transporte usás para bajar?",
+     o:["Ascensor: es más rápido","Escaleras: siempre, nunca ascensor","Saltás por la ventana","Esperás a que llegue el rescate al piso"],c:[1],
+     porq:"En un incendio, el ascensor puede quedar atascado si falla la energía. Las escaleras son la única vía segura de evacuación.",
+     tip:"En incendio: SIEMPRE escaleras, NUNCA ascensor."},
+    {q:"Antes de usar un extintor, ¿qué tenés que verificar?",
+     o:["Que sea de color rojo","Que el manómetro esté en zona verde (presión OK) y que sepas usarlo","Solo que esté lleno","Nada: cualquier extintor sirve"],c:[1],
+     porq:"Un extintor con presión baja (zona roja del manómetro) no funciona. Antes de actuar, verificar que esté operativo. Si el fuego es grande, evacuar y dejarlo a Bomberos.",
+     tip:"Manómetro en verde + extintor adecuado + vía de escape clara."}
+  ],
+  3: [
+    {q:"Una persona se desmaya y no responde. ¿Cuál es la primera acción?",
+     o:["Le tirás agua en la cara","Verificás si respira y avisás a la Central de Operaciones (botón de pánico)","La sacudís fuerte para despertarla","La sentás en una silla"],c:[1],
+     porq:"Ante una persona inconsciente, lo primero es verificar respiración y avisar a la Central. La Central despacha al SAME (107). Cada segundo cuenta.",
+     tip:"Verificá respiración + Central de Operaciones inmediato."},
+    {q:"Hacés RCP y llega una persona que se identifica como médica y pide tomar el relevo. ¿Qué hacés?",
+     o:["Te negás: la responsabilidad es tuya","Le cedés el lugar de inmediato y la asistís buscando el DEA o despejando el área","La ignorás y seguís vos","Le pedís el carnet primero"],c:[1],
+     porq:"Ante un profesional médico que se identifica, la responsabilidad legal pasa a él. Tu rol cambia: pasás a ser apoyo (DEA, despejar el área, mantener informada a la Central).",
+     tip:"Si llega un médico: le cedés, lo asistís."},
+    {q:"Una persona se está atragantando y no puede respirar. ¿Qué hacés?",
+     o:["Le das agua para que trague","Aplicás la maniobra de Heimlich y avisás a la Central de Operaciones","La sentás y esperás","La acostás boca arriba"],c:[1],
+     porq:"Ante un atragantamiento con obstrucción total, la maniobra de Heimlich puede salvar la vida en segundos. Avisar a la Central simultáneamente para que despache al SAME.",
+     tip:"Heimlich + Central. No demores."}
+  ],
+  4: [
+    {q:"Detectás en cámara a alguien forzando una puerta a las 3 AM. ¿Qué hacés primero?",
+     o:["Vas al lugar personalmente","Avisás a la Central de Operaciones (botón de pánico) — ellos despachan al 911","Apagás la cámara","Esperás a ver qué hace"],c:[1],
+     porq:"El monitorista NO va al lugar: su valor es la visión global. Avisar a la Central de Operaciones es la acción clave — la Central coordina con la policía (911).",
+     tip:"Monitorista no abandona el puesto. La Central despacha."},
+    {q:"Una cámara queda en pantalla negra durante 90 minutos. ¿Qué hacés?",
+     o:["La ignorás: probablemente se reinicia sola","Reportás al coordinador y registrás en el libro con hora exacta","Borrás las grabaciones","Apagás todas las cámaras"],c:[1],
+     porq:"Una cámara fuera de servicio por mucho tiempo puede ser falla técnica o sabotaje intencional. Se documenta y se reporta para que el coordinador decida los siguientes pasos.",
+     tip:"Cámara caída = documentar y reportar. Nunca ignorar."},
+    {q:"Recibís un correo en la PC de monitoreo con un enlace que dice 'actualización urgente del sistema'. ¿Qué hacés?",
+     o:["Hacés clic: si es urgente hay que hacerlo","NO hacés clic y reportás al coordinador como posible phishing","Reenviás el correo a todos","Apagás la PC"],c:[1],
+     porq:"Los correos con urgencia + enlaces desconocidos son el método #1 de ciberataque. Un solo clic puede comprometer todo el sistema de cámaras. Siempre reportar antes de hacer clic.",
+     tip:"Link inesperado con urgencia = phishing hasta que se demuestre lo contrario."}
+  ],
+  5: [
+    {q:"Al asumir la guardia con el vehículo SAB-5, ¿cuál es la primera acción obligatoria?",
+     o:["Arrancar y salir al recorrido","Realizar la inspección del vehículo, documentar daños con fotos y reportar al coordinador","Verificar solo el combustible","Firmar y salir"],c:[1],
+     porq:"La inspección pre-guardia protege al vigilador de responsabilidades por daños preexistentes. Sin documentación, cualquier daño previo puede imputarse al vigilador que asumió.",
+     tip:"Sin inspección documentada = responsabilidad por daños ajenos."},
+    {q:"¿Cuál es la velocidad máxima dentro de un barrio privado durante el servicio?",
+     o:["40 km/h como en cualquier calle","20 km/h o la velocidad establecida por el reglamento del barrio","60 km/h en emergencia","No hay velocidad establecida"],c:[1],
+     porq:"Los barrios privados tienen reglamentos internos. La velocidad estándar es 20 km/h. Superar esto genera reclamos de residentes y puede causar accidentes con peatones o niños.",
+     tip:"Barrio privado = 20 km/h. Siempre."},
+    {q:"Tenés un accidente menor con el vehículo SAB-5. ¿Qué hacés primero?",
+     o:["Huís rápido para evitar problemas","Avisás a la Central de Operaciones, fotografiás la escena y registrás los datos del otro conductor","Pagás en el momento sin reportar","Llamás a un familiar"],c:[1],
+     porq:"Ante un accidente, la documentación inmediata (fotos, datos, escena) es tu defensa legal. La Central de Operaciones coordina toda la respuesta (seguro, policía si corresponde, asistencia).",
+     tip:"Fotografía + Central. Antes de mover nada."}
+  ]
+};
+
 function startModQuiz(){
-  // En modo práctica → solo 3 preguntas (rápido para presentaciones)
-  const cantPreguntas = _practiceMode ? 3 : 16;
+  // ── MODO PRÁCTICA: usa preguntas fáciles del banco DEMO_QUIZ ──
+  if(_practiceMode && DEMO_QUIZ[curMod.id]){
+    curQ = DEMO_QUIZ[curMod.id].map((q,i)=>({...q, _oi:i})).map(shuffleOpts);
+    qIdx = 0; qAns = [];
+    gi('qmod-title').textContent = 'Quiz: '+curMod.title+' (Práctica · 3 preg. fáciles)';
+    renderQ(); go('s-quiz');
+    return;
+  }
+  // ── Quiz normal: 16 preguntas del banco real ──
   const pool = QUIZZES[curMod.id] ? QUIZZES[curMod.id].slice(0,16) : [];
   // Preservar índice original antes del shuffle para que las imágenes sean correctas
   const poolConIdx = pool.map((q,i)=>Object.assign({},q,{_oi:i}));
-  curQ  = shuf([...poolConIdx]).slice(0,cantPreguntas).map(shuffleOpts);
+  curQ  = shuf([...poolConIdx]).map(shuffleOpts);
   qIdx  = 0; qAns = [];
-  gi('qmod-title').textContent = 'Quiz: '+curMod.title + (_practiceMode ? ' (Práctica · 3 preg.)' : '');
+  gi('qmod-title').textContent = 'Quiz: '+curMod.title;
   renderQ(); go('s-quiz');
 }
 
