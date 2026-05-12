@@ -1297,7 +1297,7 @@ function mod5(){ return `
 <div class="do-c"><div class="rtitle">🚪 Portones o puertas abiertas fuera de horario</div><div class="rdesc">A las 2 AM una puerta abierta puede ser descuido o puede ser que alguien ingresó. Reportar con hora y ubicación, intentar contactar al propietario por los canales del barrio. No ingresar a la propiedad sin autorización.</div></div>
 <div class="do-c"><div class="rtitle">💡 Luminarias apagadas o dañadas</div><div class="rdesc">Una luminaria apagada puede ser falla técnica o puede haberse dañado intencionalmente para operar en la oscuridad. Reportar al coordinador y al consorcio del barrio.</div></div>
 <div class="do-c"><div class="rtitle">🚗 Vehículos desconocidos estacionados más de 3 horas</div><div class="rdesc">Registrar patente, color, modelo y hora. No actuar por cuenta propia: reportar al coordinador para que evalúe si se contacta al propietario o a la policía.</div></div>
-<div class="do-c"><div class="rtitle">👥 Personas a pie de madrugada sin actividad clara</div><div class="rdesc">No interceptar ni confrontar. Observar, registrar descripción detallada y reportar al coordinador. Si hay actitud claramente sospechosa o amenazante, llamar al 911.</div></div>
+<div class="do-c"><div class="rtitle">👥 Personas a pie de madrugada sin actividad clara</div><div class="rdesc">No interceptar ni confrontar. Observar, registrar descripción detallada y reportar al coordinador. Si hay actitud claramente sospechosa o amenazante, avisar a la Central de Operaciones (botón de pánico).</div></div>
 </div>
 
 <div class="divider">📝 ELABORACIÓN DEL INFORME DE GUARDIA</div>
@@ -1538,7 +1538,7 @@ function mod4(){ return `
 <div class="divider">🔐 ACCESOS Y CREDENCIALES: ESCENARIOS DEL QUIZ</div>
 <div class="card">
 <div class="do-c"><div class="rtitle">👤 Empleado con credencial válida en área no autorizada (3 AM)</div><div class="rdesc">Tener credencial válida no equivale a tener acceso a todos los sectores. <strong>Registrar la novedad con hora exacta, notificar al coordinador y mantener monitoreo continuo del sector.</strong> No ignorar por la credencial.</div></div>
-<div class="do-c"><div class="rtitle">🪪 Credencial visualmente alterada (foto borrosa, formato distinto)</div><div class="rdesc"><strong>No autorizar el ingreso.</strong> Retener la credencial con calma si es posible y notificar al encargado de inmediato describiendo la situación. No llamar al 911 de entrada sin pasar por el coordinador.</div></div>
+<div class="do-c"><div class="rtitle">🪪 Credencial visualmente alterada (foto borrosa, formato distinto)</div><div class="rdesc"><strong>No autorizar el ingreso.</strong> Retener la credencial con calma si es posible y notificar al encargado de inmediato describiendo la situación. No avisar a la Central de Operaciones (botón de pánico) de entrada sin pasar por el coordinador.</div></div>
 <div class="do-c"><div class="rtitle">👤 Visitante sin registro de salida después de 3 horas</div><div class="rdesc">Verificar en cámaras la última posición conocida. Notificar al coordinador y solicitar verificación física de su paradero dentro del establecimiento. No ignorar ni esperar al final del turno.</div></div>
 </div>
 
@@ -1600,7 +1600,7 @@ const MOD5_DATA = {
 <div class="divider">⚠️ CONTINGENCIAS EN OBRA</div>
 <div class="card">
 <div class="do-c"><div class="rtitle">✅ Accidente laboral</div><div class="rdesc">Llamar a la Central de Operaciones (pánico) de inmediato. No mover al accidentado. Preservar el área. Notificar al responsable de obra y asentar todo en el libro de novedades con hora exacta. La ART debe ser notificada por la empresa.</div></div>
-<div class="do-c"><div class="rtitle">✅ Incidente entre trabajadores</div><div class="rdesc">Separar verbalmente, no intervenir físicamente. Llamar al capataz o responsable. Si hay violencia activa, llamar al 911 y preservar la escena.</div></div>
+<div class="do-c"><div class="rtitle">✅ Incidente entre trabajadores</div><div class="rdesc">Separar verbalmente, no intervenir físicamente. Llamar al capataz o responsable. Si hay violencia activa, avisar a la Central de Operaciones (botón de pánico) y preservar la escena.</div></div>
 <div class="do-c"><div class="rtitle">✅ Persona no autorizada en obra</div><div class="rdesc">Toda persona en el obrador debe tener razón de estar: personal contratado, proveedor con cita, inspector habilitado. Sin identificación y autorización, no entra.</div></div>
 </div>
 
@@ -1673,7 +1673,7 @@ const MOD5_DATA = {
       {q:"Llega una persona que se identifica como inspector del Ministerio de Trabajo. ¿Cuál es el procedimiento?",
        o:["Lo dejás pasar de inmediato: tiene autoridad legal para inspeccionar","Verificás su credencial oficial, llamás al responsable de la planta ANTES de permitir el acceso y lo acompañás en todo momento durante la inspección","Le pedís que espere afuera hasta que llegue el gerente de planta","Le negás el acceso hasta tener una orden judicial firmada","Lo dejás entrar y le avisás al responsable mientras camina hacia la planta","Le permitís el acceso solo a la administración, no al sector productivo"],c:[1]},
       {q:"Un operario se aplasta la mano con una prensa. Está consciente y grita de dolor. ¿Qué hacés?",
-       o:["Lo llevás a la enfermería de la planta vos mismo inmediatamente","Avisás a la Central de Operaciones y presionás el botón de pánico, no movés a la persona sin indicación médica, avisás al responsable de planta y preservás la escena","Buscás al enfermero de la planta primero antes de llamar al 911","Intentás liberar la mano vos mismo antes de llamar a emergencias","Le aplicás los primeros auxilios y luego llamás al 911","Le pedís al supervisor del área que decida qué hacer"],c:[1]},
+       o:["Lo llevás a la enfermería de la planta vos mismo inmediatamente","Avisás a la Central de Operaciones y presionás el botón de pánico, no movés a la persona sin indicación médica, avisás al responsable de planta y preservás la escena","Buscás al enfermero de la planta primero antes de avisar a la Central de Operaciones (botón de pánico)","Intentás liberar la mano vos mismo antes de llamar a emergencias","Le aplicás los primeros auxilios y luego llamás al 911","Le pedís al supervisor del área que decida qué hacer"],c:[1]},
       {q:"Un camionero insiste en que su carga no puede abrirse según un 'protocolo del cliente'. El protocolo interno de la planta exige verificar toda carga entrante. ¿Qué prevalece?",
        o:["El protocolo del cliente: el cliente siempre tiene razón","El protocolo interno de la planta: es la norma de seguridad de las instalaciones. Sin verificación, no ingresa. Escalás al coordinador si hay conflicto","Dependés de lo que diga el coordinador en ese momento concreto","Dejás entrar el camión pero lo acompañás hasta el depósito sin abrir","Consultás con el cliente antes de tomar cualquier decisión","Abrís solo una muestra de la carga como verificación parcial"],c:[1]},
     ]
@@ -2536,7 +2536,7 @@ const QUIZZES = {
   ],
   4:[
     {q:"El monitorista detecta en cámara que alguien fuerza una puerta trasera a las 2 AM. ¿Primera acción?",
-     o:["Ir al lugar a verificar personalmente","Verificar por cámara, alertar al vigilador en campo y llamar al 911","Esperar 5 minutos para confirmar que no es una falla del sensor","Apagar y reiniciar las cámaras para resetear la alarma","Avisar al cliente del servicio directamente sin pasar por protocolo","Registrar la novedad y notificar al coordinador al final del turno"],c:[1],
+     o:["Ir al lugar a verificar personalmente","Verificar por cámara, alertar al vigilador en campo y avisar a la Central de Operaciones (botón de pánico)","Esperar 5 minutos para confirmar que no es una falla del sensor","Apagar y reiniciar las cámaras para resetear la alarma","Avisar al cliente del servicio directamente sin pasar por protocolo","Registrar la novedad y notificar al coordinador al final del turno"],c:[1],
      porq:"El monitorista no va al lugar: su valor está en la visión global y la coordinación. Ir personalmente abandona el puesto de monitoreo. La combinación de verificación visual + alerta al vigilador + 911 activa la respuesta correcta sin dejar de ver el cuadro completo.",
      tip:"Tu lugar es la central. Desde ahí coordinás toda la respuesta, sin abandonar el puesto."},
     {q:"La cámara del acceso principal lleva 90 minutos con pantalla negra. ¿Qué hacés?",
