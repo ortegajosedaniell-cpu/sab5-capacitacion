@@ -2158,7 +2158,7 @@ function ejAlarma4Tap(id){
     fb.style.display='block';
     if(allOk){
       fb.className='ej-feedback ok';
-      fb.innerHTML='✅ ¡Correcto! El orden es: <strong>1° Humo/Incendio → llamar al 100</strong>, <strong>2° Puerta/Intrusión → vigilador + 911</strong>, <strong>3° Estacionamiento</strong>.';
+      fb.innerHTML='✅ ¡Correcto! El orden es: <strong>1° Humo/Incendio → avisar a la Central (pánico)</strong>, <strong>2° Puerta/Intrusión → vigilador + Central</strong>, <strong>3° Estacionamiento</strong>. La Central despacha a Bomberos/Policía.';
     } else {
       fb.className='ej-feedback err';
       fb.innerHTML='❌ Orden incorrecto. La prioridad correcta es: <strong>1° Humo (incendio)</strong>, <strong>2° Puerta depósito (intrusión)</strong>, <strong>3° Estacionamiento</strong>. El fuego es siempre la amenaza más urgente.';
