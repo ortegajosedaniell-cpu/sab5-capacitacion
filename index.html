@@ -3830,6 +3830,11 @@ function renderModuleAdminList(){
 
 // ─── GUARDAR RESULTADO ───────────────────────────────────────────
 function saveSheets(data){
+  // ── MODO PRÁCTICA: no guarda nada, ni local ni remoto ────────
+  if(_practiceMode){
+    console.log('[PRÁCTICA] Evaluación NO registrada (modo sandbox)');
+    return;
+  }
   // Siempre guarda en localStorage
   saveLocal(data);
   // Envía a Google Sheets si está configurado
@@ -3839,6 +3844,7 @@ function saveSheets(data){
 }
 
 function saveLocal(data){
+  if(_practiceMode) return; // doble guard: nunca guardar en práctica
   const key = 'sab5_evaluaciones';
   const list = JSON.parse(localStorage.getItem(key)||'[]');
   list.unshift(data);
