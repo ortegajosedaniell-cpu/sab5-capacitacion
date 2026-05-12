@@ -5321,8 +5321,8 @@ function _demoTypeField(el, text){
     const iv=setInterval(()=>{
       el.value+=text[i++];
       el.dispatchEvent(new Event('input'));
-      if(i>=text.length){ clearInterval(iv); setTimeout(resolve,300); }
-    }, 60);
+      if(i>=text.length){ clearInterval(iv); setTimeout(resolve,150); }
+    }, 30); // tipeo más rápido
   });
 }
 
