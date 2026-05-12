@@ -3771,7 +3771,18 @@ function saveServiceLabelsAdmin(){}
 // ─── MÓDULOS DISPONIBLES ─────────────────────────────────────────
 function getEnabledModules(){
   const s = localStorage.getItem('sab5_enabled_modules');
-  return s ? JSON.parse(s) : MODS.map(m=>m.id);
+  if(!s) return MODS.map(m=>m.id);
+  let list;
+  try { list = JSON.parse(s); } catch(e){ return MODS.map(m=>m.id); }
+  if(!Array.isArray(list)) return MODS.map(m=>m.id);
+  // Auto-habilitar módulos NUEVOS que aún no estén en localStorage
+  // (ej: cuando se agrega un módulo nuevo al código, debe activarse solo)
+  let changed = false;
+  MODS.forEach(m=>{
+    if(!list.includes(m.id)){ list.push(m.id); changed = true; }
+  });
+  if(changed) localStorage.setItem('sab5_enabled_modules', JSON.stringify(list));
+  return list;
 }
 function saveEnabledModules(list){ localStorage.setItem('sab5_enabled_modules', JSON.stringify(list)); }
 
