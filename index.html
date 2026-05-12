@@ -2761,6 +2761,15 @@ async function doLogin(){
   const modId = parseInt(gi('i-modulo').value)||0;
   if(!n||!d||!modId){ alert('Completá todos los campos para continuar.'); return; }
 
+  // ── MODO PRÁCTICA: saltea el chequeo de "ya aprobado" ────────
+  if(_practiceMode){
+    const selMod = MODS.find(m=>m.id===modId);
+    user={nombre:n,legajo:'',dni:d,sede:'',coordinador:'',modId:modId,modTitle:selMod?selMod.title:'',inicio:new Date().toISOString()};
+    t0=Date.now();
+    renderHome(); go('s-home');
+    return;
+  }
+
   // ── Verificar si el DNI ya aprobó este módulo (local + GitHub) ──
   const btnLogin = gi('btn-login');
   const MIN = typeof MIN_MOD!=='undefined' ? MIN_MOD : 6;
