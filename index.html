@@ -5385,14 +5385,14 @@ async function runDemo(){
   ].join(';');
   _demoToast('🎬 Iniciando demo...', toast);
   document.body.appendChild(toast);
-  await _demoWait(1500);
+  await _demoWait(800);
 
   // ── 1. Rellenar formulario ──────────────────────────────────────
-  _demoToast('✏️ Completando datos del participante...', toast);
+  _demoToast('✏️ Completando datos...', toast);
   await _demoTypeField(document.getElementById('i-nombre'), 'Carlos Rodríguez');
-  await _demoWait(400);
+  await _demoWait(200);
   await _demoTypeField(document.getElementById('i-dni'), '30512874');
-  await _demoWait(500);
+  await _demoWait(300);
   const selMod=document.getElementById('i-modulo');
   if(selMod){
     // Demo siempre usa Módulo 2: Lucha contra Incendios
@@ -5401,18 +5401,18 @@ async function runDemo(){
     if(optFuego) optFuego.selected=true;
     else if(optFallback) optFallback.selected=true;
   }
-  await _demoWait(800);
+  await _demoWait(500);
 
   // ── 2. Login ────────────────────────────────────────────────────
   _demoToast('🚀 Ingresando al sistema...', toast);
   await doLogin();
-  await _demoWait(_DW);
+  await _demoWait(2500);
 
   // ── 3. Abrir módulo ─────────────────────────────────────────────
-  _demoToast('📚 Abriendo módulo de capacitación...', toast);
+  _demoToast('📚 Abriendo módulo...', toast);
   const mcard=document.querySelector('.mcard.available')||document.querySelector('.mcard');
   if(mcard) mcard.click();
-  await _demoWait(_DW);
+  await _demoWait(2500);
 
   // ── 4. Ir al quiz con solo 2 preguntas ──────────────────────────
   _demoToast('📝 Evaluación (2 preguntas de muestra)...', toast);
