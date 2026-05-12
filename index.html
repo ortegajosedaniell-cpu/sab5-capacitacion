@@ -2861,12 +2861,14 @@ function shuffleOpts(q){
 }
 
 function startModQuiz(){
+  // En modo práctica → solo 3 preguntas (rápido para presentaciones)
+  const cantPreguntas = _practiceMode ? 3 : 16;
   const pool = QUIZZES[curMod.id] ? QUIZZES[curMod.id].slice(0,16) : [];
   // Preservar índice original antes del shuffle para que las imágenes sean correctas
   const poolConIdx = pool.map((q,i)=>Object.assign({},q,{_oi:i}));
-  curQ  = shuf([...poolConIdx]).map(shuffleOpts);
+  curQ  = shuf([...poolConIdx]).slice(0,cantPreguntas).map(shuffleOpts);
   qIdx  = 0; qAns = [];
-  gi('qmod-title').textContent = 'Quiz: '+curMod.title;
+  gi('qmod-title').textContent = 'Quiz: '+curMod.title + (_practiceMode ? ' (Práctica · 3 preg.)' : '');
   renderQ(); go('s-quiz');
 }
 
